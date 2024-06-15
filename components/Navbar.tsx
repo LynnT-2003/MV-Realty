@@ -85,7 +85,7 @@ const Navbar = () => {
   };
 
   return (
-    <header className="w-full py-5 sm:px-10 px-5 flex justify-between items-center">
+    <header className="w-full py-2 mb-3 sm:px-10 px-5 flex justify-between items-center bg-slate-100">
       <nav className="flex w-full screen-max-width">
         <div className="flex flex-1 items-center">
           <div className="md:pr-5 pr-3">
