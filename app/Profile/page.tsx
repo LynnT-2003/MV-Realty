@@ -20,7 +20,7 @@ const ProfilePage = () => {
   }, []);
 
   return (
-    <>
+    <div className="mt-12 mx-6">
       {openEdit ? (
         <div>
           <div className="px-4 space-y-6 md:px-6">
@@ -75,7 +75,7 @@ const ProfilePage = () => {
                   </div>
                 </div>
               </div>
-              <div className="space-y-2">
+              <div className="space-y-2 pt-6">
                 <h2 className="text-lg font-semibold">Change Password</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
@@ -105,7 +105,7 @@ const ProfilePage = () => {
                 </div>
               </div>
             </div>
-            <div className="mt-8 flex space-x-4">
+            <div className="pt-6 flex space-x-4">
               <Button
                 size="lg"
                 variant="destructive"
@@ -158,7 +158,7 @@ const ProfilePage = () => {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 
