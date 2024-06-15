@@ -53,6 +53,16 @@ const Navbar = () => {
   // Function to post user credentials to the backend
   const postUserToBackend = async (userData: User) => {
     try {
+      const checkResponse = await fetch(
+        `http://localhost:8080/check/user?email=${userData.email}`
+      );
+      const userExists = await checkResponse.json();
+
+      if (userExists.exists) {
+        console.log("User already exists, not POSTING user credentials again.");
+        return;
+      }
+
       const response = await fetch("http://localhost:8080/add/user", {
         method: "POST",
         headers: {
