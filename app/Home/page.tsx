@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 
 const filters = ["Bedrooms", "Price", "Location", "Buy/Rent"];
 
-const page = () => {
+const HomePage = () => {
   const [properties, setProperties] = useState(null);
 
   useEffect(() => {
@@ -56,4 +56,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default HomePage;
