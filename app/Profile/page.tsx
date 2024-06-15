@@ -58,11 +58,23 @@ const ProfilePage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <Label htmlFor="name">Name</Label>
-                <Input type="email" id="name" placeholder="Enter your name" />
+                <Input
+                  disabled
+                  type="disabled"
+                  id="name"
+                  placeholder="Enter your name"
+                  defaultValue={user?.displayName || ""}
+                />
               </div>
               <div>
                 <Label htmlFor="email">Email</Label>
-                <Input id="email" placeholder="Enter your email" type="email" />
+                <Input
+                  disabled
+                  id="email"
+                  placeholder="Enter your email"
+                  type="email"
+                  defaultValue={user?.email || ""}
+                />
               </div>
               <div>
                 <Label htmlFor="phone">Phone</Label>
