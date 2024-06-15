@@ -111,6 +111,7 @@ const Navbar = () => {
               src={user.photoURL || "/default-avatar.png"}
               alt={user.displayName || "User"}
               className="rounded-full md:w-12 w-12"
+              onClick={() => router.push("/Profile")}
             />
             {/* <span className="ml-2 text-sm">{user.displayName}</span> */}
           </div>
