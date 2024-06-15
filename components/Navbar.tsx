@@ -121,7 +121,10 @@ const Navbar = () => {
           </div>
         )}
         {user ? (
-          <Button className="md:p-4 pl-2 max-sm:hidden" onClick={handleSignOut}>
+          <Button
+            className="ml-3 p-2 bg-background text-black hover:bg-slate-100 max-sm:hidden"
+            onClick={handleSignOut}
+          >
             Sign Out
           </Button>
         ) : (
