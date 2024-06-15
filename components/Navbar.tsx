@@ -95,7 +95,7 @@ const Navbar = () => {
           {navLists.map((nav, i) => (
             <div
               key={nav}
-              className="md:px-5 pl-2 text-sm cursor-pointer text-gray hover:font-light hover:text-base hover:text-slate-500 transition-all"
+              className="md:px-5 pl-4 text-sm cursor-pointer text-gray hover:font-light hover:text-base hover:text-slate-500 transition-all"
               onClick={() => router.push(`/${nav}`)}
             >
               {nav}
