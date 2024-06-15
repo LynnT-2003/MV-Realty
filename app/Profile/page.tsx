@@ -112,8 +112,13 @@ const ProfilePage = () => {
             </div>
           </div>
         </div>
-        <div className="mt-8">
-          <Button size="lg">Save</Button>
+        <div className="mt-8 flex space-x-5">
+          <Button size="lg" className="bg-slate-500">
+            Save
+          </Button>
+          <Button size="lg" variant="destructive">
+            Sign Out
+          </Button>
         </div>
       </div>
     </div>
