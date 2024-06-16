@@ -1,14 +1,23 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { onAuthStateChange, User } from "@/lib/firebase";
+import { signOutUser, onAuthStateChange, User } from "@/lib/firebase";
+import { useRouter } from "next/navigation";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FaEdit } from "react-icons/fa";
 
 const ProfilePage = () => {
+  const router = useRouter();
+
   const [user, setUser] = useState<User | null>(null);
   const [openEdit, setOpenEdit] = useState(false);
+
+  const handleSignOut = async () => {
+    await signOutUser();
+    console.log("Sign-out successful.");
+    router.push("/Home");
+  };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChange((user) => {
@@ -151,7 +160,7 @@ const ProfilePage = () => {
               </div>
             </header>
             <div className="mt-8 flex space-x-5">
-              <Button size="lg" variant="destructive">
+              <Button size="lg" variant="destructive" onClick={handleSignOut}>
                 Sign Out
               </Button>
             </div>
