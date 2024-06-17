@@ -79,7 +79,7 @@ const HomePage: React.FC = () => {
         className="flex justify-center items-center w-full absolute"
         style={{ bottom: "-20px" }}
       >
-        <div className="inline-flex justify-center items-center shadow-lg md:space-x-24 md:text-base sm:space-x-5 sm:text-lg space-x-8 text-xs py-2 px-10 bg-white rounded">
+        <div className="max-sm:hidden inline-flex justify-center items-center shadow-lg md:space-x-24 md:text-base sm:space-x-5 sm:text-lg space-x-8 text-xs py-2 px-10 bg-white rounded">
           {filters.map((filter) => (
             <div key={filter} className="md:px-0">
               <Popover
