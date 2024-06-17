@@ -116,9 +116,7 @@ const Navbar = () => {
             {/* <span className="ml-2 text-sm">{user.displayName}</span> */}
           </div>
         ) : (
-          <div className="flex items-center">
-            <img src="/next.svg" alt="Apple" width={18} height={18} />
-          </div>
+          <div className="flex items-center"></div>
         )}
         {user ? (
           <Button
