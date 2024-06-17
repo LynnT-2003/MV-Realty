@@ -23,7 +23,7 @@ const filters = ["Bedrooms", "Price", "Location", "Buy/Rent"] as const;
 type Filter = (typeof filters)[number];
 
 const options: Record<Filter, string[]> = {
-  Bedrooms: ["1", "2", "3"],
+  Bedrooms: ["1-Bedroom", "2-Bedroom", "3-Bedroom"],
   Price: ["$0 - $100k", "$100k - $200k", "$200k+"],
   Location: ["New York", "San Francisco", "Chicago", "Los Angeles"],
   "Buy/Rent": ["Buy", "Rent"],

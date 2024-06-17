@@ -1,7 +1,7 @@
 // app/property/page.tsx
-import { client } from '@/sanity/lib/client';
-import { urlForImage } from '@/sanity/lib/image';
-import { Property } from '../../types';
+import { client } from "@/sanity/lib/client";
+import { urlForImage } from "@/sanity/lib/image";
+import { Property } from "../../types";
 
 const fetchProperties = async (): Promise<Property[]> => {
   return await client.fetch(`*[_type == "property"]`);
@@ -17,7 +17,9 @@ const PropertyPage = async () => {
           <h1>{property.title}</h1>
           <p>Developer: {property.developer}</p>
           <p>{property.description}</p>
-          <p>Coordinates: {property.coordinates.lat}, {property.coordinates.lng}</p>
+          <p>
+            Coordinates: {property.coordinates.lat}, {property.coordinates.lng}
+          </p>
           <p>Min Price: ${property.minPrice}</p>
           <p>Max Price: ${property.maxPrice}</p>
           <div>
@@ -31,7 +33,11 @@ const PropertyPage = async () => {
           <div>
             <h2>Photos:</h2>
             {property.photos.map((photo) => (
-              <img key={photo._key} src={urlForImage(photo)} alt={property.title} />
+              <img
+                key={photo._key}
+                src={urlForImage(photo)}
+                alt={property.title}
+              />
             ))}
           </div>
           <p>Built: {property.built}</p>
