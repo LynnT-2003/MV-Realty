@@ -174,12 +174,15 @@ const HomePage: React.FC = () => {
           <h1 className="md:text-xl text-base pt-4">Recommended:</h1>
           <CarouselContent className="w-full">
             {properties.map((property) => (
-              <CarouselItem className="flex justify-center items-center md:w-full w-screen md:basis-1/3 basis-1/1">
-                <div key={property.property_id} className="p-2">
+              <CarouselItem
+                key={property.property_id}
+                className="flex justify-center items-center md:w-full w-screen md:basis-1/3 basis-1/1"
+              >
+                <div className="p-2">
                   <Card className="w-full">
                     <CardContent className="flex aspect-square items-center justify-center p-6">
                       <span className="text-3xl font-semibold text-center">
-                        {property.Title}
+                        <img src=""></img>
                       </span>
                     </CardContent>
                   </Card>
