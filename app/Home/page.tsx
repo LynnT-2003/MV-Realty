@@ -107,7 +107,7 @@ const HomePage: React.FC = () => {
         <div className="flex items-center justify-center">
           <img
             src="/yinlin-banner.webp"
-            className="h-[60vh] w-screen object-cover"
+            className="md:h-[60vh] h-[30vh] w-screen object-cover"
           />
         </div>
         <div className="flex justify-center items-center w-full absolute bottom-0 translate-y-1/2">
@@ -164,25 +164,66 @@ const HomePage: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="md:py-16 flex flex-col w-full items-center justify-center">
+      <div className="md:py-16 flex flex-col items-center justify-center">
         <Carousel
           opts={{
             align: "start",
           }}
-          className="w-full max-w-sm md:max-w-screen-lg flex flex-col justify-center"
+          className="w-full md:max-w-screen-xl pl-6 flex flex-col justify-center"
         >
-          <h1 className="md:text-xl text-base pt-4">Recommended:</h1>
+          <h1 className="md:text-xl text-base pt-4 md:pl-4">
+            Featured Listings:
+          </h1>
           <CarouselContent className="w-full">
             {properties.map((property) => (
               <CarouselItem
                 key={property.property_id}
-                className="flex justify-center items-center md:w-full w-screen md:basis-1/3 basis-1/1"
+                className="flex justify-center items-center md:w-full w-screen md:basis-1/4 basis-1/3"
               >
                 <div className="p-2">
                   <Card className="w-full">
-                    <CardContent className="flex aspect-square items-center justify-center p-6">
+                    <CardContent className="flex aspect-square items-center justify-center p-0 shadow-lg">
                       <span className="text-3xl font-semibold text-center">
-                        <img src=""></img>
+                        <img
+                          src={property.Images[0]}
+                          className="md:h-64 md:w-64 h-32 object-cover"
+                        ></img>
+                      </span>
+                    </CardContent>
+                  </Card>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselNext />
+          <CarouselPrevious />
+        </Carousel>
+      </div>
+
+      <div className="md:py-16 flex flex-col items-center justify-center md:pt-0 pt-1">
+        <Carousel
+          opts={{
+            align: "start",
+          }}
+          className="w-full md:max-w-screen-xl pl-6 flex flex-col justify-center"
+        >
+          <h1 className="md:text-xl text-base pt-4 md:pl-4">
+            Recommended for You:
+          </h1>
+          <CarouselContent className="w-full">
+            {properties.map((property) => (
+              <CarouselItem
+                key={property.property_id}
+                className="flex justify-center items-center md:w-full w-screen md:basis-1/4 basis-1/3"
+              >
+                <div className="p-2">
+                  <Card className="w-full">
+                    <CardContent className="flex aspect-square items-center justify-center p-0 shadow-lg">
+                      <span className="text-3xl font-semibold text-center">
+                        <img
+                          src={property.Images[0]}
+                          className="md:h-64 md:w-64 h-32 object-cover"
+                        ></img>
                       </span>
                     </CardContent>
                   </Card>
