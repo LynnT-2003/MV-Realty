@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
+import { urlForImage } from "@/sanity/lib/image";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -27,20 +28,22 @@ import {
 } from "@/components/ui/carousel";
 
 import { Card, CardContent } from "@/components/ui/card";
+import { Property } from "@/types";
+import getAllProperties from "@/services/getAllProperties";
 
-interface Property {
-  property_id?: string;
-  Title: string;
-  Developer: string;
-  Description: string;
-  Coordinates: [number, number];
-  MinPrice: number;
-  MaxPrice: number;
-  Facilities: string[];
-  Images: string[];
-  Built: number;
-  Created_at: string; // Use string to represent date
-}
+// interface Property {
+//   property_id?: string;
+//   Title: string;
+//   Developer: string;
+//   Description: string;
+//   Coordinates: [number, number];
+//   MinPrice: number;
+//   MaxPrice: number;
+//   Facilities: string[];
+//   Images: string[];
+//   Built: number;
+//   Created_at: string; // Use string to represent date
+// }
 
 const filters = ["Bedrooms", "Price", "Location", "Buy/Rent"] as const;
 
@@ -79,18 +82,20 @@ const HomePage: React.FC = () => {
 
   const fetchProperties = async () => {
     try {
-      const response = await fetch("http://localhost:8080/properties", {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (!response.ok) {
+      // const response = await fetch("http://localhost:8080/properties", {
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      // });
+      const response: Property[] = await getAllProperties();
+
+      if (!response) {
         throw new Error("Failed to fetch properties.");
       }
       console.log("Fetching...");
-      const data = await response.json();
-      setProperties(data);
-      console.log(data);
+      // const data = await response.json();
+      setProperties(response);
+      console.log(response);
     } catch (error) {
       console.log(error);
     }
@@ -177,17 +182,21 @@ const HomePage: React.FC = () => {
           <CarouselContent className="w-full">
             {properties.map((property) => (
               <CarouselItem
-                key={property.property_id}
+                key={property._id}
                 className="flex justify-center items-center md:w-full w-screen md:basis-1/4 basis-1/3"
               >
                 <div className="p-2">
                   <Card className="w-full">
                     <CardContent className="flex aspect-square items-center justify-center p-0 shadow-lg">
                       <span className="text-3xl font-semibold text-center">
-                        <img
-                          src={property.Images[0]}
-                          className="md:h-64 md:w-64 h-32 object-cover"
-                        ></img>
+                        {property.photos.map((photo) => (
+                          <img
+                            key={photo._key}
+                            src={urlForImage(photo)}
+                            alt={property.title}
+                            className="md:h-64 md:w-64 h-32 object-cover"
+                          />
+                        ))}
                       </span>
                     </CardContent>
                   </Card>
@@ -213,17 +222,21 @@ const HomePage: React.FC = () => {
           <CarouselContent className="w-full">
             {properties.map((property) => (
               <CarouselItem
-                key={property.property_id}
+                key={property._id}
                 className="flex justify-center items-center md:w-full w-screen md:basis-1/4 basis-1/3"
               >
                 <div className="p-2">
                   <Card className="w-full">
                     <CardContent className="flex aspect-square items-center justify-center p-0 shadow-lg">
                       <span className="text-3xl font-semibold text-center">
-                        <img
-                          src={property.Images[0]}
-                          className="md:h-64 md:w-64 h-32 object-cover"
-                        ></img>
+                        {property.photos.map((photo) => (
+                          <img
+                            key={photo._key}
+                            src={urlForImage(photo)}
+                            alt={property.title}
+                            className="md:h-64 md:w-64 h-32 object-cover"
+                          />
+                        ))}
                       </span>
                     </CardContent>
                   </Card>
