@@ -12,6 +12,15 @@ export default defineType({
       type: 'string',
     }),
     defineField({
+      name: "slug",
+      title: "Slug",
+      type: "slug",
+      options: {
+        source: "title",
+        maxLength: 96,
+      },
+    }),
+    defineField({
       name: 'developer',
       title: 'Developer',
       type: 'string',

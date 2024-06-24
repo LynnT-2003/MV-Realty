@@ -1,19 +1,54 @@
-// app/property/page.tsx
+'use client';
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { client } from "@/sanity/lib/client";
 import { urlForImage } from "@/sanity/lib/image";
 import { Property } from "../../types";
 
-const fetchProperties = async (): Promise<Property[]> => {
+const fetchPropertiesFromSanity = async (): Promise<Property[]> => {
   return await client.fetch(`*[_type == "property"]`);
 };
 
-const PropertyPage = async () => {
-  const properties = await fetchProperties();
+const PropertyPage = () => {
+  const [properties, setProperties] = useState<Property[]>([]);
+  const router = useRouter();
+
+  useEffect(() => {
+    const getPropertiesFromLocalStorage = (): Property[] | null => {
+      const storedProperties = localStorage.getItem("properties");
+      if (storedProperties) {
+        return JSON.parse(storedProperties);
+      }
+      return null;
+    };
+
+    const storePropertiesInLocalStorage = (properties: Property[]) => {
+      localStorage.setItem("properties", JSON.stringify(properties));
+    };
+
+    const fetchProperties = async () => {
+      const localProperties = getPropertiesFromLocalStorage();
+      if (localProperties) {
+        setProperties(localProperties);
+      } else {
+        const fetchedProperties = await fetchPropertiesFromSanity();
+        setProperties(fetchedProperties);
+        storePropertiesInLocalStorage(fetchedProperties);
+      }
+    };
+
+    fetchProperties();
+  }, []);
+
+  const handlePropertyClick = (slug: string) => {
+    console.log("Clicked on property with slug:", slug);
+    router.push(`/Property/${slug}`);
+  };
 
   return (
     <div>
       {properties.map((property) => (
-        <div key={property._id}>
+        <div key={property._id} onClick={() => handlePropertyClick(property.slug.current)} style={{ cursor: 'pointer' }}>
           <h1>{property.title}</h1>
           <p>Developer: {property.developer}</p>
           <p>{property.description}</p>
