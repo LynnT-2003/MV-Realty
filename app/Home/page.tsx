@@ -180,7 +180,7 @@ const HomePage: React.FC = () => {
         </div>
       </div>
 
-      <div className="md:py-16 flex flex-col items-center justify-center">
+      <div className="md:py-16 md:w-max-xl flex flex-col items-center justify-center">
         <LayoutGridDemo />
       </div>
 
