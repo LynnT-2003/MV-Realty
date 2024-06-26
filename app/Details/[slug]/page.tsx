@@ -8,13 +8,13 @@ import { fetchPropertyBySlug } from "@/services/PropertyServices";
 
 const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
   const router = useRouter();
-
   const { slug } = params;
   const [property, setProperty] = React.useState<Property | null>(null);
 
   React.useEffect(() => {
     if (slug) {
       fetchPropertyBySlug(slug).then(setProperty);
+      console.log("Setting property");
     }
   }, [slug]);
 

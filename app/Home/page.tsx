@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { urlForImage } from "@/sanity/lib/image";
+import { useRouter } from "next/navigation";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -29,7 +30,9 @@ import {
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Property } from "@/types";
-import getAllProperties from "@/services/getAllProperties";
+import { fetchAllProperties } from "@/services/PropertyServices";
+
+import { LayoutGridDemo } from "@/components/HomeLayoutGrid";
 
 // interface Property {
 //   property_id?: string;
@@ -57,6 +60,8 @@ const options: Record<Filter, string[]> = {
 };
 
 const HomePage: React.FC = () => {
+  const router = useRouter();
+
   const [properties, setProperties] = useState<Property[]>([]);
   const [openFilter, setOpenFilter] = useState<Filter | null>(null);
 
@@ -87,7 +92,7 @@ const HomePage: React.FC = () => {
       //     "Content-Type": "application/json",
       //   },
       // });
-      const response: Property[] = await getAllProperties();
+      const response: Property[] = await fetchAllProperties();
 
       if (!response) {
         throw new Error("Failed to fetch properties.");
@@ -106,13 +111,18 @@ const HomePage: React.FC = () => {
     setOpenFilter(null);
   };
 
+  const handlePropertyClick = (slug: string) => {
+    console.log("Clicked on property with slug:", slug);
+    router.push(`/Property/${slug}`);
+  };
+
   return (
     <div>
       <div className="relative">
         <div className="flex items-center justify-center">
           <img
-            src="/yinlin-banner.webp"
-            className="md:h-[60vh] h-[30vh] w-screen object-cover"
+            src="/banner.jpeg"
+            className="md:h-[60vh] h-[20vh] w-screen object-cover md:px-10 px-6 py-2"
           />
         </div>
         <div className="flex justify-center items-center w-full absolute bottom-0 translate-y-1/2">
@@ -169,33 +179,42 @@ const HomePage: React.FC = () => {
           </div>
         </div>
       </div>
+
       <div className="md:py-16 flex flex-col items-center justify-center">
+        <LayoutGridDemo />
+      </div>
+
+      <div className="flex flex-col items-center justify-center pb-8 ">
         <Carousel
           opts={{
             align: "start",
           }}
-          className="w-full md:max-w-screen-xl pl-6 flex flex-col justify-center"
+          className="w-screen md:w-[90vw] flex flex-col justify-center md:px-0 px-4"
         >
-          <h1 className="md:text-xl text-base pt-4 md:pl-4">
-            Featured Listings:
+          <h1 className="md:text-xl text-base md:pt-4 pt-16">
+            Recently added Listings:
           </h1>
           <CarouselContent className="w-full">
             {properties.map((property) => (
               <CarouselItem
                 key={property._id}
-                className="flex justify-center items-center md:w-full w-screen md:basis-1/4 basis-1/3"
+                className="flex justify-center items-center md:w-full w-screen 2xl:basis-1/5 md:basis-1/4 basis-1/3"
               >
-                <div className="p-2">
+                <div className="p-0">
                   <Card className="w-full">
-                    <CardContent className="flex aspect-square items-center justify-center p-0 shadow-lg">
+                    <CardContent className="flex items-center justify-center shadow-lg">
                       <span className="text-3xl font-semibold text-center">
                         {property.photos.map((photo) => (
-                          <img
-                            key={photo._key}
-                            src={urlForImage(photo)}
-                            alt={property.title}
-                            className="md:h-64 md:w-64 h-32 object-cover"
-                          />
+                          <div key={photo._key} className="md:w-128 w-128">
+                            <img
+                              src={urlForImage(photo)}
+                              alt={property.title}
+                              className="md:h-64 md:w-80 h-32 w-80 object-cover"
+                              onClick={() =>
+                                handlePropertyClick(property.slug.current)
+                              }
+                            />
+                          </div>
                         ))}
                       </span>
                     </CardContent>
@@ -209,33 +228,35 @@ const HomePage: React.FC = () => {
         </Carousel>
       </div>
 
-      <div className="md:py-16 flex flex-col items-center justify-center md:pt-0 pt-1">
+      <div className="flex flex-col items-center justify-center pb-8">
         <Carousel
           opts={{
             align: "start",
           }}
-          className="w-full md:max-w-screen-xl pl-6 flex flex-col justify-center"
+          className="w-screen md:w-[90vw] flex flex-col justify-center md:px-0 px-4"
         >
-          <h1 className="md:text-xl text-base pt-4 md:pl-4">
-            Recommended for You:
-          </h1>
+          <h1 className="md:text-xl text-base pt-4">Popular Listings:</h1>
           <CarouselContent className="w-full">
             {properties.map((property) => (
               <CarouselItem
                 key={property._id}
-                className="flex justify-center items-center md:w-full w-screen md:basis-1/4 basis-1/3"
+                className="flex justify-center items-center md:w-full w-screen 3xl:basis-1/7 2xl:basis-1/5 md:basis-1/4 basis-1/3"
               >
-                <div className="p-2">
+                <div className="p-0">
                   <Card className="w-full">
-                    <CardContent className="flex aspect-square items-center justify-center p-0 shadow-lg">
+                    <CardContent className="flex items-center justify-center shadow-lg">
                       <span className="text-3xl font-semibold text-center">
                         {property.photos.map((photo) => (
-                          <img
-                            key={photo._key}
-                            src={urlForImage(photo)}
-                            alt={property.title}
-                            className="md:h-64 md:w-64 h-32 object-cover"
-                          />
+                          <div key={photo._key} className="md:w-128 w-128">
+                            <img
+                              src={urlForImage(photo)}
+                              alt={property.title}
+                              className="md:h-64 md:w-80 h-32 w-80 object-cover"
+                              onClick={() =>
+                                handlePropertyClick(property.slug.current)
+                              }
+                            />
+                          </div>
                         ))}
                       </span>
                     </CardContent>

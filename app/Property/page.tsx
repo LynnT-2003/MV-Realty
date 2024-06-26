@@ -1,13 +1,10 @@
-'use client';
+"use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { client } from "@/sanity/lib/client";
 import { urlForImage } from "@/sanity/lib/image";
 import { Property } from "../../types";
-
-const fetchPropertiesFromSanity = async (): Promise<Property[]> => {
-  return await client.fetch(`*[_type == "property"]`);
-};
+import { fetchAllProperties } from "@/services/PropertyServices";
 
 const PropertyPage = () => {
   const [properties, setProperties] = useState<Property[]>([]);
@@ -31,7 +28,7 @@ const PropertyPage = () => {
       if (localProperties) {
         setProperties(localProperties);
       } else {
-        const fetchedProperties = await fetchPropertiesFromSanity();
+        const fetchedProperties = await fetchAllProperties();
         setProperties(fetchedProperties);
         storePropertiesInLocalStorage(fetchedProperties);
       }
@@ -48,7 +45,11 @@ const PropertyPage = () => {
   return (
     <div>
       {properties.map((property) => (
-        <div key={property._id} onClick={() => handlePropertyClick(property.slug.current)} style={{ cursor: 'pointer' }}>
+        <div
+          key={property._id}
+          onClick={() => handlePropertyClick(property.slug.current)}
+          style={{ cursor: "pointer" }}
+        >
           <h1>{property.title}</h1>
           <p>Developer: {property.developer}</p>
           <p>{property.description}</p>
