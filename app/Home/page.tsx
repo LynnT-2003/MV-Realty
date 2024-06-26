@@ -33,6 +33,7 @@ import { Property } from "@/types";
 import { fetchAllProperties } from "@/services/PropertyServices";
 
 import { LayoutGridDemo } from "@/components/HomeLayoutGrid";
+import { AnimatedHero } from "@/components/AnimatedHero";
 
 // interface Property {
 //   property_id?: string;
@@ -118,6 +119,7 @@ const HomePage: React.FC = () => {
 
   return (
     <div>
+      <AnimatedHero />
       <div className="relative">
         <div className="flex items-center justify-center">
           <img
