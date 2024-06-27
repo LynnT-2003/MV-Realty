@@ -6,6 +6,10 @@ import { urlForImage } from "@/sanity/lib/image";
 import { Property } from "../../../types";
 import { fetchPropertyBySlug } from "@/services/PropertyServices";
 
+import { DetailsBento } from "@/components/DetailsBento";
+import { DetailsImageGridLayout } from "@/components/DetailsImageGrid";
+import { LayoutGridDemo } from "@/components/HomeLayoutGrid";
+
 const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
   const router = useRouter();
   const { slug } = params;
@@ -24,6 +28,7 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
 
   return (
     <div>
+      <DetailsImageGridLayout />
       <h1>{property.title}</h1>
       <p>Developer: {property.developer}</p>
       <p>{property.description}</p>

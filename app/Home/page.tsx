@@ -115,7 +115,7 @@ const HomePage: React.FC = () => {
 
   const handlePropertyClick = (slug: string) => {
     console.log("Clicked on property with slug:", slug);
-    router.push(`/Property/${slug}`);
+    router.push(`/Details/${slug}`);
   };
 
   return (
@@ -202,7 +202,7 @@ const HomePage: React.FC = () => {
             {properties.map((property) => (
               <CarouselItem
                 key={property._id}
-                className="flex justify-center items-center md:w-full w-screen xl:basis-1/4 macbook-air:basis-1/3 2xl:basis-1/4 basis-1/2"
+                className="flex justify-center items-center md:w-full w-screen xl:basis-1/4 macbook-air:basis-1/3 2x:basis-1/4 basis-1/2"
               >
                 <div className="p-0">
                   <Card className="w-full">
