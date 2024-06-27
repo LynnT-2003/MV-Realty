@@ -20,6 +20,7 @@ const config = {
     extend: {
       screens: {
         "3xl": "1920px",
+        "macbook-air": "1440px",
       },
       colors: {
         border: "hsl(var(--border))",

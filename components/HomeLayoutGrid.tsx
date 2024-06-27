@@ -5,7 +5,7 @@ import { LayoutGrid } from "@/components/ui/layout-grid";
 export function LayoutGridDemo() {
   return (
     <div className="h-screen w-max-screen">
-      <h1 className="pl-10 pb-2">Featured:</h1>
+      <h1 className="md:pl-10 pl-2 pb-2">Featured:</h1>
       <LayoutGrid cards={cards} />
     </div>
   );

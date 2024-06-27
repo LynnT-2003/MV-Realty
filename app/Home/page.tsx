@@ -34,6 +34,7 @@ import { fetchAllProperties } from "@/services/PropertyServices";
 
 import { LayoutGridDemo } from "@/components/HomeLayoutGrid";
 import { AnimatedHero } from "@/components/AnimatedHero";
+import { DirectionAwareHover } from "@/components/ui/direction-aware-hover";
 
 // interface Property {
 //   property_id?: string;
@@ -120,6 +121,7 @@ const HomePage: React.FC = () => {
   return (
     <div>
       <AnimatedHero />
+
       <div className="relative">
         <div className="flex items-center justify-center">
           <img
@@ -200,13 +202,13 @@ const HomePage: React.FC = () => {
             {properties.map((property) => (
               <CarouselItem
                 key={property._id}
-                className="flex justify-center items-center md:w-full w-screen 2xl:basis-1/5 md:basis-1/4 basis-1/3"
+                className="flex justify-center items-center md:w-full w-screen xl:basis-1/4 macbook-air:basis-1/3 2xl:basis-1/4 basis-1/2"
               >
                 <div className="p-0">
                   <Card className="w-full">
                     <CardContent className="flex items-center justify-center shadow-lg">
                       <span className="text-3xl font-semibold text-center">
-                        {property.photos.map((photo) => (
+                        {/* {property.photos.map((photo) => (
                           <div key={photo._key} className="md:w-128 w-128">
                             <img
                               src={urlForImage(photo)}
@@ -216,6 +218,27 @@ const HomePage: React.FC = () => {
                                 handlePropertyClick(property.slug.current)
                               }
                             />
+                          </div>
+                        ))} */}
+                        {property.photos.map((photo) => (
+                          <div>
+                            <div
+                              className="md:h-full md:w-full w-[45vw] relative  flex items-center justify-center"
+                              onClick={() =>
+                                handlePropertyClick(property.slug.current)
+                              }
+                            >
+                              <DirectionAwareHover
+                                imageUrl={urlForImage(photo)}
+                              >
+                                <p className="font-bold text-xl">
+                                  {property.title}
+                                </p>
+                                <p className="font-normal text-sm">
+                                  $1299 / night
+                                </p>
+                              </DirectionAwareHover>
+                            </div>
                           </div>
                         ))}
                       </span>
