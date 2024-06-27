@@ -221,7 +221,7 @@ const HomePage: React.FC = () => {
                           </div>
                         ))} */}
                         {property.photos.map((photo) => (
-                          <div>
+                          <div key={photo._key}>
                             <div
                               className="md:h-full md:w-full w-[45vw] relative  flex items-center justify-center"
                               onClick={() =>
