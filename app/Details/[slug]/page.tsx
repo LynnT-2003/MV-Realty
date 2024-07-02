@@ -29,7 +29,19 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
   return (
     <div>
       <DetailsImageGridLayout />
-      <h1>{property.title}</h1>
+      <div className="pl-6">
+        <h1 className="text-3xl font-medium pb-2">
+          Life Rama 4-Asoke : ไลฟ์ พระราม 4 - อโศก, กรุงเทพ
+        </h1>
+        <h1 className="subtitle font-medium text-slate-600 pb-1">
+          Choose Everything Moving From Work From Home To Work From Anywhere
+        </h1>
+        <h1 className="address font-base text-slate-500 pb-48">
+          Rama 4 Road, Khlong Toei, Khlong Toei, Bangkok
+        </h1>
+      </div>
+
+      {/* <h1>{property.title}</h1>
       <p>Developer: {property.developer}</p>
       <p>{property.description}</p>
       <p>
@@ -52,7 +64,7 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
         ))}
       </div>
       <p>Built: {property.built}</p>
-      <p>Created at: {new Date(property.createdAt).toDateString()}</p>
+      <p>Created at: {new Date(property.createdAt).toDateString()}</p> */}
     </div>
   );
 };

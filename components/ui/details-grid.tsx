@@ -27,7 +27,7 @@ export const DetailsGrid = ({ cards }: { cards: Card[] }) => {
 
   return (
     <div className="flex justify-center py-4">
-      <div className="px-6 w-[100vw] h-[70vh] grid grid-cols-1 md:grid-cols-3 w-[95vw] gap-1 relative">
+      <div className="px-6 w-[100vw] h-[50vh] grid grid-cols-1 md:grid-cols-3 w-[95vw] gap-1 relative">
         {cards.map((card, i) => (
           <div key={i} className={cn(card.className, "")}>
             <motion.div
@@ -36,7 +36,7 @@ export const DetailsGrid = ({ cards }: { cards: Card[] }) => {
                 card.className,
                 "relative overflow-hidden",
                 selected?.id === card.id
-                  ? "rounded-lg cursor-pointer absolute inset-0 h-1/2 w-full md:w-1/2 m-auto z-50 flex justify-center items-center flex-wrap flex-col"
+                  ? "rounded-lg cursor-pointer absolute inset-0 h-[80vh] w-full md:w-[60vw] mx-auto my-[-7vh] z-50 flex justify-center items-center"
                   : lastSelected?.id === card.id
                     ? "z-40 bg-white rounded-xl h-full w-full"
                     : "bg-white rounded-xl h-full w-full"
