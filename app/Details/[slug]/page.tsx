@@ -33,7 +33,7 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
       <DetailsImageGridLayout />
 
       <Grid container spacing={0} className="w-screen mx-auto px-4">
-        <Grid item xs={7}>
+        <Grid item md={7}>
           {/* Title and Subtitle */}
           <div className="flex pt-3">
             <div className="flex-shrink-0">
@@ -46,14 +46,14 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
               />
             </div>
             <div className="pl-5">
-              <h1 className="text-3xl font-medium pb-2">
+              <h1 className="text-xs md:text-3xl font-medium pb-2">
                 Life Rama 4-Asoke : ไลฟ์ พระราม 4 - อโศก, กรุงเทพ
               </h1>
-              <h1 className="subtitle font-medium text-slate-600 pb-1">
+              <h1 className="subtitle text-xs md:text-base font-medium text-slate-600 pb-1">
                 Choose Everything Moving From Work From Home To Work From
                 Anywhere
               </h1>
-              <h1 className="address font-base text-slate-500">
+              <h1 className="address text-xs md:text-base font-base text-slate-500">
                 Rama 4 Road, Khlong Toei, Khlong Toei, Bangkok
               </h1>
             </div>
@@ -61,7 +61,7 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
 
           {/* Details 1 */}
           <Grid container spacing={2} className="pt-8 pl-[1vw]s">
-            <Grid item xs={5}>
+            <Grid item md={5}>
               <h1>Starting from ฿2,538,000</h1>
               <div className="flex">
                 <h1>Mortgage</h1>
