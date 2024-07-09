@@ -5,6 +5,7 @@ import { client } from "@/sanity/lib/client";
 import { urlForImage } from "@/sanity/lib/image";
 import Image from "next/image";
 import Grid from "@mui/material/Grid";
+import { Button } from "@/components/ui/button";
 import { Property } from "../../../types";
 import { fetchPropertyBySlug } from "@/services/PropertyServices";
 
@@ -32,24 +33,30 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
     <div>
       <DetailsImageGridLayout />
 
+      <div className="md:hidden w-screen mx-auto px-4 pb-2">
+        <img
+          alt="Detail Banner"
+          src="https://images.unsplash.com/photo-1588880331179-bc9b93a8cb5e?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          className="w-screen h-[25vh] rounded-lg shadow-lg mb-4"
+        />
+      </div>
+
       <Grid container spacing={0} className="w-screen mx-auto px-4">
         <Grid item md={7}>
           {/* Title and Subtitle */}
-          <div className="flex pt-3">
+          <div className="flex md:pt-6">
             <div className="flex-shrink-0">
-              <Image
+              <img
                 src="/logo.png"
                 alt="Logo"
-                height="100"
-                width="100"
-                className="pl-2"
+                className="md:pl-2 md:w-24 md:h-24 w-12 h-12"
               />
             </div>
-            <div className="pl-5">
-              <h1 className="text-xs md:text-3xl font-medium pb-2">
-                Life Rama 4-Asoke : ไลฟ์ พระราม 4 - อโศก, กรุงเทพ
+            <div className="pl-4 md:pl-5">
+              <h1 className="text-base md:text-3xl font-medium md:pb-2">
+                Life Rama 4-Asoke
               </h1>
-              <h1 className="subtitle text-xs md:text-base font-medium text-slate-600 pb-1">
+              <h1 className="subtitle hidden md:block text-xs md:text-base md:font-medium text-slate-600 pb-1">
                 Choose Everything Moving From Work From Home To Work From
                 Anywhere
               </h1>
@@ -60,8 +67,8 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
           </div>
 
           {/* Details 1 */}
-          <Grid container spacing={2} className="pt-8 pl-[1vw]s">
-            <Grid item md={5}>
+          {/* <Grid container spacing={2} className="pt-8 pl-[1vw]s">
+            <Grid item md={5} className="hidden">
               <h1>Starting from ฿2,538,000</h1>
               <div className="flex">
                 <h1>Mortgage</h1>
@@ -69,10 +76,22 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
               </div>
             </Grid>
             <Grid item xs={6}></Grid>
-          </Grid>
+          </Grid> */}
         </Grid>
         <Grid item xs={6}></Grid>
       </Grid>
+
+      <div className="flex pt-4 md:gap-8 gap-4 pl-6">
+        <Button variant="outline" className="md:h-12 md:text-lg h-6 font-light">
+          Photos
+        </Button>
+        <Button variant="outline" className="md:h-12 md:text-lg h-6 font-light">
+          Developer
+        </Button>
+        <Button variant="outline" className="md:h-12 md:text-lg h-6 font-light">
+          Location
+        </Button>
+      </div>
 
       {/* <h1>{property.title}</h1>
       <p>Developer: {property.developer}</p>

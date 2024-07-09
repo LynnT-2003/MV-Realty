@@ -208,39 +208,21 @@ const HomePage: React.FC = () => {
                   <Card className="w-full">
                     <CardContent className="flex items-center justify-center shadow-lg">
                       <span className="text-3xl font-semibold text-center">
-                        {/* {property.photos.map((photo) => (
-                          <div key={photo._key} className="md:w-128 w-128">
-                            <img
-                              src={urlForImage(photo)}
-                              alt={property.title}
-                              className="md:h-64 md:w-80 h-32 w-80 object-cover"
-                              onClick={() =>
-                                handlePropertyClick(property.slug.current)
-                              }
-                            />
-                          </div>
-                        ))} */}
-                        {property.photos.map((photo) => (
-                          <div key={photo._key}>
-                            <div
-                              className="md:h-full md:w-full w-[45vw] relative  flex items-center justify-center"
-                              onClick={() =>
-                                handlePropertyClick(property.slug.current)
-                              }
-                            >
-                              <DirectionAwareHover
-                                imageUrl={urlForImage(photo)}
-                              >
-                                <p className="font-bold text-xl">
-                                  {property.title}
-                                </p>
-                                <p className="font-normal text-sm">
-                                  $1299 / night
-                                </p>
-                              </DirectionAwareHover>
-                            </div>
-                          </div>
-                        ))}
+                        <div
+                          className="md:h-full md:w-full w-[45vw] relative  flex items-center justify-center"
+                          onClick={() =>
+                            handlePropertyClick(property.slug.current)
+                          }
+                        >
+                          <DirectionAwareHover
+                            imageUrl={urlForImage(property.photos[0])}
+                          >
+                            <p className="font-bold text-xl">
+                              {property.title}
+                            </p>
+                            <p className="font-normal text-sm">$1299 / night</p>
+                          </DirectionAwareHover>
+                        </div>
                       </span>
                     </CardContent>
                   </Card>

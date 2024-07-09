@@ -26,8 +26,8 @@ export const DetailsGrid = ({ cards }: { cards: Card[] }) => {
   };
 
   return (
-    <div className="flex justify-center py-4">
-      <div className="px-6 w-[100vw] h-[50vh] grid grid-cols-1 md:grid-cols-3 mx-auto gap-1 relative">
+    <div className="flex justify-center">
+      <div className="px-6 md:w-[100vw] md:h-[50vh] grid grid-cols-1 md:grid-cols-3 mx-auto gap-1 relative">
         {cards.map((card, i) => (
           <div key={i} className={cn(card.className, "")}>
             <motion.div
