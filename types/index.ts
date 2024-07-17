@@ -10,11 +10,11 @@ export interface Property {
   };
   developer: string;
   description: string;
-  mapUrl: string; // Changed from coordinates to mapUrl as per your schema
+  mapUrl: string;
   minPrice: number;
   maxPrice: number;
-  facilities: Facility[]; // Updated to match the schema for facilities
-  photos: SanityImage[];
+  facilities: Facility[];
+  photos: SanityImageWithKey[];
   built: number;
   createdAt: string;
 }
@@ -22,13 +22,9 @@ export interface Property {
 export interface Facility {
   name: string;
   description: string;
-  photos: SanityImage[];
+  photos: SanityImageWithKey[];
 }
 
-// export interface Image {
-//   _key: string;
-//   asset: {
-//     _ref: string;
-//     _type: string;
-//   };
-// }
+export interface SanityImageWithKey extends SanityImage {
+  _key: string;
+}
