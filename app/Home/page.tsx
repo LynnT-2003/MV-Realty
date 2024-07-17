@@ -254,7 +254,7 @@ const HomePage: React.FC = () => {
                     <CardContent className="flex items-center justify-center shadow-lg">
                       <span className="text-3xl font-semibold text-center">
                         {property.photos.map((photo) => (
-                          <div key={photo._key} className="md:w-128 w-128">
+                          <div className="md:w-128 w-128">
                             <img
                               src={urlForImage(photo)}
                               alt={property.title}

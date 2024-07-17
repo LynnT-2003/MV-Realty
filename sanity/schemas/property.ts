@@ -1,5 +1,5 @@
 // schemas/property.ts
-import {defineType, defineField} from 'sanity';
+import { defineType, defineField } from 'sanity';
 
 export default defineType({
   name: 'property',
@@ -23,7 +23,8 @@ export default defineType({
     defineField({
       name: 'developer',
       title: 'Developer',
-      type: 'string',
+      type: 'reference',
+      to: [{ type: 'developer' }],
     }),
     defineField({
       name: 'description',
@@ -31,31 +32,59 @@ export default defineType({
       type: 'text',
     }),
     defineField({
-      name: 'coordinates',
-      title: 'Coordinates',
-      type: 'geopoint',
+      name: 'mapUrl',
+      title: 'Map URL',
+      type: 'url',
     }),
     defineField({
-        name: 'minPrice',
-        title: 'Min Price',
-        type: 'number',
-      }),
-      defineField({
-        name: 'maxPrice',
-        title: 'Max Price',
-        type: 'number',
-      }),
+      name: 'minPrice',
+      title: 'Min Price',
+      type: 'number',
+    }),
+    defineField({
+      name: 'maxPrice',
+      title: 'Max Price',
+      type: 'number',
+    }),
     defineField({
       name: 'facilities',
-      title: 'Facilities',
       type: 'array',
-      of: [{ type: 'string' }],
+      title: 'Facilities',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            {
+              name: 'name',
+              type: 'string',
+              title: 'Facility Name'
+            },
+            {
+              name: 'description',
+              type: 'text',
+              title: 'Facility Description'
+            },
+            {
+              name: 'photos',
+              title: 'Photos',
+              type: 'array',
+              of: [{ type: 'image' }],
+              options: {
+                layout: 'grid',
+              }
+            }
+          ]
+        }
+      ]
     }),
     defineField({
       name: 'photos',
       title: 'Photos',
       type: 'array',
       of: [{ type: 'image' }],
+      options: {
+        layout: 'grid',
+      }
     }),
     defineField({
       name: 'built',

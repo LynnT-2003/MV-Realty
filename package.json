@@ -28,10 +28,12 @@
     "lucide-react": "^0.394.0",
     "next": "^14.2.4",
     "next-sanity": "^9.3.10",
+    "puppeteer": "^22.12.1",
     "react": "^18",
     "react-dom": "^18",
     "react-icons": "^5.2.1",
     "sanity": "^3.46.1",
+    "sanity-plugin-media": "^2.2.5",
     "styled-components": "^6.1.11",
     "tailwind-merge": "^2.3.0",
     "tailwindcss-animate": "^1.0.7"
