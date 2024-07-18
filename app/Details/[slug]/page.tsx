@@ -13,6 +13,8 @@ import { DetailsBento } from "@/components/DetailsBento";
 import { DetailsImageGridLayout } from "@/components/DetailsImageGrid";
 import { LayoutGridDemo } from "@/components/HomeLayoutGrid";
 
+import MapDemo from "@/components/MapDemo";
+
 const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
   const router = useRouter();
   const { slug } = params;
@@ -117,6 +119,7 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
       </div>
       <p>Built: {property.built}</p>
       <p>Created at: {new Date(property.createdAt).toDateString()}</p> */}
+      <MapDemo lat={property.geoLocation.lat} lng={property.geoLocation.lng} />
     </div>
   );
 };
