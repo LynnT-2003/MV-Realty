@@ -54,7 +54,7 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
             </div>
             <div className="pl-4 md:pl-5">
               <h1 className="text-base md:text-3xl font-medium md:pb-2">
-                Life Rama 4-Asoke
+                {property.title}
               </h1>
               <h1 className="subtitle hidden md:block text-xs md:text-base md:font-medium text-slate-600 pb-1">
                 Choose Everything Moving From Work From Home To Work From
