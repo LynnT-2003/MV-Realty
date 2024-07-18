@@ -11,6 +11,7 @@ export interface Property {
   developer: string;
   description: string;
   mapUrl: string;
+  geoLocation: GeoLocation;
   minPrice: number;
   maxPrice: number;
   facilities: Facility[];
@@ -27,4 +28,10 @@ export interface Facility {
 
 export interface SanityImageWithKey extends SanityImage {
   _key: string;
+}
+
+export interface GeoLocation {
+  _type: string;
+  lat: number;
+  lng: number;
 }

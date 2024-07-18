@@ -37,6 +37,11 @@ export default defineType({
       type: 'url',
     }),
     defineField({
+      name: 'geoLocation',
+      title: 'Geo Location',
+      type: 'geopoint',
+    }),   
+    defineField({
       name: 'minPrice',
       title: 'Min Price',
       type: 'number',
