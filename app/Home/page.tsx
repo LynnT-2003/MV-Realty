@@ -36,20 +36,6 @@ import { LayoutGridDemo } from "@/components/HomeLayoutGrid";
 import { AnimatedHero } from "@/components/AnimatedHero";
 import { DirectionAwareHover } from "@/components/ui/direction-aware-hover";
 
-// interface Property {
-//   property_id?: string;
-//   Title: string;
-//   Developer: string;
-//   Description: string;
-//   Coordinates: [number, number];
-//   MinPrice: number;
-//   MaxPrice: number;
-//   Facilities: string[];
-//   Images: string[];
-//   Built: number;
-//   Created_at: string; // Use string to represent date
-// }
-
 const filters = ["Bedrooms", "Price", "Location", "Buy/Rent"] as const;
 
 type Filter = (typeof filters)[number];
@@ -89,18 +75,12 @@ const HomePage: React.FC = () => {
 
   const fetchProperties = async () => {
     try {
-      // const response = await fetch("http://localhost:8080/properties", {
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      // });
       const response: Property[] = await fetchAllProperties();
 
       if (!response) {
         throw new Error("Failed to fetch properties.");
       }
       console.log("Fetching...");
-      // const data = await response.json();
       setProperties(response);
       console.log(response);
     } catch (error) {
@@ -113,23 +93,24 @@ const HomePage: React.FC = () => {
     setOpenFilter(null);
   };
 
-  const handlePropertyClick = (slug: string) => {
-    console.log("Clicked on property with slug:", slug);
-    router.push(`/Details/${slug}`);
+  const handlePropertyClick = (property: Property) => {
+    console.log("Clicked on Property: ", { property });
+    router.push(`/Details/${property.slug.current}`);
   };
 
   return (
     <div>
-      <AnimatedHero />
+      {/* <AnimatedHero /> */}
 
       <div className="relative">
         <div className="flex items-center justify-center">
           <img
             src="/banner.jpeg"
-            className="md:h-[60vh] h-[20vh] w-screen object-cover md:px-10 px-6 py-2"
+            className="md:h-[60vh] h-[20vh] w-screen object-cover md:px-[10%] px-6 py-10"
           />
         </div>
-        <div className="flex justify-center items-center w-full absolute bottom-0 translate-y-1/2">
+
+        <div className="flex justify-center items-center w-full absolute bottom-10 translate-y-1/2">
           <div className="max-sm:hidden inline-flex justify-center items-center shadow-lg md:space-x-24 md:text-base sm:space-x-5 sm:text-lg space-x-8 text-xs py-2 px-10 bg-white rounded">
             {filters.map((filter) => (
               <div key={filter} className="md:px-0">
@@ -210,9 +191,7 @@ const HomePage: React.FC = () => {
                       <span className="text-3xl font-semibold text-center">
                         <div
                           className="md:h-full md:w-full w-[45vw] relative  flex items-center justify-center"
-                          onClick={() =>
-                            handlePropertyClick(property.slug.current)
-                          }
+                          onClick={() => handlePropertyClick(property)}
                         >
                           <DirectionAwareHover
                             imageUrl={urlForImage(property.photos[0])}
@@ -259,9 +238,7 @@ const HomePage: React.FC = () => {
                               src={urlForImage(photo)}
                               alt={property.title}
                               className="md:h-64 md:w-80 h-32 w-80 object-cover"
-                              onClick={() =>
-                                handlePropertyClick(property.slug.current)
-                              }
+                              onClick={() => handlePropertyClick(property)}
                             />
                           </div>
                         ))}
