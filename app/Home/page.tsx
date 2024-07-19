@@ -169,21 +169,21 @@ const HomePage: React.FC = () => {
         <LayoutGridDemo />
       </div>
 
-      <div className="flex flex-col items-center justify-center pb-8 ">
+      <div className="flex flex-col items-center justify-center pb-8 3xl:pl-[9%] macbook-air:px-[10%]">
         <Carousel
           opts={{
             align: "start",
           }}
-          className="w-screen md:w-[90vw] flex flex-col justify-center md:px-0 px-4"
+          className="w-screen md:w-[90vw] macbook-air:w-[85vw] flex flex-col justify-center px-4"
         >
-          <h1 className="md:text-xl text-base md:pt-4 pt-16">
+          <h1 className="md:text-xl text-base md:px-[2%] pt-16">
             Recently added Listings:
           </h1>
           <CarouselContent className="w-full">
             {properties.map((property) => (
               <CarouselItem
                 key={property._id}
-                className="flex justify-center items-center md:w-full w-screen 3xl:basis-1/5 2xl:basis-1/4 macbook-air:basis-1/3 2x:basis-1/4 basis-1/2"
+                className="flex justify-center items-center md:w-full ml-8 w-screen 3xl:basis-1/4 2xl:basis-1/3 macbook-air:basis-1/3 basis-1/2"
               >
                 <div className="p-0">
                   <Card className="w-full">
@@ -202,46 +202,6 @@ const HomePage: React.FC = () => {
                             <p className="font-normal text-sm">$1299 / night</p>
                           </DirectionAwareHover>
                         </div>
-                      </span>
-                    </CardContent>
-                  </Card>
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselNext />
-          <CarouselPrevious />
-        </Carousel>
-      </div>
-
-      <div className="flex flex-col items-center justify-center pb-8">
-        <Carousel
-          opts={{
-            align: "start",
-          }}
-          className="w-screen md:w-[90vw] flex flex-col justify-center md:px-0 px-4"
-        >
-          <h1 className="md:text-xl text-base pt-4">Popular Listings:</h1>
-          <CarouselContent className="w-full">
-            {properties.map((property) => (
-              <CarouselItem
-                key={property._id}
-                className="flex justify-center items-center md:w-full w-screen 3xl:basis-1/7 2xl:basis-1/5 md:basis-1/4 basis-1/3"
-              >
-                <div className="p-0">
-                  <Card className="w-full">
-                    <CardContent className="flex items-center justify-center shadow-lg">
-                      <span className="text-3xl font-semibold text-center">
-                        {property.photos.map((photo) => (
-                          <div key={photo._key} className="md:w-128 w-128">
-                            <img
-                              src={urlForImage(photo)}
-                              alt={property.title}
-                              className="md:h-64 md:w-80 h-32 w-80 object-cover"
-                              onClick={() => handlePropertyClick(property)}
-                            />
-                          </div>
-                        ))}
                       </span>
                     </CardContent>
                   </Card>
