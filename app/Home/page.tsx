@@ -177,7 +177,7 @@ const HomePage: React.FC = () => {
           className="w-screen md:w-[90vw] macbook-air:w-[85vw] flex flex-col justify-center px-4"
         >
           <h1 className="md:text-xl text-base md:px-[2%] pt-16">
-            Recently added Listings:
+            Recently added:
           </h1>
           <CarouselContent className="w-full">
             {properties.map((property) => (
