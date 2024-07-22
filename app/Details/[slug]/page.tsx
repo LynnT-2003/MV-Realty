@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { client } from "@/sanity/lib/client";
 import { urlForImage } from "@/sanity/lib/image";
@@ -14,6 +15,7 @@ import { DetailsImageGridLayout } from "@/components/DetailsImageGrid";
 import { LayoutGridDemo } from "@/components/HomeLayoutGrid";
 
 import MapDemo from "@/components/MapDemo";
+import developer from "@/sanity/schemas/developer";
 
 const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
   const router = useRouter();
@@ -24,6 +26,8 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
     if (slug) {
       fetchPropertyBySlug(slug).then(setProperty);
       console.log("Setting property");
+      console.log("Developer: ", property?.developer);
+      console.log(property?.photos);
     }
   }, [slug]);
 
@@ -33,9 +37,67 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
 
   return (
     <div>
-      <DetailsImageGridLayout />
+      <Grid container spacing={0} className="w-screen mx-auto px-[15%] pt-[5%]">
+        <Grid item md={7}>
+          {/* Title and Subtitle */}
+          <div className="flex md:pt-6">
+            <div className="flex-shrink-0">
+              <img
+                // src={urlForImage(property.developer.profileIcon)}
+                src="/logo.png"
+                alt="Logo"
+                className="md:pl-2 md:w-48 md:h-48 macbook-air:w-38 macbook-air:h-38 w-12 h-12"
+              />
+            </div>
+            <div className="pl-4 md:pl-10 flex flex-col justify-center">
+              <h1 className="text-base md:text-5xl macbook-air:text-4xl font-medium md:pb-4">
+                {property.title}
+              </h1>
+              <h1 className="subtitle hidden md:block text-md md:text-xl macbook-air:text-lg md:font-medium text-slate-600 pb-4">
+                {/* Choose Everything Moving From Work From Home To Work From
+                Anywhere */}
+                {property.description}
+              </h1>
+              <h1 className="address text-xs md:text-lg macbook-air:text-base font-base text-slate-500">
+                {/* Rama 4 Road, Khlong Toei, Khlong Toei, Bangkok */}
+                {property.description}
+              </h1>
+            </div>
+          </div>
+        </Grid>
+        <Grid item xs={6}></Grid>
+      </Grid>
 
-      <div className="md:hidden w-screen mx-auto px-4 pb-2">
+      <div className="md:flex hidden pt-[2%] md:gap-8 md:px-[15%] gap-4 pb-[5%]">
+        <Button
+          variant="outline"
+          className="md:h-16 md:text-2xl macbook-air:text-base macbook-air:h-12 md:px-8 h-6 font-light"
+        >
+          Photos
+        </Button>
+        <Button
+          variant="outline"
+          className="md:h-16 md:text-2xl macbook-air:text-base macbook-air:h-12 md:px-8 h-6 font-light"
+        >
+          Information
+        </Button>
+        <Button
+          variant="outline"
+          className="md:h-16 md:text-2xl macbook-air:text-base macbook-air:h-12 md:px-8 h-6 font-light"
+        >
+          Location
+        </Button>
+        <Button
+          variant="outline"
+          className="md:h-16 md:text-2xl macbook-air:text-base macbook-air:h-12 md:px-8 h-6 font-light"
+        >
+          Gallery
+        </Button>
+      </div>
+
+      <DetailsImageGridLayout photos={property.photos} />
+
+      <div className="md:hidden w-screen mx-auto pb-2">
         <img
           alt="Detail Banner"
           src="https://images.unsplash.com/photo-1588880331179-bc9b93a8cb5e?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
@@ -43,82 +105,6 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
         />
       </div>
 
-      <Grid container spacing={0} className="w-screen mx-auto px-4">
-        <Grid item md={7}>
-          {/* Title and Subtitle */}
-          <div className="flex md:pt-6">
-            <div className="flex-shrink-0">
-              <img
-                src="/logo.png"
-                alt="Logo"
-                className="md:pl-2 md:w-24 md:h-24 w-12 h-12"
-              />
-            </div>
-            <div className="pl-4 md:pl-5">
-              <h1 className="text-base md:text-3xl font-medium md:pb-2">
-                {property.title}
-              </h1>
-              <h1 className="subtitle hidden md:block text-xs md:text-base md:font-medium text-slate-600 pb-1">
-                Choose Everything Moving From Work From Home To Work From
-                Anywhere
-              </h1>
-              <h1 className="address text-xs md:text-base font-base text-slate-500">
-                Rama 4 Road, Khlong Toei, Khlong Toei, Bangkok
-              </h1>
-            </div>
-          </div>
-
-          {/* Details 1 */}
-          {/* <Grid container spacing={2} className="pt-8 pl-[1vw]s">
-            <Grid item md={5} className="hidden">
-              <h1>Starting from ฿2,538,000</h1>
-              <div className="flex">
-                <h1>Mortgage</h1>
-                <h1 className="pl-2 text-red-500">฿9,630 / mo</h1>
-              </div>
-            </Grid>
-            <Grid item xs={6}></Grid>
-          </Grid> */}
-        </Grid>
-        <Grid item xs={6}></Grid>
-      </Grid>
-
-      <div className="flex pt-4 md:gap-8 gap-4 pl-6">
-        <Button variant="outline" className="md:h-12 md:text-lg h-6 font-light">
-          Photos
-        </Button>
-        <Button variant="outline" className="md:h-12 md:text-lg h-6 font-light">
-          Developer
-        </Button>
-        <Button variant="outline" className="md:h-12 md:text-lg h-6 font-light">
-          Location
-        </Button>
-      </div>
-
-      {/* <h1>{property.title}</h1>
-      <p>Developer: {property.developer}</p>
-      <p>{property.description}</p>
-      <p>
-        Coordinates: {property.coordinates.lat}, {property.coordinates.lng}
-      </p>
-      <p>Min Price: ${property.minPrice}</p>
-      <p>Max Price: ${property.maxPrice}</p>
-      <div>
-        <h2>Facilities:</h2>
-        <ul>
-          {property.facilities.map((facility, index) => (
-            <li key={index}>{facility}</li>
-          ))}
-        </ul>
-      </div>
-      <div>
-        <h2>Photos:</h2>
-        {property.photos.map((photo) => (
-          <img key={photo._key} src={urlForImage(photo)} alt={property.title} />
-        ))}
-      </div>
-      <p>Built: {property.built}</p>
-      <p>Created at: {new Date(property.createdAt).toDateString()}</p> */}
       <MapDemo lat={property.geoLocation.lat} lng={property.geoLocation.lng} />
     </div>
   );

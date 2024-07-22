@@ -124,7 +124,7 @@ export const MapDemo = ({ lat, lng }) => {
     initMap();
   }, [lat, lng]);
 
-  return <div style={{ height: "600px" }} ref={mapRef}></div>;
+  return <div style={{ height: "100vh" }} ref={mapRef}></div>;
 };
 
 export default MapDemo;

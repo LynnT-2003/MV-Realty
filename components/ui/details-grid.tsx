@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
@@ -12,50 +12,41 @@ type Card = {
 };
 
 export const DetailsGrid = ({ cards }: { cards: Card[] }) => {
-  const [selected, setSelected] = useState<Card | null>(null);
-  const [lastSelected, setLastSelected] = useState<Card | null>(null);
+  const [hovered, setHovered] = useState<Card | null>(null);
 
-  const handleClick = (card: Card) => {
-    setLastSelected(selected);
-    setSelected(card);
+  const handleMouseEnter = (card: Card) => {
+    setHovered(card);
   };
 
-  const handleOutsideClick = () => {
-    setLastSelected(selected);
-    setSelected(null);
+  const handleMouseLeave = () => {
+    setHovered(null);
   };
 
   return (
     <div className="flex justify-center">
-      <div className="px-6 md:w-[100vw] md:h-[50vh] grid grid-cols-1 md:grid-cols-3 mx-auto gap-1 relative">
+      <div className="md:w-[100vw] md:h-[100vh] grid grid-cols-1 md:grid-cols-5 gap-5 relative">
         {cards.map((card, i) => (
-          <div key={i} className={cn(card.className, "")}>
+          <div
+            key={i}
+            className={cn(card.className, "")}
+            onMouseEnter={() => handleMouseEnter(card)}
+            onMouseLeave={handleMouseLeave}
+          >
             <motion.div
-              onClick={() => handleClick(card)}
               className={cn(
                 card.className,
                 "relative overflow-hidden",
-                selected?.id === card.id
-                  ? "rounded-lg cursor-pointer absolute inset-0 h-[80vh] w-full md:w-[60vw] mx-auto my-[-7vh] z-50 flex justify-center items-center"
-                  : lastSelected?.id === card.id
-                    ? "z-40 bg-white rounded-xl h-full w-full"
-                    : "bg-white rounded-xl h-full w-full"
+                hovered?.id === card.id
+                  ? "rounded-lg cursor-pointer absolute inset-0 h-[70vh] w-full md:w-[50vw] mx-auto my-[15vh] z-50 flex justify-center items-center"
+                  : "bg-white rounded-xl h-full w-full"
               )}
               layout
             >
-              {selected?.id === card.id && <SelectedCard selected={selected} />}
+              {hovered?.id === card.id && <SelectedCard selected={hovered} />}
               <BlurImage card={card} />
             </motion.div>
           </div>
         ))}
-        <motion.div
-          onClick={handleOutsideClick}
-          className={cn(
-            "absolute h-full w-full left-0 top-0 bg-black opacity-0 z-10",
-            selected?.id ? "pointer-events-auto" : "pointer-events-none"
-          )}
-          animate={{ opacity: selected?.id ? 0.3 : 0 }}
-        />
       </div>
     </div>
   );
@@ -66,7 +57,7 @@ const BlurImage = ({ card }: { card: Card }) => {
   return (
     <Image
       src={card.thumbnail}
-      height="500"
+      height="5000"
       width="500"
       onLoad={() => setLoaded(true)}
       className={cn(

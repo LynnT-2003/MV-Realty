@@ -1,5 +1,14 @@
 // types.ts
-import { Image as SanityImage } from 'sanity';
+import { Image as SanityImage } from "sanity";
+
+export interface Developer {
+  name: string;
+  profileIcon: {
+    asset: {
+      _ref: string;
+    };
+  };
+}
 
 export interface Property {
   _id: string;
