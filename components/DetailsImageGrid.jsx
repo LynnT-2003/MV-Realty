@@ -6,11 +6,10 @@ export function DetailsImageGridLayout({ photos }) {
   const cards = photos.slice(0, 4).map((photo, index) => ({
     id: index + 1,
     content: (
-      <div className="flex flex-col items-center">
-        <p className="font-bold text-4xl text-white">House {index + 1}</p>
-        <p className="font-normal text-base text-white"></p>
-        <p className="font-normal text-base my-4 max-w-lg text-neutral-200">
-          This is a description for house {index + 1}.
+      <div className="flex flex-col items-center justify-center">
+        <p className="text-4xl text-white">Showcase {index + 1}</p>
+        <p className="font-light pt-6 text-base max-w-lg text-neutral-200">
+          This is a description for Item #{index + 1}.
         </p>
       </div>
     ),

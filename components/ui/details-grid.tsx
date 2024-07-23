@@ -24,7 +24,7 @@ export const DetailsGrid = ({ cards }: { cards: Card[] }) => {
 
   return (
     <div className="flex justify-center">
-      <div className="md:pb-[15%] md:w-[100vw] md:px-[15%] md:h-[100vh] grid grid-cols-1 md:grid-cols-2 gap-5 relative">
+      <div className="md:pb-[15%] md:w-[100vw] md:px-[15%] md:h-[100vh] grid grid-cols-1 md:grid-cols-2 gap-4 relative">
         {cards.map((card, i) => (
           <div
             key={i}
@@ -71,7 +71,7 @@ const BlurImage = ({ card }: { card: Card }) => {
 
 const SelectedCard = ({ selected }: { selected: Card | null }) => {
   return (
-    <div className="bg-transparent h-full w-full flex flex-col justify-end rounded-lg shadow-2xl relative z-[60]">
+    <div className="bg-transparent h-full w-full flex flex-col justify-center rounded-lg shadow-2xl relative z-[60]">
       <motion.div
         initial={{
           opacity: 0,
