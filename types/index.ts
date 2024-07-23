@@ -2,12 +2,9 @@
 import { Image as SanityImage } from "sanity";
 
 export interface Developer {
+  _id: string;
   name: string;
-  profileIcon: {
-    asset: {
-      _ref: string;
-    };
-  };
+  profileIcon: SanityImageWithKey;
 }
 
 export interface Property {
@@ -17,7 +14,7 @@ export interface Property {
     current: string;
     _type: string;
   };
-  developer: string;
+  developer: { _ref: string; _type: string };
   description: string;
   mapUrl: string;
   geoLocation: GeoLocation;

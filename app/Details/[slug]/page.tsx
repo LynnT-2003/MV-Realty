@@ -7,8 +7,9 @@ import { urlForImage } from "@/sanity/lib/image";
 import Image from "next/image";
 import Grid from "@mui/material/Grid";
 import { Button } from "@/components/ui/button";
-import { Property } from "../../../types";
+import { Developer, Property } from "../../../types";
 import { fetchPropertyBySlug } from "@/services/PropertyServices";
+import { fetchDeveloperById } from "@/services/DeveloperServices";
 
 import { DetailsBento } from "@/components/DetailsBento";
 import { DetailsImageGridLayout } from "@/components/DetailsImageGrid";
@@ -21,17 +22,20 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
   const router = useRouter();
   const { slug } = params;
   const [property, setProperty] = React.useState<Property | null>(null);
+  const [developer, setDeveloper] = React.useState<Developer | null>(null);
 
   React.useEffect(() => {
     if (slug) {
-      fetchPropertyBySlug(slug).then(setProperty);
-      console.log("Setting property");
-      console.log("Developer: ", property?.developer);
-      console.log(property?.photos);
+      fetchPropertyBySlug(slug).then((propertyData) => {
+        setProperty(propertyData);
+        if (propertyData?.developer) {
+          fetchDeveloperById(propertyData.developer._ref).then(setDeveloper);
+        }
+      });
     }
   }, [slug]);
 
-  if (!property) {
+  if (!property || !developer) {
     return <div>Loading...</div>;
   }
 
@@ -43,8 +47,8 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
           <div className="flex md:pt-6">
             <div className="flex-shrink-0">
               <img
-                // src={urlForImage(property.developer.profileIcon)}
-                src="/logo.png"
+                src={urlForImage(developer.profileIcon)}
+                // src="/logo.png"
                 alt="Logo"
                 className="md:pl-2 md:w-48 md:h-48 macbook-air:w-38 macbook-air:h-38 w-12 h-12"
               />
