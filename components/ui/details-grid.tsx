@@ -24,7 +24,7 @@ export const DetailsGrid = ({ cards }: { cards: Card[] }) => {
 
   return (
     <div className="flex justify-center">
-      <div className="md:w-[100vw] md:h-[100vh] grid grid-cols-1 md:grid-cols-5 gap-5 relative">
+      <div className="md:pb-[15%] md:w-[100vw] md:px-[15%] md:h-[100vh] grid grid-cols-1 md:grid-cols-2 gap-5 relative">
         {cards.map((card, i) => (
           <div
             key={i}
