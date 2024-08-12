@@ -54,7 +54,8 @@ const Navbar = () => {
   const postUserToBackend = async (userData: User) => {
     try {
       const checkResponse = await fetch(
-        `http://localhost:8080/check/user?email=${userData.email}`
+        // here
+        `https://mv-realty-backend-production.up.railway.app/check/user?email=${userData.email}`
       );
       const userExists = await checkResponse.json();
 
@@ -63,18 +64,22 @@ const Navbar = () => {
         return;
       }
 
-      const response = await fetch("http://localhost:8080/add/user", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          // Assuming user contains necessary fields like email, name, etc.
-          email: userData?.email,
-          name: userData?.displayName,
-          // Add other fields if needed
-        }),
-      });
+      // here
+      const response = await fetch(
+        "https://mv-realty-backend-production.up.railway.app/add/user",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            // Assuming user contains necessary fields like email, name, etc.
+            email: userData?.email,
+            name: userData?.displayName,
+            // Add other fields if needed
+          }),
+        }
+      );
       if (!response.ok) {
         throw new Error("Failed to add user");
       }
