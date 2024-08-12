@@ -1,16 +1,29 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { signOutUser, onAuthStateChange, User } from "@/lib/firebase";
+import axios from "axios";
+import {
+  signOutUser,
+  onAuthStateChange,
+  User as FirebaseUser,
+} from "@/lib/firebase";
 import { useRouter } from "next/navigation";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FaEdit } from "react-icons/fa";
 
+interface UserData {
+  name: string;
+  email: string;
+  phone?: string;
+  photoURL?: string;
+  // Add other properties as needed
+}
+
 const ProfilePage = () => {
   const router = useRouter();
 
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<UserData | null>(null);
   const [openEdit, setOpenEdit] = useState(false);
 
   const handleSignOut = async () => {
@@ -19,9 +32,37 @@ const ProfilePage = () => {
     router.push("/Home");
   };
 
+  const fetchUserByEmail = async (email: string) => {
+    try {
+      const response = await axios.get(
+        `https://mv-realty-backend-production.up.railway.app/users/getUserByEmail?email=${encodeURIComponent(email)}`
+      );
+      console.log(response);
+      return response.data as UserData;
+    } catch (error) {
+      console.error("Error fetching user by email:", error);
+      return null;
+    }
+  };
+
   useEffect(() => {
-    const unsubscribe = onAuthStateChange((user) => {
-      setUser(user); // Set user state when authentication state changes
+    const unsubscribe = onAuthStateChange(async (authUser: any) => {
+      if (authUser) {
+        // Fetch the user data by email
+        const userData = await fetchUserByEmail(authUser.email);
+
+        if (userData) {
+          // Add the photoURL from authUser to userData
+          userData.photoURL = authUser.photoURL;
+
+          // Set user state with the combined data
+          setUser(userData);
+        } else {
+          setUser(null); // Handle case where user data is not found
+        }
+      } else {
+        setUser(null); // Handle user not authenticated
+      }
     });
 
     // Clean up subscription
@@ -43,7 +84,7 @@ const ProfilePage = () => {
                   className="border rounded-full"
                 />
                 <div className="space-y-1.5">
-                  <h1 className="text-2xl font-bold">{user?.displayName}</h1>
+                  <h1 className="text-2xl font-bold">{user?.name}</h1>
                   <p className="text-gray-500 dark:text-gray-400">
                     {user?.email}
                   </p>
@@ -58,10 +99,9 @@ const ProfilePage = () => {
                     <Label htmlFor="name">Name</Label>
                     <Input
                       disabled
-                      type="disabled"
                       id="name"
                       placeholder="Enter your name"
-                      defaultValue={user?.displayName || ""}
+                      defaultValue={user?.name || ""}
                     />
                   </div>
                   <div>
@@ -80,6 +120,7 @@ const ProfilePage = () => {
                       id="phone"
                       placeholder="Enter your phone"
                       type="tel"
+                      defaultValue={user?.phone || ""}
                     />
                   </div>
                 </div>
@@ -144,7 +185,7 @@ const ProfilePage = () => {
                 />
                 <div className="space-y-1.5">
                   <div className="flex items-center justify-center">
-                    <h1 className="text-2xl font-bold">{user?.displayName}</h1>
+                    <h1 className="text-2xl font-bold">{user?.name}</h1>
                     <FaEdit
                       className="ml-3 h-5 w-5 text-blue-800"
                       onClick={() => {
