@@ -17,6 +17,7 @@ interface UserData {
   email: string;
   phone?: string;
   photoURL?: string;
+  _id?: string;
   // Add other properties as needed
 }
 
@@ -25,6 +26,7 @@ const ProfilePage = () => {
 
   const [user, setUser] = useState<UserData | null>(null);
   const [openEdit, setOpenEdit] = useState(false);
+  const [updatedPhone, setUpdatedPhone] = useState<any>("");
 
   const handleSignOut = async () => {
     await signOutUser();
@@ -37,11 +39,26 @@ const ProfilePage = () => {
       const response = await axios.get(
         `https://mv-realty-backend-production.up.railway.app/users/getUserByEmail?email=${encodeURIComponent(email)}`
       );
-      console.log(response);
+      console.log("Fetched user data:", response.data);
       return response.data as UserData;
     } catch (error) {
       console.error("Error fetching user by email:", error);
       return null;
+    }
+  };
+
+  const updatePhoneNumber = async (userId: any, newPhone: string) => {
+    try {
+      const response = await axios.put(
+        `https://mv-realty-backend-production.up.railway.app/users?user_id=${encodeURIComponent(userId)}`,
+        {
+          phone: newPhone,
+        }
+      );
+      console.log("Phone number updated successfully:", response.data);
+    } catch (error) {
+      console.log(updatedPhone);
+      console.error("Error updating phone number:", error);
     }
   };
 
@@ -57,6 +74,7 @@ const ProfilePage = () => {
 
           // Set user state with the combined data
           setUser(userData);
+          setUpdatedPhone(userData.phone || "");
         } else {
           setUser(null); // Handle case where user data is not found
         }
@@ -121,11 +139,12 @@ const ProfilePage = () => {
                       placeholder="Enter your phone"
                       type="tel"
                       defaultValue={user?.phone || ""}
+                      onChange={(e) => setUpdatedPhone(e.target.value)}
                     />
                   </div>
                 </div>
               </div>
-              <div className="space-y-2 pt-6">
+              {/* <div className="space-y-2 pt-6">
                 <h2 className="text-lg font-semibold">Change Password</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div>
@@ -153,7 +172,7 @@ const ProfilePage = () => {
                     />
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
             <div className="pt-6 flex space-x-4">
               <Button
@@ -165,7 +184,15 @@ const ProfilePage = () => {
               >
                 Cancel
               </Button>
-              <Button size="lg" className="bg-slate-500">
+              <Button
+                size="lg"
+                className="bg-slate-500"
+                onClick={() => {
+                  if (user) {
+                    updatePhoneNumber(user._id, updatedPhone);
+                  }
+                }}
+              >
                 Save
               </Button>
             </div>
