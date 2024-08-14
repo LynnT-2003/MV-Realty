@@ -12,6 +12,11 @@ export default defineType({
       to: [{ type: 'property' }],
     }),
     defineField({
+      name: 'listingName',
+      title: 'Listing Name',
+      type: 'string',
+    }),
+    defineField({
       name: 'description',
       title: 'Description',
       type: 'text',
@@ -23,7 +28,7 @@ export default defineType({
     }),
     defineField({
       name: 'minimumContractInMonth',
-      title: 'Minimum ContractInMonth',
+      title: 'Minimum Contract In Month',
       type: 'number',
     }),
     defineField({
@@ -102,12 +107,28 @@ export default defineType({
       type: 'datetime',
     }),
     defineField({
+      name: 'listingHero',
+      title: 'Listing Hero',
+      type: 'image',
+      options: {
+        hotspot: true, // Allows selection of a hotspot within the image
+      },
+    }),
+    defineField({
       name: 'listingPhoto',
       title: 'listingPhoto',
       type: 'array',
       of: [{ type: 'image' }],
       options: {
         layout: 'grid',
+      },
+    }),
+    defineField({
+      name: 'floorPlan',
+      title: 'Floor Plan',
+      type: 'image',
+      options: {
+        hotspot: true, // Allows selection of a hotspot within the image
       },
     }),
     defineField({
