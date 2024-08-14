@@ -27,11 +27,14 @@ export interface Property {
 }
 
 export interface Facility {
-  name: string;
+  facilityType: {
+    _ref: string;
+    _type: string;
+  };
+  facilityName: string;
   description: string;
   photos: SanityImageWithKey[];
 }
-
 export interface SanityImageWithKey extends SanityImage {
   _key: string;
 }

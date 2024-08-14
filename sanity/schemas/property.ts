@@ -60,7 +60,13 @@ export default defineType({
           type: 'object',
           fields: [
             {
-              name: 'name',
+              name: 'facilityType',
+              title: 'Facility Type',
+              type: 'reference',
+              to: [{ type: 'facilityType' }],
+            },
+            {
+              name: 'facilityName',
               type: 'string',
               title: 'Facility Name'
             },
@@ -81,6 +87,20 @@ export default defineType({
           ]
         }
       ]
+    }),
+    defineField({
+      name: 'tags',
+      title: 'Tags',
+      type: 'array',
+      of: [{ type: 'reference', to: [{ type: 'tags' }] }],
+    }),
+    defineField({
+      name: 'propertyHero',
+      title: 'Property Hero',
+      type: 'image',
+      options: {
+        hotspot: true, // Allows selection of a hotspot within the image
+      },
     }),
     defineField({
       name: 'photos',
