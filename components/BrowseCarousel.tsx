@@ -2,6 +2,7 @@ import { urlForImage } from "@/sanity/lib/image";
 import React, { useRef, useState } from "react";
 import { Image } from "sanity";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { DirectionAwareHover } from "./ui/direction-aware-hover";
 
 // Define the prop types
 interface BrowseCarouselProps {
@@ -51,9 +52,10 @@ const BrowseCarousel: React.FC<BrowseCarouselProps> = ({ properties }) => {
   };
 
   return (
-    <div className="w-full flex items-center justify-center">
+    <div className="w-full flex items-center justify-center pb-12">
+      <div></div>
       <button
-        className="mr-10 bg-white shadow-md rounded-full"
+        className="hidden md:block mr-10 bg-white shadow-md rounded-full"
         onClick={scrollLeftClick}
         aria-label="Scroll Left"
       >
@@ -63,39 +65,22 @@ const BrowseCarousel: React.FC<BrowseCarouselProps> = ({ properties }) => {
       <div
         id="slider"
         ref={carouselRef}
-        className="w-[1500px] overflow-x-scroll scroll whitespace-nowrap scroll-smooth"
+        className="md:w-[1200px] w-screen mx-4 md:mx-0 overflow-hidden md:overflow-x-scroll scroll whitespace-nowrap scroll-smooth flex flex-col md:flex-row"
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseLeave}
-        style={{ cursor: isDragging ? "grabbing" : "grab" }}
       >
         {properties.map((property, index) => (
           <div
             key={index}
-            className="relative inline-block w-[30.55rem] h-[20.78rem] mr-[1vw]"
+            className="relative inline-block macbook-air:w-[24.2rem] macbook-air:h-[16.60rem] md:w-[30.55rem] mb-4 md:mb-0 md:h-[20.78rem] md:mr-[1vw] group"
           >
-            <img
-              src={urlForImage(property.photos[0])}
-              alt={`Property ${property.title}`}
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute bottom-0 w-full bg-gradient-to-t from-black to-transparent text-white p-4">
-              <p className="text-lg font-semibold">{property.title}</p>
-            </div>
-          </div>
-        ))}
-        {properties.map((property, index) => (
-          <div
-            key={index}
-            className="relative inline-block w-[30.55rem] h-[20.78rem] mr-[1vw]"
-          >
-            <img
-              src={urlForImage(property.photos[0])}
-              alt={`Property ${property.title}`}
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute bottom-0 w-full bg-gradient-to-t from-blue-500 to-transparent text-white p-4">
+            <DirectionAwareHover imageUrl={urlForImage(property.photos[0])}>
+              <p className="font-bold text-xl">{property.title}</p>
+              <p className="font-normal text-sm">$1299 / night</p>
+            </DirectionAwareHover>
+            <div className="absolute bottom-0 w-full bg-gradient-to-t from-gray-800 to-transparent text-white p-4 group-hover:hidden">
               <p className="text-lg font-semibold">{property.title}</p>
             </div>
           </div>
@@ -103,7 +88,7 @@ const BrowseCarousel: React.FC<BrowseCarouselProps> = ({ properties }) => {
       </div>
 
       <button
-        className="ml-10 bg-white shadow-md rounded-full"
+        className="hidden md:block ml-10 bg-white shadow-md rounded-full"
         onClick={scrollRightClick}
         aria-label="Scroll Right"
       >

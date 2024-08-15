@@ -47,7 +47,7 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
           <div className="flex md:pt-6">
             <div className="flex-shrink-0">
               <img
-                src={urlForImage(developer.profileIcon)}
+                src={urlForImage(property.photos[0])}
                 // src="/logo.png"
                 alt="Logo"
                 className="md:pl-2 md:w-48 md:h-48 macbook-air:w-38 macbook-air:h-38 w-12 h-12"
@@ -60,10 +60,6 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
               <h1 className="subtitle hidden md:block text-md md:text-xl macbook-air:text-lg md:font-medium text-slate-600 pb-4">
                 {/* Choose Everything Moving From Work From Home To Work From
                 Anywhere */}
-                {property.description}
-              </h1>
-              <h1 className="address text-xs md:text-lg macbook-air:text-base font-base text-slate-500">
-                {/* Rama 4 Road, Khlong Toei, Khlong Toei, Bangkok */}
                 {property.description}
               </h1>
             </div>
