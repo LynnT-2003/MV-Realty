@@ -3,17 +3,26 @@ import React, { useRef, useState } from "react";
 import { Image } from "sanity";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { DirectionAwareHover } from "./ui/direction-aware-hover";
+import { Property } from "@/types";
+import { useRouter } from "next/navigation";
 
 // Define the prop types
 interface BrowseCarouselProps {
-  properties: Array<{ photos: Image[]; title: String }>;
+  properties: Property[];
 }
 
 const BrowseCarousel: React.FC<BrowseCarouselProps> = ({ properties }) => {
+  const router = useRouter();
+
   const carouselRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
+
+  const handlePropertyClick = (slug: String) => {
+    // console.log("Clicked on Property: ", { property });
+    router.push(`/Details/${slug}`);
+  };
 
   const handleMouseDown = (e: React.MouseEvent) => {
     if (carouselRef.current) {
@@ -76,6 +85,9 @@ const BrowseCarousel: React.FC<BrowseCarouselProps> = ({ properties }) => {
         {properties.map((property, index) => (
           <div
             key={index}
+            onClick={() => {
+              handlePropertyClick(property.slug.current);
+            }}
             className="relative inline-block macbook-air:w-[24.2rem] macbook-air:h-[16.60rem] md:w-[30.55rem] mb-4 md:mb-0 md:h-[20.78rem] md:mr-[1vw] group"
           >
             <DirectionAwareHover imageUrl={urlForImage(property.photos[0])}>
