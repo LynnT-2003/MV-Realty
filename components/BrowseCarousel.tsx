@@ -41,13 +41,15 @@ const BrowseCarousel: React.FC<BrowseCarouselProps> = ({ properties }) => {
 
   const scrollLeftClick = () => {
     if (carouselRef.current) {
-      carouselRef.current.scrollBy({ left: -300, behavior: "smooth" });
+      //  const remToPx = 16; // base font size in pixels
+      // const moveAmountPx = 30.55 * remToPx; // converting rem to pixels
+      carouselRef.current.scrollBy({ left: -488, behavior: "smooth" });
     }
   };
 
   const scrollRightClick = () => {
     if (carouselRef.current) {
-      carouselRef.current.scrollBy({ left: 300, behavior: "smooth" });
+      carouselRef.current.scrollBy({ left: 488, behavior: "smooth" });
     }
   };
 
