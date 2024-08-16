@@ -10,7 +10,7 @@ const ListingDetailsIntro: React.FC<ListingDetailsIntroProps> = ({
   listingDetails,
 }) => {
   return (
-    <div className="w-full flex justify-center pb-24">
+    <div className="w-full flex justify-center pb-12 md:pb-20">
       <div className="md:max-w-[1150px] w-[85vw]">
         <Grid container columnSpacing={10}>
           <Grid item md={7}>

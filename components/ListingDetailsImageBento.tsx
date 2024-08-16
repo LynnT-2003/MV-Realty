@@ -11,7 +11,7 @@ const ListingDetailsImageBento: React.FC<ListingDetailsImageBentoProps> = ({
   listingDetails,
 }) => {
   return (
-    <div className="w-full flex justify-center pt-3 pb-12 md:pb-16">
+    <div className="w-full flex justify-center pt-3 pb-12 md:pb-20">
       <div className="md:max-w-[1200px] w-[95vw] hidden md:block">
         <Grid container spacing={{ xs: 0.5, md: 1.5 }} className="">
           <Grid item xs={6}>
