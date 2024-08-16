@@ -29,13 +29,15 @@ import {
 } from "@/components/ui/carousel";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { Property } from "@/types";
+import { Property, Listing } from "@/types";
 import { fetchAllProperties } from "@/services/PropertyServices";
 
 import { LayoutGridDemo } from "@/components/HomeLayoutGrid";
 import { AnimatedHero } from "@/components/AnimatedHero";
 import { DirectionAwareHover } from "@/components/ui/direction-aware-hover";
 import BrowseCarousel from "@/components/BrowseCarousel";
+import { fetchAllListings } from "@/services/ListingServices";
+import { List } from "postcss/lib/list";
 
 const filters = ["Bedrooms", "Price", "Location", "Buy/Rent"] as const;
 
@@ -52,6 +54,7 @@ const HomePage: React.FC = () => {
   const router = useRouter();
 
   const [properties, setProperties] = useState<Property[]>([]);
+  const [listings, setListings] = useState<Listing[]>([]);
   const [openFilter, setOpenFilter] = useState<Filter | null>(null);
 
   const [bedroomFilter, setBedroomFilter] = useState(null);
@@ -68,6 +71,7 @@ const HomePage: React.FC = () => {
 
   useEffect(() => {
     fetchProperties();
+    fetchListings();
   }, []);
 
   useEffect(() => {
@@ -81,9 +85,24 @@ const HomePage: React.FC = () => {
       if (!response) {
         throw new Error("Failed to fetch properties.");
       }
-      console.log("Fetching...");
+      console.log("Fetching properties...");
       setProperties(response);
-      console.log(response);
+      console.log("Properties: ", response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchListings = async () => {
+    try {
+      const response: Listing[] = await fetchAllListings();
+
+      if (!response) {
+        throw new Error("Failed to fetch listings.");
+      }
+      console.log("Fetching listings...");
+      setListings(response);
+      console.log("Listings: ", response);
     } catch (error) {
       console.log(error);
     }
@@ -170,46 +189,6 @@ const HomePage: React.FC = () => {
         <LayoutGridDemo />
       </div> */}
 
-      {/* <div className="flex flex-col items-center justify-center pb-8 3xl:pl-[9%] macbook-air:px-[10%]">
-        <Carousel
-          opts={{
-            align: "start",
-          }}
-          className="w-screen md:w-[90vw] macbook-air:w-[85vw] flex flex-col justify-center px-4"
-        >
-          <h1 className="md:text-xl text-base md:px-[2%] pt-16">
-            Recently added:
-          </h1>
-          <CarouselContent className="w-full">
-            {properties.map((property) => (
-              <CarouselItem
-                key={property._id}
-                className="md:w-full w-screen 3xl:basis-1/3 2xl:basis-1/3 macbook-air:basis-1/3 basis-1/2"
-              >
-                <Card className="bg-blue-500">
-                  <CardContent className="flex items-center justify-center shadow-lg">
-                    <span className="text-3xl font-semibold text-center">
-                      <div
-                        className="md:h-full md:w-[40vw] w-[45vw] relative bg--500 flex items-center justify-center"
-                        onClick={() => handlePropertyClick(property)}
-                      >
-                        <DirectionAwareHover
-                          imageUrl={urlForImage(property.photos[0])}
-                        >
-                          <p className="font-bold text-xl">{property.title}</p>
-                          <p className="font-normal text-sm">$1299 / night</p>
-                        </DirectionAwareHover>
-                      </div>
-                    </span>
-                  </CardContent>
-                </Card>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselNext />
-          <CarouselPrevious />
-        </Carousel>
-      </div> */}
       <div className="w-full flex items-center justify-center">
         <div className="xl:w-[1200px] overflow-x-scroll scroll whitespace-nowrap scroll-smooth">
           <p className="poppins-text pt-[62px] pb-[37px]">Featured Listings</p>
