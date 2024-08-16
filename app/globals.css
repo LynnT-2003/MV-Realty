@@ -83,8 +83,14 @@
   .poppins-text-small {
     @apply font-poppins text-[15px] font-[300];
   }
+  .poppins-text-small-bold {
+    @apply font-poppins text-[15px] font-[400];
+  }
   .poppins-text-avg {
     @apply font-poppins text-[18px] font-[300];
+  }
+  .poppins-text-avg-bold {
+    @apply font-poppins text-[18px] font-[400];
   }
   .property-details-title-text {
     @apply font-poppins text-[25px] font-[550];

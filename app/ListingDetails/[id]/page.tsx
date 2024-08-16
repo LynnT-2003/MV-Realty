@@ -15,6 +15,7 @@ import PropertyDetailsIntro from "@/components/PropertyDetailsIntro";
 import { fetchListingById } from "@/services/ListingServices";
 import ListingDetailsImageBento from "@/components/ListingDetailsImageBento";
 import ListingDetailsIntro from "@/components/ListingDetailsIntro";
+import FaqSection from "@/components/FaqSection";
 
 const ListingDetailPage = ({ params }: { params: { id: string } }) => {
   const router = useRouter();
@@ -55,6 +56,8 @@ const ListingDetailPage = ({ params }: { params: { id: string } }) => {
 
       <ListingDetailsImageBento listingDetails={listing} />
       <ListingDetailsIntro listingDetails={listing} />
+
+      <FaqSection />
 
       {/* <MapDemo lat={property.geoLocation.lat} lng={property.geoLocation.lng} /> */}
     </div>
