@@ -77,6 +77,18 @@
   .poppins-text {
     @apply font-poppins text-[25px] font-[500];
   }
+  .poppins-text-title-small {
+    @apply font-poppins text-[20px] font-[450];
+  }
+  .poppins-text-small {
+    @apply font-poppins text-[15px] font-[300];
+  }
+  .poppins-text-avg {
+    @apply font-poppins text-[18px] font-[300];
+  }
+  .property-details-title-text {
+    @apply font-poppins text-[25px] font-[550];
+  }
   body {
     @apply bg-background text-foreground;
     font-feature-settings:

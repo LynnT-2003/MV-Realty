@@ -3,15 +3,15 @@ import Grid from "@mui/material/Grid";
 import { Property } from "@/types";
 import { urlForImage } from "@/sanity/lib/image";
 
-interface BrowseCarouselProps {
+interface PropertyDetailsImageBentoProps {
   propertyDetails: Property;
 }
 
-const PropertyDetailsImageBento: React.FC<BrowseCarouselProps> = ({
+const PropertyDetailsImageBento: React.FC<PropertyDetailsImageBentoProps> = ({
   propertyDetails,
 }) => {
   return (
-    <div className="w-full flex justify-center pb-24">
+    <div className="w-full flex justify-center pb-16">
       <div className="md:max-w-[1200px] w-[95vw]">
         <Grid container spacing={{ xs: 0.5, md: 1.5 }}>
           <Grid item xs={6}>

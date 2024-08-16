@@ -18,6 +18,7 @@ import { LayoutGridDemo } from "@/components/HomeLayoutGrid";
 import MapDemo from "@/components/MapDemo";
 import developer from "@/sanity/schemas/developer";
 import PropertyDetailsImageBento from "@/components/PropertyDetailsImageBento";
+import PropertyDetailsIntro from "@/components/PropertyDetailsIntro";
 
 const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
   const router = useRouter();
@@ -43,6 +44,7 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
   return (
     <div>
       <PropertyDetailsImageBento propertyDetails={property} />
+      <PropertyDetailsIntro propertyDetails={property} />
 
       {/* <div>
         <p>Facilities</p>
