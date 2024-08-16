@@ -12,20 +12,19 @@ const ListingDetailsIntro: React.FC<ListingDetailsIntroProps> = ({
   return (
     <div className="w-full flex justify-center pb-24">
       <div className="md:max-w-[1200px] w-[85vw]">
-        {/* {propertyDetails.title} */}
         <Grid container columnSpacing={10}>
           <Grid item md={7}>
             <p className="poppins-text-title-small md:property-details-title-text">
               {listingDetails.listingName}
             </p>
-            <p className="poppins-text-small md:poppins-text-avg mt-6">
+            <p className="poppins-text-small md:poppins-text-avg mt-4">
               {listingDetails.description}
             </p>
           </Grid>
           <Grid
             item
             md={5}
-            className="pt-8 md:pt-0 flex items-center justify-center"
+            className="pt-10 md:pt-0 flex items-center justify-center"
           >
             <Grid
               container
@@ -37,31 +36,31 @@ const ListingDetailsIntro: React.FC<ListingDetailsIntroProps> = ({
               <Grid item xs={6}>
                 <div className="flex ">
                   <img src="/icons/bedroom.png" />
-                  <p className="ml-2">{listingDetails.bedroom} Bedroom</p>
+                  <p className="ml-3.5">{listingDetails.bedroom} Bedroom</p>
                 </div>
               </Grid>
               <Grid item xs={6}>
                 <div className="flex">
                   <img src="/icons/shower.png" />
-                  <p className="ml-2">{listingDetails.bathroom} Bathroom</p>
+                  <p className="ml-3.5">{listingDetails.bathroom} Bathroom</p>
                 </div>
               </Grid>
               <Grid item xs={6}>
                 <div className="flex">
                   <img src="/icons/floor.png" />
-                  <p className="ml-2">{listingDetails.floor}th Floor</p>
+                  <p className="ml-3.5">{listingDetails.floor}th Floor</p>
                 </div>
               </Grid>
               <Grid item xs={6}>
                 <div className="flex">
                   <img src="/icons/meter.png" />
-                  <p className="ml-2">{listingDetails.size} square meter</p>
+                  <p className="ml-3.5">{listingDetails.size} square meter</p>
                 </div>
               </Grid>
               <Grid item xs={6}>
                 <div className="flex">
                   <img src="/icons/compass.png" />
-                  <p className="ml-2">
+                  <p className="ml-3.5">
                     Facing {listingDetails.facingDirection}
                   </p>
                 </div>
@@ -69,7 +68,7 @@ const ListingDetailsIntro: React.FC<ListingDetailsIntroProps> = ({
               <Grid item xs={6}>
                 <div className="flex">
                   <img src="/icons/price.png" />
-                  <p className="ml-2">{listingDetails.price} Million Baht</p>
+                  <p className="ml-3.5">{listingDetails.price} Million Baht</p>
                 </div>
               </Grid>
             </Grid>
