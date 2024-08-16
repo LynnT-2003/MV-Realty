@@ -38,6 +38,7 @@ import { DirectionAwareHover } from "@/components/ui/direction-aware-hover";
 import BrowseCarousel from "@/components/BrowseCarousel";
 import { fetchAllListings } from "@/services/ListingServices";
 import { List } from "postcss/lib/list";
+import BrowseCarouselListing from "@/components/BrowseCarouselListing";
 
 const filters = ["Bedrooms", "Price", "Location", "Buy/Rent"] as const;
 
@@ -194,12 +195,12 @@ const HomePage: React.FC = () => {
           <p className="poppins-text pt-[62px] pb-[37px]">Featured Listings</p>
         </div>
       </div>
-      <BrowseCarousel properties={properties} />
 
+      <BrowseCarouselListing listings={listings} />
       <div className="w-full flex items-center justify-center">
         <div className="xl:w-[1200px] overflow-x-scroll scroll whitespace-nowrap scroll-smooth">
           <p className="poppins-text pt-[62px] pb-[37px]">
-            Recommended for you
+            Available Properties
           </p>
         </div>
       </div>
