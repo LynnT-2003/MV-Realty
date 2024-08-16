@@ -11,7 +11,7 @@ const ListingDetailsIntro: React.FC<ListingDetailsIntroProps> = ({
 }) => {
   return (
     <div className="w-full flex justify-center pb-24">
-      <div className="md:max-w-[1200px] w-[95vw]">
+      <div className="md:max-w-[1200px] w-[85vw]">
         {/* {propertyDetails.title} */}
         <Grid container columnSpacing={10}>
           <Grid item md={7}>
@@ -22,28 +22,55 @@ const ListingDetailsIntro: React.FC<ListingDetailsIntroProps> = ({
               {listingDetails.description}
             </p>
           </Grid>
-          <Grid item xs={5} className="flex items-center justify-center">
-            <Grid container spacing={2}>
+          <Grid
+            item
+            md={5}
+            className="pt-8 md:pt-0 flex items-center justify-center"
+          >
+            <Grid
+              container
+              rowSpacing={{ xs: 4, md: 3 }}
+              columnSpacing={{ xs: 1, md: 2 }}
+              //   spacing={{ xs: 0, md: 2 }}
+              spacing={2}
+            >
               <Grid item xs={6}>
-                <div className="bg-red-300">xs=6</div>
-              </Grid>
-              <Grid item xs={6}>
-                <div className="flex">
+                <div className="flex ">
                   <img src="/icons/bedroom.png" />
-                  <p className="ml-2">Bedroom</p>
+                  <p className="ml-2">{listingDetails.bedroom} Bedroom</p>
                 </div>
               </Grid>
               <Grid item xs={6}>
-                <div className="bg-blue-300">xs=6</div>
+                <div className="flex">
+                  <img src="/icons/shower.png" />
+                  <p className="ml-2">{listingDetails.bathroom} Bathroom</p>
+                </div>
               </Grid>
               <Grid item xs={6}>
-                <div>xs=6</div>
+                <div className="flex">
+                  <img src="/icons/floor.png" />
+                  <p className="ml-2">{listingDetails.floor}th Floor</p>
+                </div>
               </Grid>
               <Grid item xs={6}>
-                <div>xs=6</div>
+                <div className="flex">
+                  <img src="/icons/meter.png" />
+                  <p className="ml-2">{listingDetails.size} square meter</p>
+                </div>
               </Grid>
               <Grid item xs={6}>
-                <div>xs=6</div>
+                <div className="flex">
+                  <img src="/icons/compass.png" />
+                  <p className="ml-2">
+                    Facing {listingDetails.facingDirection}
+                  </p>
+                </div>
+              </Grid>
+              <Grid item xs={6}>
+                <div className="flex">
+                  <img src="/icons/price.png" />
+                  <p className="ml-2">{listingDetails.price} Million Baht</p>
+                </div>
               </Grid>
             </Grid>
           </Grid>
