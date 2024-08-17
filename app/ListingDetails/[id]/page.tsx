@@ -2,7 +2,10 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import { Developer, Listing, Property } from "../../../types";
-import { fetchPropertyBySlug } from "@/services/PropertyServices";
+import {
+  fetchPropertyById,
+  fetchPropertyBySlug,
+} from "@/services/PropertyServices";
 import { fetchDeveloperById } from "@/services/DeveloperServices";
 
 import { DetailsBento } from "@/components/DetailsBento";
@@ -21,6 +24,7 @@ const ListingDetailPage = ({ params }: { params: { id: string } }) => {
   const router = useRouter();
   const { id } = params;
   const [listing, setListing] = React.useState<Listing | null>(null);
+  const [property, setProperty] = React.useState<Property | null>(null);
   //   const [developer, setDeveloper] = React.useState<Developer | null>(null);
 
   //   React.useEffect(() => {
@@ -41,6 +45,14 @@ const ListingDetailPage = ({ params }: { params: { id: string } }) => {
         setListing(listingData);
         // if (listingData?.property) {
         // }
+
+        // Fetch and log the associated property
+        if (listingData?.property._ref) {
+          const propertyId = listingData.property._ref;
+          fetchPropertyById(propertyId).then((propertyData) => {
+            setProperty(propertyData);
+          });
+        }
       });
     }
   }, [id]);
@@ -58,6 +70,7 @@ const ListingDetailPage = ({ params }: { params: { id: string } }) => {
       <ListingDetailsIntro listingDetails={listing} />
 
       <FaqSection />
+      {property?.title}
 
       {/* <MapDemo lat={property.geoLocation.lat} lng={property.geoLocation.lng} /> */}
     </div>
