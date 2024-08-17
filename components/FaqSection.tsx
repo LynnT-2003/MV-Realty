@@ -60,7 +60,7 @@ export default function CustomizedAccordions() {
         >
           <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
             <span className="poppins-text-small md:poppins-text-avg-bold">
-              How much is the Maintenance cost?
+              Gym
             </span>
           </AccordionSummary>
           <AccordionDetails>

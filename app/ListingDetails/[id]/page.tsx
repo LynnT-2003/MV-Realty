@@ -19,6 +19,7 @@ import { fetchListingById } from "@/services/ListingServices";
 import ListingDetailsImageBento from "@/components/ListingDetailsImageBento";
 import ListingDetailsIntro from "@/components/ListingDetailsIntro";
 import FaqSection from "@/components/FaqSection";
+import FacilitiesAccordion from "@/components/FacilitiesAccordion";
 
 const ListingDetailPage = ({ params }: { params: { id: string } }) => {
   const router = useRouter();
@@ -68,7 +69,13 @@ const ListingDetailPage = ({ params }: { params: { id: string } }) => {
         propertyDetails={property}
       />
       <ListingDetailsIntro listingDetails={listing} />
+
       <FaqSection />
+
+      <FacilitiesAccordion
+        listingDetails={listing}
+        propertyDetails={property}
+      />
 
       <div className="w-full flex justify-center pb-6">
         <div className="md:max-w-[1150px] w-[85vw]">
