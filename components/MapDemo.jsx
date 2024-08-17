@@ -62,6 +62,11 @@ export const MapDemo = ({ lat, lng }) => {
       service.nearbySearch(request, (results, status) => {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
           const directionsService = new google.maps.DirectionsService();
+          const directionsRenderer = new google.maps.DirectionsRenderer({
+            map: map,
+            suppressMarkers: true, // Prevent automatic markers, as we'll add custom ones
+          });
+
           const btsList = []; // Temporary array to store BTS information
 
           results.forEach((place) => {
@@ -72,7 +77,7 @@ export const MapDemo = ({ lat, lng }) => {
                 title: place.name,
               });
 
-              // Calculate walking distance
+              // Calculate walking distance and draw the route
               const calculateWalkingDistance = () => {
                 const directionsRequest = {
                   origin: position,
@@ -85,14 +90,17 @@ export const MapDemo = ({ lat, lng }) => {
                     const distance = result.routes[0].legs[0].distance.text;
                     const duration = result.routes[0].legs[0].duration.text;
 
+                    // Draw the route on the map
+                    directionsRenderer.setDirections(result);
+
                     // Create a custom InfoWindow
                     const infoWindowContent = `
-                    <div>
-                      <strong>${place.name}</strong><br>
-                      Distance: ${distance}<br>
-                      Walking duration: ${duration}
-                    </div>
-                  `;
+                      <div>
+                        <strong>${place.name}</strong><br>
+                        Distance: ${distance}<br>
+                        Walking duration: ${duration}
+                      </div>
+                    `;
 
                     // Create a new InfoWindow instance
                     const infoWindow = new google.maps.InfoWindow({
@@ -168,19 +176,21 @@ export const MapDemo = ({ lat, lng }) => {
           Nearest Transit
         </p>
         {nearestBTS.map((bts, index) => (
-          // <div>
-          //   {bts.name} {bts.distance} {bts.duration}
-          // </div>
           <Grid
             container
             rowSpacing={{ xs: 4, md: 3 }}
             columnSpacing={{ xs: 1, md: 2 }}
             spacing={2}
             className="flex items-center"
+            key={index}
           >
             <Grid item xs={6}>
               <div className="flex items-center justify-start h-32 p-4">
-                <img src="/icons/compass.png" className="" alt="MRT Icon" />
+                <img
+                  src="/icons/compass.png"
+                  className="w-8 h-8"
+                  alt="MRT Icon"
+                />
                 <p className="poppins-text-small-bts md:poppins-text-avg-bold ml-3.5">
                   {bts.name}
                 </p>
@@ -188,7 +198,11 @@ export const MapDemo = ({ lat, lng }) => {
             </Grid>
             <Grid item xs={6}>
               <div className="flex items-center justify-start h-32 p-4">
-                <img src="/icons/floor.png" className="" alt="MRT Icon" />
+                <img
+                  src="/icons/floor.png"
+                  className="w-8 h-8"
+                  alt="MRT Icon"
+                />
                 <p className="poppins-text-small-bts md:poppins-text-avg-bold ml-3.5">
                   {bts.duration}
                 </p>

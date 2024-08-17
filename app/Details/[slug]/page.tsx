@@ -51,15 +51,14 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
         <DetailsImageGridLayout photos={property.photos} />
       </div> */}
 
-      <div className="md:hidden w-screen mx-auto pb-2">
-        <img
-          alt="Detail Banner"
-          src="https://images.unsplash.com/photo-1588880331179-bc9b93a8cb5e?q=80&w=3540&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          className="w-screen h-[25vh] rounded-lg shadow-lg mb-4"
-        />
+      <div className="w-full flex justify-center mb-24 pb-24 md:pb-20">
+        <div className="md:max-w-[1100px] w-[100vw] md:max-h-[805px] h-[80vw]">
+          <MapDemo
+            lat={property.geoLocation.lat}
+            lng={property.geoLocation.lng}
+          />
+        </div>
       </div>
-
-      <MapDemo lat={property.geoLocation.lat} lng={property.geoLocation.lng} />
     </div>
   );
 };
