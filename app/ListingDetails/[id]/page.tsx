@@ -65,14 +65,26 @@ const ListingDetailPage = ({ params }: { params: { id: string } }) => {
     <div>
       {/* <PropertyDetailsImageBento propertyDetails={property} />
       <PropertyDetailsIntro propertyDetails={property} /> */}
-
       <ListingDetailsImageBento listingDetails={listing} />
       <ListingDetailsIntro listingDetails={listing} />
-
       <FaqSection />
-      {property?.title}
 
-      {/* <MapDemo lat={property.geoLocation.lat} lng={property.geoLocation.lng} /> */}
+      <div className="w-full flex justify-center pb-6">
+        <div className="md:max-w-[1150px] w-[85vw]">
+          <p className="poppins-text-title-small md:property-details-title-text">
+            Location
+          </p>
+        </div>
+      </div>
+
+      <div className="w-full flex justify-center mb-24 pb-24 md:pb-20">
+        <div className="md:max-w-[1100px] w-[100vw] md:max-h-[805px] h-[80vw]">
+          <MapDemo
+            lat={property?.geoLocation.lat}
+            lng={property?.geoLocation.lng}
+          />
+        </div>
+      </div>
     </div>
   );
 };

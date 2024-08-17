@@ -48,9 +48,11 @@ export default function CustomizedAccordions() {
     };
 
   return (
-    <div className="w-full flex justify-center pb-24">
+    <div className="w-full flex justify-center pb-12 md:pb-20">
       <div className="md:max-w-[1150px] w-[85vw]">
-        <span className="poppins-text">Frequently Asked questions</span>
+        <p className="poppins-text-title-small md:property-details-title-text">
+          Frequently Asked questions
+        </p>
         <Accordion
           className="pt-6"
           //   expanded={expanded === "panel1"}
