@@ -47,17 +47,15 @@ const ListingDetailPage = ({ params }: { params: { id: string } }) => {
         // }
 
         // Fetch and log the associated property
-        if (listingData?.property._ref) {
-          const propertyId = listingData.property._ref;
-          fetchPropertyById(propertyId).then((propertyData) => {
-            setProperty(propertyData);
-          });
-        }
+        const propertyId = listingData.property._ref;
+        fetchPropertyById(propertyId).then((propertyData) => {
+          setProperty(propertyData);
+        });
       });
     }
   }, [id]);
 
-  if (!listing) {
+  if (!listing || !property) {
     return <div>Loading...</div>;
   }
 
@@ -65,7 +63,10 @@ const ListingDetailPage = ({ params }: { params: { id: string } }) => {
     <div>
       {/* <PropertyDetailsImageBento propertyDetails={property} />
       <PropertyDetailsIntro propertyDetails={property} /> */}
-      <ListingDetailsImageBento listingDetails={listing} />
+      <ListingDetailsImageBento
+        listingDetails={listing}
+        propertyDetails={property}
+      />
       <ListingDetailsIntro listingDetails={listing} />
       <FaqSection />
 
