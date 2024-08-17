@@ -11,3 +11,7 @@ export const fetchPropertyBySlug = async (slug: string): Promise<Property> => {
     { slug }
   );
 };
+
+export const fetchPropertyById = async (id: string): Promise<Property> => {
+  return await client.fetch(`*[_type == "property" && _id == $id][0]`, { id });
+};
