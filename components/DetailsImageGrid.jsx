@@ -3,7 +3,7 @@ import { DetailsGrid } from "./ui/details-grid";
 import { urlForImage } from "@/sanity/lib/image";
 
 export function DetailsImageGridLayout({ photos }) {
-  const cards = photos.slice(0, 4).map((photo, index) => ({
+  const cards = photos.slice(1, 5).map((photo, index) => ({
     id: index + 1,
     content: (
       <div className="flex flex-col items-center justify-center">

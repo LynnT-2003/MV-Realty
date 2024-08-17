@@ -26,6 +26,31 @@ export interface Property {
   createdAt: string;
 }
 
+export interface Listing {
+  _id: string;
+  property: {
+    _ref: string;
+    _type: string;
+  };
+  listingName: string;
+  description: string;
+  price: number;
+  minimumContractInMonth: number;
+  floor: number;
+  size: number;
+  bedroom: number;
+  bathroom: number;
+  furniture: "fully-fitted" | "fully-furnished";
+  status: "ready-to-move-in" | "finishing-2026";
+  listingType: "sale" | "rent";
+  facingDirection: "N" | "S" | "E" | "W" | "NE" | "NW" | "SE" | "SW";
+  createdAt: string; // ISO date string
+  listingHero: SanityImageWithKey;
+  listingPhoto: SanityImageWithKey[];
+  floorPlan: SanityImageWithKey;
+  statusActive: "active" | "inactive";
+}
+
 export interface Facility {
   facilityType: {
     _ref: string;

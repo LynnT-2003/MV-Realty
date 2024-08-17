@@ -18,6 +18,9 @@ const config = {
       },
     },
     extend: {
+      fontFamily: {
+        poppins: ["Poppins", "sans-serif"],
+      },
       screens: {
         "3xl": "1920px",
         "macbook-air": "1440px",
