@@ -126,8 +126,8 @@ const HomePage: React.FC = () => {
       <div className="relative">
         <div className="flex items-center justify-center">
           <img
-            src="/banner.jpeg"
-            className="h-[600px] w-[1600px] macbook-air:w-[1280px] object-cover py-10"
+            src="/mv_home_hero.jpg"
+            // className="h-[600px] w-[1600px] macbook-air:w-[1280px] object-cover py-10"
           />
         </div>
 
