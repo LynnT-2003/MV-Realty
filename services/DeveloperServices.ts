@@ -1,6 +1,11 @@
 import { client } from "@/sanity/lib/client";
 import { Developer } from "@/types";
 
+
+export async function fetchAllDeveloper() {
+  return await client.fetch(`*[_type == "developer"]`);
+}
+
 export const fetchDeveloperById = async (
   id: string
 ): Promise<Developer | null> => {

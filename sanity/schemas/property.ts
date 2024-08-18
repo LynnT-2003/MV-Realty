@@ -117,6 +117,14 @@ export default defineType({
       type: 'number',
     }),
     defineField({
+      name: "brochure",
+      title: "Brochure",
+      type: "file",
+      options: {
+        accept: ".pdf", // Specify the allowed file format(s)
+      },
+    }),
+    defineField({
       name: 'createdAt',
       title: 'Created at',
       type: 'datetime',
