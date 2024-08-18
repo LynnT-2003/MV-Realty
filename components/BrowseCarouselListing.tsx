@@ -63,7 +63,7 @@ const BrowseCarousel: React.FC<BrowseCarouselProps> = ({ listings }) => {
   };
 
   return (
-    <div className="w-full flex items-center justify-center pb-12">
+    <div className="w-full flex items-center justify-center pb-4">
       <div></div>
       <button
         className="hidden md:block mr-10 bg-white shadow-md rounded-full"
@@ -76,7 +76,7 @@ const BrowseCarousel: React.FC<BrowseCarouselProps> = ({ listings }) => {
       <div
         id="slider"
         ref={carouselRef}
-        className="md:w-[1200px] w-screen mx-4 md:mx-0 overflow-hidden md:overflow-x-scroll scroll whitespace-nowrap scroll-smooth flex flex-col md:flex-row"
+        className="md:w-[1200px] w-screen mx-4 md:mx-0 overflow-hidden md:overflow-x-scroll scroll whitespace-nowrap scroll-smooth flex flex-col md:flex-row "
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
@@ -88,7 +88,7 @@ const BrowseCarousel: React.FC<BrowseCarouselProps> = ({ listings }) => {
             onClick={() => {
               handlePropertyClick(listing._id);
             }}
-            className="relative inline-block macbook-air:w-[24.2rem] macbook-air:h-[16.60rem] md:w-[30.55rem] mb-4 md:mb-0 md:h-[20.78rem] md:mr-[1vw] group"
+            className="relative inline-block mb-4 md:mb-0 group"
           >
             <DirectionAwareHover
               imageUrl={urlForImage(listing.listingPhoto[0])}
@@ -96,8 +96,27 @@ const BrowseCarousel: React.FC<BrowseCarouselProps> = ({ listings }) => {
               <p className="font-bold text-xl">{listing.listingName}</p>
               <p className="font-normal text-sm">$1299 / night</p>
             </DirectionAwareHover>
-            <div className="absolute bottom-0 w-full bg-gradient-to-t from-gray-800 to-transparent text-white p-4 group-hover:hidden">
+            <div className="mt-2 p-2 bg-white rounded-lg mb-8">
               <p className="text-lg font-semibold">{listing.listingName}</p>
+              {/* <p className="font-normal text-sm">$1299 / night</p> */}
+              <div className="flex pt-2">
+                <span className="pr-6 flex">
+                  <img src="/icons/bedroom.png" className="pr-2" />
+                  {listing.bedroom}
+                </span>
+                <span className="pr-6 flex">
+                  <img src="/icons/meter.png" className="pr-2" />
+                  {listing.size}
+                </span>
+                <span className="pr-6 flex">
+                  <img src="/icons/shower.png" className="pr-2" />
+                  {listing.bathroom}
+                </span>
+                <span className="pr-6 flex">
+                  <img src="/icons/floor.png" className="pr-2" />
+                  {listing.floor}
+                </span>
+              </div>
             </div>
           </div>
         ))}
