@@ -7,6 +7,41 @@ export const MapDemo = ({ lat, lng }) => {
   const mapRef = React.useRef(null);
   const [nearestBTS, setNearestBTS] = useState([]);
 
+  const btsStations = [
+    "Ratchathewi",
+    "Asok",
+    "Mo Chit",
+    "Siam",
+    "Phaya Thai",
+    "Chit Lom",
+    "Sala Daeng",
+    "Phrom Phong",
+    "Thong Lo",
+    "Ekkamai",
+    "Phra Khanong",
+    "On Nut",
+    "Bang Chak",
+    "Punnawithi",
+    "Udom Suk",
+    "Bang Na",
+    "Bearing",
+    "Samrong",
+    "Nana",
+    "Asok",
+    "Phloen Chit",
+    "Chit Lom",
+    "Siam",
+    "Ratchadamri",
+    "Sala Daeng",
+    "National Stadium",
+    "Ratchathewi",
+    "Phaya Thai",
+    "Victory Monument",
+    "Sanam Pao",
+    "Ari",
+    "Saphan Khwai",
+  ];
+
   useEffect(() => {
     const initMap = async () => {
       const loader = new Loader({
@@ -56,7 +91,7 @@ export const MapDemo = ({ lat, lng }) => {
       const request = {
         location: position,
         radius: 1000, // Search within 1000 meters radius
-        type: "transit_station", // Search for transit stations
+        type: "subway_station", // Search for transit stations
       };
 
       service.nearbySearch(request, (results, status) => {
@@ -69,8 +104,79 @@ export const MapDemo = ({ lat, lng }) => {
 
           const btsList = []; // Temporary array to store BTS information
 
+          // results.forEach((place) => {
+          //   if (
+          //     (place.name.includes("Ratchathewi") ||
+          //       place.name.includes("Asok")) &&
+          //     !place.name.includes("Exit")
+          //   ) {
+          //     const marker = new google.maps.Marker({
+          //       map: map,
+          //       position: place.geometry.location,
+          //       title: place.name,
+          //     });
+
+          //     // Calculate walking distance and draw the route
+          //     const calculateWalkingDistance = () => {
+          //       const directionsRequest = {
+          //         origin: position,
+          //         destination: place.geometry.location,
+          //         travelMode: google.maps.TravelMode.WALKING,
+          //       };
+
+          //       directionsService.route(directionsRequest, (result, status) => {
+          //         if (status === google.maps.DirectionsStatus.OK) {
+          //           const distance = result.routes[0].legs[0].distance.text;
+          //           const duration = result.routes[0].legs[0].duration.text;
+
+          //           // Draw the route on the map
+          //           directionsRenderer.setDirections(result);
+
+          //           // Create a custom InfoWindow
+          //           const infoWindowContent = `
+          //             <div>
+          //               <strong>${place.name}</strong><br>
+          //               Distance: ${distance}<br>
+          //               Walking duration: ${duration}
+          //             </div>
+          //           `;
+
+          //           // Create a new InfoWindow instance
+          //           const infoWindow = new google.maps.InfoWindow({
+          //             content: infoWindowContent,
+          //             disableAutoPan: true,
+          //           });
+
+          //           marker.addListener("mouseover", () => {
+          //             infoWindow.open(map, marker);
+          //           });
+
+          //           marker.addListener("mouseout", () => {
+          //             infoWindow.close();
+          //           });
+
+          //           // Add BTS information to the list
+          //           btsList.push({
+          //             name: place.name,
+          //             distance,
+          //             duration,
+          //           });
+
+          //           // Update state with BTS list
+          //           setNearestBTS([...btsList]);
+          //         }
+          //       });
+          //     };
+
+          //     calculateWalkingDistance();
+          //   }
+          // });
+
           results.forEach((place) => {
-            if (place.name.includes("BTS") && !place.name.includes("Exit")) {
+            if (
+              btsStations.some((station) => place.name.includes(station)) &&
+              !place.name.includes("Exit")
+            ) {
               const marker = new google.maps.Marker({
                 map: map,
                 position: place.geometry.location,

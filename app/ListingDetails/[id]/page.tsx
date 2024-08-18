@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { useRouter } from "next/navigation";
-import { Developer, Listing, Property } from "../../../types";
+import { Developer, FacilityType, Listing, Property } from "../../../types";
 import {
   fetchPropertyById,
   fetchPropertyBySlug,
@@ -19,12 +19,15 @@ import { fetchListingById } from "@/services/ListingServices";
 import ListingDetailsImageBento from "@/components/ListingDetailsImageBento";
 import ListingDetailsIntro from "@/components/ListingDetailsIntro";
 import FaqSection from "@/components/FaqSection";
+import FacilitiesAccordion from "@/components/FacilitiesAccordion";
+import { fetchAllFacilityTypes } from "@/services/FacilityServices";
 
 const ListingDetailPage = ({ params }: { params: { id: string } }) => {
   const router = useRouter();
   const { id } = params;
   const [listing, setListing] = React.useState<Listing | null>(null);
   const [property, setProperty] = React.useState<Property | null>(null);
+  const [facilityType, setFacilityType] = React.useState<FacilityType[]>([]);
   //   const [developer, setDeveloper] = React.useState<Developer | null>(null);
 
   //   React.useEffect(() => {
@@ -47,17 +50,20 @@ const ListingDetailPage = ({ params }: { params: { id: string } }) => {
         // }
 
         // Fetch and log the associated property
-        if (listingData?.property._ref) {
-          const propertyId = listingData.property._ref;
-          fetchPropertyById(propertyId).then((propertyData) => {
-            setProperty(propertyData);
-          });
-        }
+        const propertyId = listingData.property._ref;
+        fetchPropertyById(propertyId).then((propertyData) => {
+          setProperty(propertyData);
+        });
+      });
+
+      fetchAllFacilityTypes().then((facilityTypeData) => {
+        console.log("Fetched all Facility Types", facilityTypeData);
+        setFacilityType(facilityTypeData);
       });
     }
   }, [id]);
 
-  if (!listing) {
+  if (!listing || !property) {
     return <div>Loading...</div>;
   }
 
@@ -65,9 +71,19 @@ const ListingDetailPage = ({ params }: { params: { id: string } }) => {
     <div>
       {/* <PropertyDetailsImageBento propertyDetails={property} />
       <PropertyDetailsIntro propertyDetails={property} /> */}
-      <ListingDetailsImageBento listingDetails={listing} />
+      <ListingDetailsImageBento
+        listingDetails={listing}
+        propertyDetails={property}
+      />
       <ListingDetailsIntro listingDetails={listing} />
+
       <FaqSection />
+
+      <FacilitiesAccordion
+        listingDetails={listing}
+        propertyDetails={property}
+        facilityTypeDetails={facilityType}
+      />
 
       <div className="w-full flex justify-center pb-6">
         <div className="md:max-w-[1150px] w-[85vw]">

@@ -29,7 +29,7 @@ import {
 } from "@/components/ui/carousel";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { Property, Listing } from "@/types";
+import { Property, Listing, Developer } from "@/types";
 import { fetchAllProperties } from "@/services/PropertyServices";
 
 import { LayoutGridDemo } from "@/components/HomeLayoutGrid";
@@ -39,6 +39,7 @@ import BrowseCarousel from "@/components/BrowseCarousel";
 import { fetchAllListings } from "@/services/ListingServices";
 import { List } from "postcss/lib/list";
 import BrowseCarouselListing from "@/components/BrowseCarouselListing";
+import { fetchAllDevelopers } from "@/services/DeveloperServices";
 
 const filters = ["Bedrooms", "Price", "Location", "Buy/Rent"] as const;
 
@@ -56,6 +57,7 @@ const HomePage: React.FC = () => {
 
   const [properties, setProperties] = useState<Property[]>([]);
   const [listings, setListings] = useState<Listing[]>([]);
+  const [developers, setDevelopers] = useState<Developer[]>([]);
   const [openFilter, setOpenFilter] = useState<Filter | null>(null);
 
   const [bedroomFilter, setBedroomFilter] = useState(null);
@@ -70,9 +72,30 @@ const HomePage: React.FC = () => {
     "Buy/Rent": "",
   });
 
+  // useEffect(() => {
+  //   fetchProperties();
+  //   fetchListings();
+  // }, []);
+
   useEffect(() => {
-    fetchProperties();
-    fetchListings();
+    const fetchData = async () => {
+      try {
+        const [propertiesData, listingsData, developersData] =
+          await Promise.all([
+            fetchAllProperties(),
+            fetchAllListings(),
+            fetchAllDevelopers(),
+          ]);
+
+        setProperties(propertiesData);
+        setListings(listingsData);
+        setDevelopers(developersData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
   }, []);
 
   useEffect(() => {
@@ -126,8 +149,8 @@ const HomePage: React.FC = () => {
       <div className="relative">
         <div className="flex items-center justify-center">
           <img
-            src="/banner.jpeg"
-            className="h-[600px] w-[1600px] macbook-air:w-[1280px] object-cover py-10"
+            src="/mv_home_hero.jpg"
+            // className="h-[600px] w-[1600px] macbook-air:w-[1280px] object-cover py-10"
           />
         </div>
 
@@ -195,8 +218,12 @@ const HomePage: React.FC = () => {
           <p className="poppins-text pt-[62px] pb-[37px]">Featured Listings</p>
         </div>
       </div>
+      <BrowseCarouselListing
+        listings={listings}
+        properties={properties}
+        developers={developers}
+      />
 
-      <BrowseCarouselListing listings={listings} />
       <div className="w-full flex items-center justify-center">
         <div className="xl:w-[1200px] overflow-x-scroll scroll whitespace-nowrap scroll-smooth">
           <p className="poppins-text pt-[62px] pb-[37px]">
