@@ -77,17 +77,23 @@
   .poppins-text {
     @apply font-poppins text-[25px] font-[500];
   }
+  .poppins-text-heading-name {
+    @apply font-poppins text-[16px] font-[600];
+  }
   .poppins-text-title-small {
-    @apply font-poppins text-[20px] font-[450];
+    @apply font-poppins text-[24px] font-[575];
   }
   .poppins-text-small {
     @apply font-poppins text-[15px] font-[300];
+  }
+  .poppins-text-small-title {
+    @apply font-poppins text-[18px] font-[500];
   }
   .poppins-text-small-bts {
     @apply font-poppins text-[12px] font-[300];
   }
   .poppins-text-small-bold {
-    @apply font-poppins text-[15px] font-[400];
+    @apply font-poppins text-[16px] font-[500];
   }
   .poppins-text-avg {
     @apply font-poppins text-[18px] font-[300];

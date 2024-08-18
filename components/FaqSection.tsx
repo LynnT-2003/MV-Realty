@@ -59,8 +59,8 @@ export default function CustomizedAccordions() {
           //   onChange={handleChange("panel1")}
         >
           <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-            <span className="poppins-text-small md:poppins-text-avg-bold">
-              Gym
+            <span className="poppins-text-small-bold md:poppins-text-avg-bold">
+              How much is the maintenance cost?
             </span>
           </AccordionSummary>
           <AccordionDetails>
@@ -78,7 +78,7 @@ export default function CustomizedAccordions() {
         //   onChange={handleChange("panel2")}
         >
           <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
-            <span className="poppins-text-small md:poppins-text-avg-bold">
+            <span className="poppins-text-small-bold md:poppins-text-avg-bold">
               What is the specific address of the property?
             </span>
           </AccordionSummary>
@@ -97,7 +97,7 @@ export default function CustomizedAccordions() {
         //   onChange={handleChange("panel3")}
         >
           <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
-            <span className="poppins-text-small md:poppins-text-avg-bold">
+            <span className="poppins-text-small-bold md:poppins-text-avg-bold">
               How much is the transfer fee?
             </span>
           </AccordionSummary>

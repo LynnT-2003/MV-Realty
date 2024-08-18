@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { useRouter } from "next/navigation";
-import { Developer, Listing, Property } from "../../../types";
+import { Developer, FacilityType, Listing, Property } from "../../../types";
 import {
   fetchPropertyById,
   fetchPropertyBySlug,
@@ -20,12 +20,14 @@ import ListingDetailsImageBento from "@/components/ListingDetailsImageBento";
 import ListingDetailsIntro from "@/components/ListingDetailsIntro";
 import FaqSection from "@/components/FaqSection";
 import FacilitiesAccordion from "@/components/FacilitiesAccordion";
+import { fetchAllFacilityTypes } from "@/services/FacilityServices";
 
 const ListingDetailPage = ({ params }: { params: { id: string } }) => {
   const router = useRouter();
   const { id } = params;
   const [listing, setListing] = React.useState<Listing | null>(null);
   const [property, setProperty] = React.useState<Property | null>(null);
+  const [facilityType, setFacilityType] = React.useState<FacilityType[]>([]);
   //   const [developer, setDeveloper] = React.useState<Developer | null>(null);
 
   //   React.useEffect(() => {
@@ -53,6 +55,11 @@ const ListingDetailPage = ({ params }: { params: { id: string } }) => {
           setProperty(propertyData);
         });
       });
+
+      fetchAllFacilityTypes().then((facilityTypeData) => {
+        console.log("Fetched all Facility Types", facilityTypeData);
+        setFacilityType(facilityTypeData);
+      });
     }
   }, [id]);
 
@@ -75,6 +82,7 @@ const ListingDetailPage = ({ params }: { params: { id: string } }) => {
       <FacilitiesAccordion
         listingDetails={listing}
         propertyDetails={property}
+        facilityTypeDetails={facilityType}
       />
 
       <div className="w-full flex justify-center pb-6">

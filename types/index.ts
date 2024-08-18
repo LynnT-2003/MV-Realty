@@ -51,6 +51,12 @@ export interface Listing {
   statusActive: "active" | "inactive";
 }
 
+export interface FacilityType {
+  _id: string;
+  _type: "facilityType";
+  name: string;
+}
+
 export interface Facility {
   facilityType: {
     _ref: string;
