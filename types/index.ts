@@ -1,12 +1,6 @@
 // types.ts
 import { Image as SanityImage } from "sanity";
 
-export interface Developer {
-  _id: string;
-  name: string;
-  profileIcon: SanityImageWithKey;
-}
-
 export interface Property {
   _id: string;
   title: string;
@@ -21,11 +15,13 @@ export interface Property {
   minPrice: number;
   maxPrice: number;
   facilities: Facility[];
+  tags: { _ref: string; _type: string }[];  // Reference to tags
+  propertyHero: SanityImageWithKey;
   photos: SanityImageWithKey[];
   built: number;
+  brochure: FileAsset;  // New field for brochure
   createdAt: string;
 }
-
 export interface Listing {
   _id: string;
   property: {
@@ -51,10 +47,10 @@ export interface Listing {
   statusActive: "active" | "inactive";
 }
 
-export interface FacilityType {
+export interface Developer {
   _id: string;
-  _type: "facilityType";
   name: string;
+  profileIcon: SanityImageWithKey;
 }
 
 export interface Facility {
@@ -66,8 +62,43 @@ export interface Facility {
   description: string;
   photos: SanityImageWithKey[];
 }
+
+export interface Tag {
+  _id: string;
+  tag: string;
+}
+
+export interface Faqs {
+  _id: string;
+  question: string;
+  answer: string;
+}
+
+export interface ListOfListings {
+  _id: string;
+  listOfListingName: string;
+  photos: SanityImageWithKey;
+  listings: {
+    _ref: string;
+    _type: string;
+  }[];
+}
+
 export interface SanityImageWithKey extends SanityImage {
   _key: string;
+}
+
+export interface FacilityType {
+  _id: string;
+  _type: "facilityType";
+  name: string;
+}
+
+export interface FileAsset {
+  asset: {
+    _ref: string;
+    _type: string;
+  };
 }
 
 export interface GeoLocation {
