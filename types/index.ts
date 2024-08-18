@@ -89,6 +89,7 @@ export interface SanityImageWithKey extends SanityImage {
 }
 
 export interface FacilityType {
+  _id: string;
   _type: "facilityType";
   name: string;
 }
