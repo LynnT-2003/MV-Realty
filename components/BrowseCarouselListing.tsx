@@ -3,15 +3,21 @@ import React, { useRef, useState } from "react";
 import { Image } from "sanity";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { DirectionAwareHover } from "./ui/direction-aware-hover";
-import { Property, Listing } from "@/types";
+import { Property, Listing, Developer } from "@/types";
 import { useRouter } from "next/navigation";
 
 // Define the prop types
 interface BrowseCarouselProps {
   listings: Listing[];
+  properties: Property[];
+  developers: Developer[];
 }
 
-const BrowseCarousel: React.FC<BrowseCarouselProps> = ({ listings }) => {
+const BrowseCarousel: React.FC<BrowseCarouselProps> = ({
+  listings,
+  properties,
+  developers,
+}) => {
   const router = useRouter();
 
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -82,44 +88,66 @@ const BrowseCarousel: React.FC<BrowseCarouselProps> = ({ listings }) => {
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseLeave}
       >
-        {listings.map((listing, index) => (
-          <div
-            key={index}
-            onClick={() => {
-              handlePropertyClick(listing._id);
-            }}
-            className="relative inline-block mb-4 md:mb-0 group"
-          >
-            <DirectionAwareHover
-              imageUrl={urlForImage(listing.listingPhoto[0])}
+        {listings.map((listing, index) => {
+          const property =
+            properties.find((prop) => prop._id === listing.property._ref) ||
+            properties[0];
+
+          const developer =
+            developers.find((dev) => dev._id === property.developer._ref) ||
+            developers[0];
+
+          return (
+            <div
+              key={index}
+              onClick={() => {
+                handlePropertyClick(listing._id);
+              }}
+              className="relative inline-block mb-4 md:mb-0 group"
             >
-              <p className="font-bold text-xl">{listing.listingName}</p>
-              <p className="font-normal text-sm">$1299 / night</p>
-            </DirectionAwareHover>
-            <div className="mt-2 p-2 bg-white rounded-lg mb-8">
-              <p className="text-lg font-semibold">{listing.listingName}</p>
-              {/* <p className="font-normal text-sm">$1299 / night</p> */}
-              <div className="flex pt-2">
-                <span className="pr-6 flex">
-                  <img src="/icons/bedroom.png" className="pr-2" />
-                  {listing.bedroom}
+              <DirectionAwareHover
+                imageUrl={urlForImage(listing.listingPhoto[0])}
+              >
+                <p className="font-bold text-xl">{listing.listingName}</p>
+                {/* <p className="font-normal text-sm">$1299 / night</p> */}
+                {/* <span className="font-semibold text-sm mr-6">
+                  {developer.name}
+                </span> */}
+                <span className="font-semibold text-sm">
+                  Price: {listing.price}M Baht
                 </span>
-                <span className="pr-6 flex">
-                  <img src="/icons/meter.png" className="pr-2" />
-                  {listing.size}
+              </DirectionAwareHover>
+              <div className="mt-2 p-2 bg-white rounded-lg mb-8">
+                <span className="flex items-center text-lg font-semibold">
+                  <img
+                    src={urlForImage(developer.profileIcon)}
+                    className="w-8 h-8 mr-1"
+                  />
+                  {listing.listingName}
                 </span>
-                <span className="pr-6 flex">
-                  <img src="/icons/shower.png" className="pr-2" />
-                  {listing.bathroom}
-                </span>
-                <span className="pr-6 flex">
-                  <img src="/icons/floor.png" className="pr-2" />
-                  {listing.floor}
-                </span>
+                {/* <p className="font-normal text-sm">$1299 / night</p> */}
+                <div className="flex pt-2">
+                  <span className="pr-6 flex">
+                    <img src="/icons/bedroom.png" className="pr-2" />
+                    {listing.bedroom}
+                  </span>
+                  <span className="pr-6 flex">
+                    <img src="/icons/meter.png" className="pr-2" />
+                    {listing.size}
+                  </span>
+                  <span className="pr-6 flex">
+                    <img src="/icons/shower.png" className="pr-2" />
+                    {listing.bathroom}
+                  </span>
+                  <span className="pr-6 flex">
+                    <img src="/icons/floor.png" className="pr-2" />
+                    {listing.floor}
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       <button
