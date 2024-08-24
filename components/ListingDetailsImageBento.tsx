@@ -62,7 +62,7 @@ const ListingDetailsImageBento: React.FC<ListingDetailsImageBentoProps> = ({
                 <Grid item xs={6}>
                   <div className="pt-0.5 md:pt-2">
                     <img
-                      src={urlForImage(propertyDetails.photos[0])}
+                      src={urlForImage(propertyDetails.propertyHero)}
                       alt="Logo"
                       className="rounded-lg"
                     />

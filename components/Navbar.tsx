@@ -10,7 +10,7 @@ import {
 } from "@/lib/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 
-const navLists = ["Home", "Buy", "Rent"];
+const navLists = ["Buy", "Rent"];
 
 const Navbar = () => {
   const router = useRouter();
@@ -90,11 +90,11 @@ const Navbar = () => {
   };
 
   return (
-    <header className="w-full py-2 mb-3 sm:px-10 px-5 flex justify-between items-center bg-slate-100">
+    <header className="w-full py-2 mb-3 sm:px-10 px-5 flex justify-between items-center">
       <nav className="flex w-full screen-max-width">
-        <div className="flex flex-1 items-center">
-          <div className="md:pr-5 pr-3">
-            <img src="/logo.png" width={48} height={48} />
+        <div className="flex flex-1 items-center ">
+          <div className="md:pr-15 py-1 pr-5 cursor-pointer">
+            <img src="/logo.png" width={128} onClick={() => router.push("/")} />
           </div>
 
           {navLists.map((nav, i) => (

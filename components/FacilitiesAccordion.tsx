@@ -10,7 +10,6 @@ import { FacilityType, Listing, Property } from "@/types";
 import { urlForImage } from "@/sanity/lib/image";
 
 interface FacilitiesAccordionProps {
-  listingDetails: Listing;
   propertyDetails: Property;
   facilityTypeDetails: FacilityType[];
 }
@@ -47,7 +46,6 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 }));
 
 const FacilitiesAccordion: React.FC<FacilitiesAccordionProps> = ({
-  listingDetails,
   propertyDetails,
   facilityTypeDetails,
 }) => {

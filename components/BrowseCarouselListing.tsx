@@ -105,9 +105,7 @@ const BrowseCarousel: React.FC<BrowseCarouselProps> = ({
               }}
               className="relative inline-block mb-4 md:mb-0 group"
             >
-              <DirectionAwareHover
-                imageUrl={urlForImage(listing.listingPhoto[0])}
-              >
+              <DirectionAwareHover imageUrl={urlForImage(listing.listingHero)}>
                 <p className="font-bold text-xl">{listing.listingName}</p>
                 {/* <p className="font-normal text-sm">$1299 / night</p> */}
                 {/* <span className="font-semibold text-sm mr-6">

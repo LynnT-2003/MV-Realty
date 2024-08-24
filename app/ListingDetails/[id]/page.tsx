@@ -82,7 +82,6 @@ const ListingDetailPage = ({ params }: { params: { id: string } }) => {
       <FaqSection />
 
       <FacilitiesAccordion
-        listingDetails={listing}
         propertyDetails={property}
         facilityTypeDetails={facilityType}
       />

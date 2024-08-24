@@ -1,24 +1,16 @@
 "use client";
 import React from "react";
-import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { client } from "@/sanity/lib/client";
 import { urlForFile, urlForImage } from "@/sanity/lib/image";
-import Image from "next/image";
-import Grid from "@mui/material/Grid";
 import { Button } from "@/components/ui/button";
-import { Developer, Property } from "../../../types";
+import { Developer, Facility, FacilityType, Property } from "../../../types";
 import { fetchPropertyBySlug } from "@/services/PropertyServices";
 import { fetchDeveloperById } from "@/services/DeveloperServices";
-
-import { DetailsBento } from "@/components/DetailsBento";
-import { DetailsImageGridLayout } from "@/components/DetailsImageGrid";
-import { LayoutGridDemo } from "@/components/HomeLayoutGrid";
-
 import MapDemo from "@/components/MapDemo";
-import developer from "@/sanity/schemas/developer";
 import PropertyDetailsImageBento from "@/components/PropertyDetailsImageBento";
 import PropertyDetailsIntro from "@/components/PropertyDetailsIntro";
+import FacilitiesAccordion from "@/components/FacilitiesAccordion";
+import { fetchAllFacilityTypes } from "@/services/FacilityServices";
 
 const downloadFile = (url: string) => {
   if (!url) return;
@@ -41,6 +33,7 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
   const { slug } = params;
   const [property, setProperty] = React.useState<Property | null>(null);
   const [developer, setDeveloper] = React.useState<Developer | null>(null);
+  const [facilityType, setFacilityType] = React.useState<FacilityType[]>([]);
 
   React.useEffect(() => {
     if (slug) {
@@ -49,6 +42,11 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
         if (propertyData?.developer) {
           fetchDeveloperById(propertyData.developer._ref).then(setDeveloper);
         }
+      });
+
+      fetchAllFacilityTypes().then((facilityTypeData) => {
+        console.log("Fetched all Facility Types", facilityTypeData);
+        setFacilityType(facilityTypeData);
       });
     }
   }, [slug]);
@@ -67,6 +65,11 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
     <div>
       <PropertyDetailsImageBento propertyDetails={property} />
       <PropertyDetailsIntro propertyDetails={property} />
+
+      <FacilitiesAccordion
+        propertyDetails={property}
+        facilityTypeDetails={facilityType}
+      />
 
       {/* <div>
         <p>Facilities</p>

@@ -11,7 +11,9 @@ interface BrowseCarouselProps {
   properties: Property[];
 }
 
-const BrowseCarousel: React.FC<BrowseCarouselProps> = ({ properties }) => {
+const BrowseCarouselProperty: React.FC<BrowseCarouselProps> = ({
+  properties,
+}) => {
   const router = useRouter();
 
   const carouselRef = useRef<HTMLDivElement>(null);
@@ -90,7 +92,7 @@ const BrowseCarousel: React.FC<BrowseCarouselProps> = ({ properties }) => {
             }}
             className="relative inline-block macbook-air:w-[24.2rem] macbook-air:h-[16.60rem] md:w-[30.55rem] mb-4 md:mb-0 md:h-[20.78rem] md:mr-[1vw] group"
           >
-            <DirectionAwareHover imageUrl={urlForImage(property.photos[0])}>
+            <DirectionAwareHover imageUrl={urlForImage(property.propertyHero)}>
               <p className="font-bold text-xl">{property.title}</p>
               <p className="font-normal text-sm">$1299 / night</p>
             </DirectionAwareHover>
@@ -112,4 +114,4 @@ const BrowseCarousel: React.FC<BrowseCarouselProps> = ({ properties }) => {
   );
 };
 
-export default BrowseCarousel;
+export default BrowseCarouselProperty;
