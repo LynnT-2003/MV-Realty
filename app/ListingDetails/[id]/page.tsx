@@ -25,9 +25,11 @@ import { fetchAllFacilityTypes } from "@/services/FacilityServices";
 const ListingDetailPage = ({ params }: { params: { id: string } }) => {
   const router = useRouter();
   const { id } = params;
+
   const [listing, setListing] = React.useState<Listing | null>(null);
   const [property, setProperty] = React.useState<Property | null>(null);
   const [facilityType, setFacilityType] = React.useState<FacilityType[]>([]);
+
   //   const [developer, setDeveloper] = React.useState<Developer | null>(null);
 
   //   React.useEffect(() => {

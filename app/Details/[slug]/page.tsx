@@ -23,15 +23,17 @@ import PropertyDetailsIntro from "@/components/PropertyDetailsIntro";
 const downloadFile = (url: string) => {
   if (!url) return;
 
-  fetch(url).then(response=>response.blob()).then(blob => {
-    const blobURL = window.URL.createObjectURL(new Blob([blob]));
-    const aTag = document.createElement('a');
-    aTag.href = blobURL;
-    aTag.setAttribute('download', 'brochure.pdf');
-    document.body.appendChild(aTag);
-    aTag.click();
-    aTag.remove();
-  })
+  fetch(url)
+    .then((response) => response.blob())
+    .then((blob) => {
+      const blobURL = window.URL.createObjectURL(new Blob([blob]));
+      const aTag = document.createElement("a");
+      aTag.href = blobURL;
+      aTag.setAttribute("download", "brochure.pdf");
+      document.body.appendChild(aTag);
+      aTag.click();
+      aTag.remove();
+    });
 };
 
 const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
@@ -80,10 +82,13 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
         </div>
       </div>
       <div className="w-full flex justify-center mb-24 pb-24 md:pb-20">
-
-        <Button onClick={() => {
+        <Button
+          onClick={() => {
             if (pdf_file_url) downloadFile(pdf_file_url);
-          }}>Download Brochure</Button>
+          }}
+        >
+          Download Brochure
+        </Button>
       </div>
     </div>
   );
