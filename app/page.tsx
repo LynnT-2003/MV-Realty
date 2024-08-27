@@ -40,6 +40,7 @@ import { fetchAllListings } from "@/services/ListingServices";
 import { List } from "postcss/lib/list";
 import BrowseCarouselListing from "@/components/BrowseCarouselListing";
 import { fetchAllDevelopers } from "@/services/DeveloperServices";
+import HomeSearchSection from "@/components/HomeSearchSection";
 
 const filters = ["Bedrooms", "Price", "Location", "Buy/Rent"] as const;
 
@@ -77,16 +78,41 @@ const HomePage: React.FC = () => {
   //   fetchListings();
   // }, []);
 
+  const setLocalStorage = (key: string, data: any) => {
+    localStorage.setItem(key, JSON.stringify(data));
+  };
+
+  const getLocalStorage = (key: string) => {
+    const storedData = localStorage.getItem(key);
+    return storedData ? JSON.parse(storedData) : null;
+  };
+
+  const fetchDataWithCache = async (
+    key: string,
+    fetchFunction: () => Promise<any>
+  ) => {
+    const storedData = getLocalStorage(key);
+    if (storedData) {
+      return storedData;
+    }
+
+    const fetchedData = await fetchFunction();
+    setLocalStorage(key, fetchedData);
+    return fetchedData;
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // Fetch data in parallel, using cached data if available
         const [propertiesData, listingsData, developersData] =
           await Promise.all([
-            fetchAllProperties(),
-            fetchAllListings(),
-            fetchAllDevelopers(),
+            fetchDataWithCache("properties", fetchAllProperties),
+            fetchDataWithCache("listings", fetchAllListings),
+            fetchDataWithCache("developers", fetchAllDevelopers),
           ]);
 
+        // Update state with fetched data
         setProperties(propertiesData);
         setListings(listingsData);
         setDevelopers(developersData);
@@ -111,7 +137,6 @@ const HomePage: React.FC = () => {
       }
       console.log("Fetching properties...");
       setProperties(response);
-      console.log("Properties: ", response);
     } catch (error) {
       console.log(error);
     }
@@ -126,7 +151,6 @@ const HomePage: React.FC = () => {
       }
       console.log("Fetching listings...");
       setListings(response);
-      console.log("Listings: ", response);
     } catch (error) {
       console.log(error);
     }
@@ -147,12 +171,12 @@ const HomePage: React.FC = () => {
       {/* <AnimatedHero /> */}
 
       <div className="relative">
-        <div className="flex items-center justify-center">
+        {/* <div className="flex items-center justify-center">
           <img
             src="/mv_home_hero.jpg"
             // className="h-[600px] w-[1600px] macbook-air:w-[1280px] object-cover py-10"
           />
-        </div>
+        </div> */}
 
         {/* <div className="flex justify-center items-center w-full absolute bottom-10 translate-y-1/2">
           <div className="max-sm:hidden inline-flex justify-center items-center shadow-lg md:space-x-24 md:text-base sm:space-x-5 sm:text-lg space-x-8 text-xs py-2 px-10 bg-white rounded">
@@ -212,6 +236,10 @@ const HomePage: React.FC = () => {
       {/* <div className="md:py-16 md:w-max-xl flex flex-col items-center justify-center">
         <LayoutGridDemo />
       </div> */}
+
+      <div className="flex justify-center">
+        <HomeSearchSection />
+      </div>
 
       <div className="w-full flex items-center justify-center">
         <div className="xl:w-[1200px] overflow-x-scroll scroll whitespace-nowrap scroll-smooth">

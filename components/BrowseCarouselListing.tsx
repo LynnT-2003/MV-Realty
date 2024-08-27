@@ -117,11 +117,11 @@ const BrowseCarousel: React.FC<BrowseCarouselProps> = ({
               </DirectionAwareHover>
               <div className="mt-2 p-2 bg-white rounded-lg mb-8">
                 <span className="flex items-center text-lg font-semibold">
+                  {listing.listingName}
                   <img
                     src={urlForImage(developer.profileIcon)}
-                    className="w-8 h-8 mr-1"
+                    className="w-8 h-8 ml-1"
                   />
-                  {listing.listingName}
                 </span>
                 {/* <p className="font-normal text-sm">$1299 / night</p> */}
                 <div className="flex pt-2">
