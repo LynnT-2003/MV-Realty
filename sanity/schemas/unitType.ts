@@ -1,8 +1,8 @@
 import { defineType, defineField } from 'sanity';
 
 export default defineType({
-  name: 'listing',
-  title: 'Listing',
+  name: 'unitType',
+  title: 'Unit Type',
   type: 'document',
   fields: [
     defineField({
@@ -12,8 +12,8 @@ export default defineType({
       to: [{ type: 'property' }],
     }),
     defineField({
-      name: 'listingName',
-      title: 'Listing Name',
+      name: 'unitTypeName',
+      title: 'Unit Type Name',
       type: 'string',
     }),
     defineField({
@@ -22,18 +22,8 @@ export default defineType({
       type: 'text',
     }),
     defineField({
-      name: 'price',
-      title: 'Price (in Thai Baht)',
-      type: 'number',
-    }),
-    defineField({
-      name: 'minimumContractInMonth',
-      title: 'Minimum Contract In Month',
-      type: 'number',
-    }),
-    defineField({
-      name: 'floor',
-      title: 'Floor',
+      name: 'startingPrice',
+      title: 'Starting Price (in Thai Baht)',
       type: 'number',
     }),
     defineField({
@@ -74,49 +64,21 @@ export default defineType({
       },
     }),
     defineField({
-      name: 'listingType',
-      title: 'Listing Type',
-      type: 'string',
-      options: {
-        list: [
-          { title: 'Sale', value: 'sale' },
-          { title: 'Rent', value: 'rent' },
-        ],
-      },
-    }),
-    defineField({
-      name: 'facingDirection',
-      title: 'Facing Direction',
-      type: 'string',
-      options: {
-        list: [
-          { title: 'N', value: 'N' },
-          { title: 'S', value: 'S' },
-          { title: 'E', value: 'E' },
-          { title: 'W', value: 'W' },
-          { title: 'NE', value: 'NE' },
-          { title: 'NW', value: 'NW' },
-          { title: 'SE', value: 'SE' },
-          { title: 'SW', value: 'SW' },
-        ],
-      },
-    }),
-    defineField({
       name: 'createdAt',
       title: 'Created at',
       type: 'datetime',
     }),
     defineField({
-      name: 'listingHero',
-      title: 'Listing Hero',
+      name: 'unitHero',
+      title: 'Unit Hero',
       type: 'image',
       options: {
         hotspot: true, // Allows selection of a hotspot within the image
       },
     }),
     defineField({
-      name: 'listingPhoto',
-      title: 'listingPhoto',
+      name: 'unitPhoto',
+      title: 'Unit Photo',
       type: 'array',
       of: [{ type: 'image' }],
       options: {
@@ -132,8 +94,8 @@ export default defineType({
       },
     }),
     defineField({
-      name: 'statusActive',
-      title: 'Status Active',
+      name: 'activeStatus',
+      title: 'Active Status',
       type: 'string',
       options: {
         list: [

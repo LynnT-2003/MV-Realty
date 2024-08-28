@@ -112,9 +112,32 @@ export default defineType({
       }
     }),
     defineField({
-      name: 'built',
-      title: 'Built',
+      name: 'completedOn',
+      title: 'Completed On',
       type: 'number',
+    }),
+    defineField({
+      name: 'propertyFaqs',
+      title: 'Property FAQs',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          fields: [
+            {
+              name: 'question',
+              title: 'Question',
+              type: 'reference',
+              to: [{ type: 'propertyFaqs' }],
+            },
+            {
+              name: 'answer',
+              title: 'Answer',
+              type: 'text',
+            },
+          ],
+        },
+      ],
     }),
     defineField({
       name: "brochure",
