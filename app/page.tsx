@@ -59,6 +59,7 @@ const HomePage: React.FC = () => {
   const [properties, setProperties] = useState<Property[]>([]);
   const [listings, setListings] = useState<Listing[]>([]);
   const [developers, setDevelopers] = useState<Developer[]>([]);
+
   const [openFilter, setOpenFilter] = useState<Filter | null>(null);
 
   const [bedroomFilter, setBedroomFilter] = useState(null);
@@ -238,7 +239,7 @@ const HomePage: React.FC = () => {
       </div> */}
 
       <div className="flex justify-center">
-        <HomeSearchSection />
+        <HomeSearchSection listings={listings} properties={properties} />
       </div>
 
       <div className="w-full flex items-center justify-center">
