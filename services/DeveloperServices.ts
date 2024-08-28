@@ -11,6 +11,7 @@ export const fetchDeveloperById = async (
   const query = `*[_type == "developer" && _id == $id][0]{
     _id,
     name,
+    description,
     profileIcon
   }`;
   const params = { id };
