@@ -19,6 +19,10 @@ export interface Property {
   propertyHero: SanityImageWithKey;
   photos: SanityImageWithKey[];
   built: number;
+  propertyFaqs: {
+    question: { _ref: string; _type: string };  // Reference to PropertyFaqs
+    answer: string;  // Text for the answer
+  }[];
   brochure: FileAsset;  // New field for brochure
   createdAt: string;
 }
@@ -47,9 +51,31 @@ export interface Listing {
   statusActive: "active" | "inactive";
 }
 
+export interface UnitType {
+  _id: string;
+  property: {
+    _ref: string;
+    _type: string;
+  };
+  unitTypeName: string;
+  description: string;
+  startingPrice: number;
+  size: number;
+  bedroom: number;
+  bathroom: number;
+  furniture: "fully-fitted" | "fully-furnished";
+  status: "ready-to-move-in" | "finishing-2026";
+  createdAt: string; // ISO date string
+  unitHero: SanityImageWithKey;
+  unitPhoto: SanityImageWithKey[];
+  floorPlan: SanityImageWithKey;
+  activeStatus: "active" | "inactive";
+}
+
 export interface Developer {
   _id: string;
   name: string;
+  description: string;
   profileIcon: SanityImageWithKey;
 }
 
@@ -74,11 +100,16 @@ export interface Faqs {
   answer: string;
 }
 
-export interface ListOfListings {
+export interface PropertyFaqs {
   _id: string;
-  listOfListingName: string;
-  photos: SanityImageWithKey;
-  listings: {
+  question: string;
+}
+
+export interface Collections {
+  _id: string;
+  collectionName: string;
+  thumbnail: SanityImageWithKey;
+  properties: {
     _ref: string;
     _type: string;
   }[];
