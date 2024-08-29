@@ -75,11 +75,11 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
     properties: Property[]
   ): { filteredListings: Listing[]; filteredProperties: Property[] } => {
     const filteredListings = listings.filter((listing) =>
-      listing.listingName.toLowerCase().includes(value.toLowerCase())
+      listing.description?.toLowerCase().includes(value.toLowerCase())
     );
 
     const filteredProperties = properties.filter((property) =>
-      property.title.toLowerCase().includes(value.toLowerCase())
+      property.description?.toLowerCase().includes(value.toLowerCase())
     );
 
     return { filteredListings, filteredProperties };
