@@ -60,6 +60,9 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
     "province",
   ];
 
+  const searchOnlyPropertiesKeywords = ["properties", "property"];
+  const searchOnlyListingsKeywords = ["listings", "listing"];
+
   // Function to determine if a value contains any keywords from the provided list
   const containsKeywords = (value: string, keywords: string[]): boolean => {
     return keywords.some((keyword) => value.toLowerCase().includes(keyword));
@@ -160,27 +163,65 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
   ) => {
     const isListingSearch = containsKeywords(value, listingPropertyKeywords);
     const isAddressSearch = containsKeywords(value, addressInfoKeywords);
+    const isSearchOnlyProperties = containsKeywords(
+      value,
+      searchOnlyPropertiesKeywords
+    );
+    const issearchonlyListings = containsKeywords(
+      value,
+      searchOnlyListingsKeywords
+    );
 
     let filteredListings: Listing[] = [];
     let filteredProperties: Property[] = [];
 
     if (isListingSearch && !isAddressSearch) {
       const result = filterByListingPropertyNames(value, listings, properties);
-      filteredListings = result.filteredListings;
-      filteredProperties = result.filteredProperties;
+      if (isSearchOnlyProperties) {
+        filteredListings = [];
+        filteredProperties = result.filteredProperties;
+        return { filteredListings, filteredProperties };
+      } else if (issearchonlyListings) {
+        filteredListings = result.filteredListings;
+        filteredProperties = [];
+        return { filteredListings, filteredProperties };
+      } else {
+        filteredListings = result.filteredListings;
+        filteredProperties = result.filteredProperties;
+      }
     }
 
     if (isAddressSearch && !isListingSearch) {
       const result = filterByAddressInfo(value, listings, properties);
-      filteredListings = result.filteredListings;
-      filteredProperties = result.filteredProperties;
+      if (isSearchOnlyProperties) {
+        filteredListings = [];
+        filteredProperties = result.filteredProperties;
+        return { filteredListings, filteredProperties };
+      } else if (issearchonlyListings) {
+        filteredListings = result.filteredListings;
+        filteredProperties = [];
+        return { filteredListings, filteredProperties };
+      } else {
+        filteredListings = result.filteredListings;
+        filteredProperties = result.filteredProperties;
+      }
     }
 
     if (isListingSearch && isAddressSearch) {
       // Handle cases where both types of keywords are present
       const result = filterByListingPropertyNames(value, listings, properties);
-      filteredListings = result.filteredListings;
-      filteredProperties = result.filteredProperties;
+      if (isSearchOnlyProperties) {
+        filteredListings = [];
+        filteredProperties = result.filteredProperties;
+        return { filteredListings, filteredProperties };
+      } else if (issearchonlyListings) {
+        filteredListings = result.filteredListings;
+        filteredProperties = [];
+        return { filteredListings, filteredProperties };
+      } else {
+        filteredListings = result.filteredListings;
+        filteredProperties = result.filteredProperties;
+      }
     }
 
     if (!isListingSearch && !isAddressSearch && value != "") {
