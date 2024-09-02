@@ -81,6 +81,22 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
     setOpenFilter(null);
   };
 
+  const handleFilter = () => {
+    console.log("Filter Submit clicked");
+
+    // Construct the query string
+    const query = new URLSearchParams({
+      bedrooms: selectedValues.Bedrooms ?? "",
+      minprice: selectedValues["Min Price"] ?? "",
+      maxprice: selectedValues["Max Price"] ?? "",
+      location: selectedValues.Location ?? "",
+      buyRent: selectedValues["Buy/Rent"] ?? "",
+    }).toString();
+
+    // Navigate to FilterResultsPage with query parameters
+    router.push(`/FilterResultsPage?${query}`);
+  };
+
   useEffect(() => {
     console.log("Selected Values: ", selectedValues);
   }, [selectedValues]);
@@ -379,7 +395,7 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
       </div>
 
       <div className="flex justify-center items-center w-max-[75%] mt-24">
-        <div className="bg-red-100 max-sm:hidden inline-flex justify-center items-center shadow-lg md:space-x-4 md:text-base sm:space-x-5 sm:text-lg space-x-8 text-xs py-2 px-10 bg-white rounded">
+        <div className="bg-red-100 max-sm:hidden inline-flex justify-center items-center shadow-lg space-x-4 py-3 px-3 bg-white rounded">
           {filters.map((filter) => (
             <div key={filter} className="md:px-0">
               <Popover
@@ -391,10 +407,12 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
                     variant="outline"
                     role="combobox"
                     aria-expanded={openFilter === filter}
-                    className="w-[200px] justify-between"
+                    className="flex justify-between text-right pr-4 w-full"
                   >
-                    {selectedValues[filter] || filter}
-                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    <span className="flex-1 text-left">
+                      {selectedValues[filter] || filter}
+                    </span>
+                    <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50 ml-10" />
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-[200px] p-0">
@@ -431,7 +449,13 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
               </Popover>
             </div>
           ))}
-          <Button>Submit</Button>
+          <Button
+            onClick={() => {
+              handleFilter();
+            }}
+          >
+            Submit
+          </Button>
         </div>
       </div>
     </div>

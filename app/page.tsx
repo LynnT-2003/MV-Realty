@@ -1,43 +1,10 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Check, ChevronsUpDown } from "lucide-react";
-import { urlForImage } from "@/sanity/lib/image";
 import { useRouter } from "next/navigation";
-
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-
-import { Card, CardContent } from "@/components/ui/card";
 import { Property, Listing, Developer } from "@/types";
 import { fetchAllProperties } from "@/services/PropertyServices";
-
-import { LayoutGridDemo } from "@/components/HomeLayoutGrid";
-import { AnimatedHero } from "@/components/AnimatedHero";
-import { DirectionAwareHover } from "@/components/ui/direction-aware-hover";
 import BrowseCarouselProperty from "@/components/BrowseCarouselProperty";
 import { fetchAllListings } from "@/services/ListingServices";
-import { List } from "postcss/lib/list";
 import BrowseCarouselListing from "@/components/BrowseCarouselListing";
 import { fetchAllDevelopers } from "@/services/DeveloperServices";
 import HomeSearchSection from "@/components/HomeSearchSection";
