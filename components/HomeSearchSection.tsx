@@ -29,14 +29,21 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 
-const filters = ["Bedrooms", "Price", "Location", "Buy/Rent"] as const;
+const filters = [
+  "Bedrooms",
+  "Min Price",
+  "Max Price",
+  "Location",
+  "Buy/Rent",
+] as const;
 
 type Filter = (typeof filters)[number];
 
-const options: Record<Filter, string[]> = {
-  Bedrooms: ["1-Bedroom", "2-Bedroom", "3-Bedroom"],
-  Price: ["$0 - $100k", "$100k - $200k", "$200k+"],
-  Location: ["New York", "San Francisco", "Chicago", "Los Angeles"],
+const options: Record<Filter, any[]> = {
+  Bedrooms: ["1", "2", "3"],
+  "Min Price": [0, 10, 20, 30, 40],
+  "Max Price": [10, 20, 30, 40, 50, 999],
+  Location: ["Siam", "Asoke", "Ratchathewi", "Phrom Phong"],
   "Buy/Rent": ["Buy", "Rent"],
 };
 
@@ -61,9 +68,10 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
   const [locationFilter, setLocationFilter] = useState(null);
   const [transactionOption, setTransactionOption] = useState(null);
 
-  const [selectedValues, setSelectedValues] = useState<Record<Filter, string>>({
+  const [selectedValues, setSelectedValues] = useState<Record<Filter, any>>({
     Bedrooms: "",
-    Price: "",
+    "Min Price": 0,
+    "Max Price": 0,
     Location: "",
     "Buy/Rent": "",
   });
@@ -409,7 +417,11 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
                                   : "opacity-0"
                               )}
                             />
-                            {option}
+                            {filter === "Bedrooms"
+                              ? `${option}-Bedroom`
+                              : filter === "Min Price" || filter === "Max Price"
+                                ? `${option}M Baht`
+                                : option}
                           </CommandItem>
                         ))}
                       </CommandGroup>
