@@ -3,6 +3,42 @@ import React, { useState, useEffect } from "react";
 import { PlaceholdersAndVanishInput } from "./ui/placeholders-and-vanish-input";
 import { Listing, Property } from "@/types";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+
+const filters = ["Bedrooms", "Price", "Location", "Buy/Rent"] as const;
+
+type Filter = (typeof filters)[number];
+
+const options: Record<Filter, string[]> = {
+  Bedrooms: ["1-Bedroom", "2-Bedroom", "3-Bedroom"],
+  Price: ["$0 - $100k", "$100k - $200k", "$200k+"],
+  Location: ["New York", "San Francisco", "Chicago", "Los Angeles"],
+  "Buy/Rent": ["Buy", "Rent"],
+};
 
 interface BrowseCarouselProps {
   listings: Listing[];
@@ -17,6 +53,29 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
 
   const [filteredListings, setFilteredListings] = useState<Listing[]>([]);
   const [filteredProperties, setFilteredProperties] = useState<Property[]>([]);
+
+  const [openFilter, setOpenFilter] = useState<Filter | null>(null);
+
+  const [bedroomFilter, setBedroomFilter] = useState(null);
+  const [priceFilter, setPriceFilter] = useState(null);
+  const [locationFilter, setLocationFilter] = useState(null);
+  const [transactionOption, setTransactionOption] = useState(null);
+
+  const [selectedValues, setSelectedValues] = useState<Record<Filter, string>>({
+    Bedrooms: "",
+    Price: "",
+    Location: "",
+    "Buy/Rent": "",
+  });
+
+  const handleSelect = (filter: Filter, value: string) => {
+    setSelectedValues((prev) => ({ ...prev, [filter]: value }));
+    setOpenFilter(null);
+  };
+
+  useEffect(() => {
+    console.log("Selected Values: ", selectedValues);
+  }, [selectedValues]);
 
   const handleListingClick = (slug: String) => {
     router.push(`/ListingDetails/${slug}`);
@@ -266,7 +325,7 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-[545px] w-[1320px] bg-red-300">
+    <div className="flex flex-col items-center justify-center h-[545px] w-[1320px] bg-blue-200">
       <h2 className="mb-10 sm:mb-20 text-xl text-center sm:text-5xl dark:text-white text-black">
         Ask US Anything at Mahar-Vertex
       </h2>
@@ -309,6 +368,59 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
             </div>
           ))}
         </ul>
+      </div>
+
+      <div className="flex justify-center items-center w-max-[75%] mt-24">
+        <div className="bg-red-100 max-sm:hidden inline-flex justify-center items-center shadow-lg md:space-x-4 md:text-base sm:space-x-5 sm:text-lg space-x-8 text-xs py-2 px-10 bg-white rounded">
+          {filters.map((filter) => (
+            <div key={filter} className="md:px-0">
+              <Popover
+                open={openFilter === filter}
+                onOpenChange={(isOpen) => setOpenFilter(isOpen ? filter : null)}
+              >
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    role="combobox"
+                    aria-expanded={openFilter === filter}
+                    className="w-[200px] justify-between"
+                  >
+                    {selectedValues[filter] || filter}
+                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-[200px] p-0">
+                  <Command>
+                    <CommandInput placeholder={`Search ${filter}...`} />
+                    <CommandList>
+                      <CommandEmpty>No {filter} found.</CommandEmpty>
+                      <CommandGroup>
+                        {options[filter].map((option) => (
+                          <CommandItem
+                            key={option}
+                            value={option}
+                            onSelect={() => handleSelect(filter, option)}
+                          >
+                            <Check
+                              className={cn(
+                                "mr-2 h-4 w-4",
+                                selectedValues[filter] === option
+                                  ? "opacity-100"
+                                  : "opacity-0"
+                              )}
+                            />
+                            {option}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
+            </div>
+          ))}
+          <Button>Submit</Button>
+        </div>
       </div>
     </div>
   );

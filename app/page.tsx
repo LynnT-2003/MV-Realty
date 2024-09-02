@@ -178,60 +178,6 @@ const HomePage: React.FC = () => {
             // className="h-[600px] w-[1600px] macbook-air:w-[1280px] object-cover py-10"
           />
         </div> */}
-
-        {/* <div className="flex justify-center items-center w-full absolute bottom-10 translate-y-1/2">
-          <div className="max-sm:hidden inline-flex justify-center items-center shadow-lg md:space-x-24 md:text-base sm:space-x-5 sm:text-lg space-x-8 text-xs py-2 px-10 bg-white rounded">
-            {filters.map((filter) => (
-              <div key={filter} className="md:px-0">
-                <Popover
-                  open={openFilter === filter}
-                  onOpenChange={(isOpen) =>
-                    setOpenFilter(isOpen ? filter : null)
-                  }
-                >
-                  <PopoverTrigger asChild>
-                    <Button
-                      variant="outline"
-                      role="combobox"
-                      aria-expanded={openFilter === filter}
-                      className="w-[200px] justify-between"
-                    >
-                      {selectedValues[filter] || filter}
-                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                    </Button>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-[200px] p-0">
-                    <Command>
-                      <CommandInput placeholder={`Search ${filter}...`} />
-                      <CommandList>
-                        <CommandEmpty>No {filter} found.</CommandEmpty>
-                        <CommandGroup>
-                          {options[filter].map((option) => (
-                            <CommandItem
-                              key={option}
-                              value={option}
-                              onSelect={() => handleSelect(filter, option)}
-                            >
-                              <Check
-                                className={cn(
-                                  "mr-2 h-4 w-4",
-                                  selectedValues[filter] === option
-                                    ? "opacity-100"
-                                    : "opacity-0"
-                                )}
-                              />
-                              {option}
-                            </CommandItem>
-                          ))}
-                        </CommandGroup>
-                      </CommandList>
-                    </Command>
-                  </PopoverContent>
-                </Popover>
-              </div>
-            ))}
-          </div>
-        </div> */}
       </div>
 
       {/* <div className="md:py-16 md:w-max-xl flex flex-col items-center justify-center">
