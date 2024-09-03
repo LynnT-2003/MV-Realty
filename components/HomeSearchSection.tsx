@@ -363,6 +363,7 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
         <ul className="rounded-3xl shadow-lg max-h-[160px] overflow-scroll">
           {filteredListings.map((listing) => (
             <div
+              key={listing._id}
               className="bg-gray-100 hover:bg-gray-300 hover:cursor-pointer pl-8 py-2 text-gray-600 hover:text-black"
               onClick={() => {
                 handleListingClick(listing._id);
@@ -378,6 +379,7 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
           ))}
           {filteredProperties.map((property) => (
             <div
+              key={property._id}
               className="bg-gray-100 hover:bg-gray-300 hover:cursor-pointer pl-8 py-2 text-gray-600 hover:text-black"
               onClick={() => {
                 handlePropertyClick(property.slug.current);
