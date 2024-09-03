@@ -4,7 +4,7 @@ import BrowseCarousel from "@/components/BrowseCarouselListing";
 import ListingCardCollection from "@/components/ListingCardCollection";
 import { Property, Listing, Developer } from "@/types";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 const FilterResultsPage: React.FC = () => {
   const searchParams = useSearchParams();
@@ -95,5 +95,11 @@ const FilterResultsPage: React.FC = () => {
     </div>
   );
 };
+
+const FilterResultsWrapper: React.FC = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <FilterResultsPage />
+  </Suspense>
+);
 
 export default FilterResultsPage;
