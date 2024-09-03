@@ -102,4 +102,4 @@ const FilterResultsWrapper: React.FC = () => (
   </Suspense>
 );
 
-export default FilterResultsPage;
+export default FilterResultsWrapper;
