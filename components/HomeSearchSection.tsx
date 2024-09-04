@@ -28,6 +28,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import SearchResultsSection from "./SearchResultsSection";
 
 const filters = [
   "Bedrooms",
@@ -488,49 +489,21 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
       <h2 className="mb-10 sm:mb-20 text-xl text-center sm:text-5xl dark:text-white text-black">
         Ask US Anything at Mahar-Vertex
       </h2>
-      <PlaceholdersAndVanishInput
-        placeholders={placeholders}
-        onChange={handleChange}
-        onSubmit={onSubmit}
-      />
 
-      <div className="mt-2 w-full relative max-w-xl mx-auto max-h-[0px]">
-        <ul className="rounded-3xl shadow-lg max-h-[160px] overflow-scroll">
-          {filteredListings.map((listing) => (
-            <div
-              key={listing._id}
-              className="bg-gray-100 hover:bg-gray-300 hover:cursor-pointer pl-8 py-2 text-gray-600 hover:text-black"
-              onClick={() => {
-                handleListingClick(listing._id);
-              }}
-            >
-              <span key={listing._id}>
-                <span className="text-gray-500 text-xs items-center pr-3">
-                  <i>Listing:</i>
-                </span>
-                {listing.listingName}
-              </span>
-            </div>
-          ))}
-          {filteredProperties.map((property) => (
-            <div
-              key={property._id}
-              className="bg-gray-100 hover:bg-gray-300 hover:cursor-pointer pl-8 py-2 text-gray-600 hover:text-black"
-              onClick={() => {
-                handlePropertyClick(property.slug.current);
-              }}
-            >
-              <span key={property._id}>
-                <span className="text-gray-500 text-xs items-center pr-3">
-                  <i>Property:</i>
-                </span>
-                {property.title}
-              </span>
-            </div>
-          ))}
-        </ul>
+      <div className="md:w-full w-[85vw]">
+        <PlaceholdersAndVanishInput
+          placeholders={placeholders}
+          onChange={handleChange}
+          onSubmit={onSubmit}
+        />
       </div>
 
+      <SearchResultsSection
+        filteredListings={filteredListings}
+        filteredProperties={filteredProperties}
+      />
+
+      {/* Filter Component */}
       <div className="flex justify-center items-center w-max-[75%] mt-24">
         <div className="bg-red-100 max-sm:hidden inline-flex justify-center items-center shadow-lg space-x-4 py-3 px-3 bg-white rounded">
           {filters.map((filter) => (
