@@ -33,6 +33,7 @@
     "next-sanity": "^9.3.10",
     "puppeteer": "^22.12.1",
     "react": "^18",
+    "react-calendly": "^4.3.1",
     "react-dom": "^18",
     "react-icons": "^5.2.1",
     "sanity": "^3.46.1",
