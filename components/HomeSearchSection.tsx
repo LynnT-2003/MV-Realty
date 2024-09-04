@@ -123,6 +123,8 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
     "Sathorn",
   ];
 
+  //////////////////////////////////////////////////////////////////////////////
+
   const placeholders = [
     "I want to know more info on LIFE Asoke Rama ..",
     "Details about The Address - 2BR ?",
@@ -132,7 +134,17 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
   ];
 
   // Define all keywords for different filters
+  const bedroomInfoKeywords = ["bed", "bedrooms", "bedroom", "-bedroom"];
+  const bathroomInfoKeywords = ["bath", "bathrooms", "bathroom", "-bathroom"];
+
   const listingPropertyKeywords = [" on", " about", " for", " in"];
+
+  const developerInfoKeywords = [
+    "by",
+    "from",
+    "developed by",
+    "developed from",
+  ];
 
   const addressInfoKeywords = [
     "close to",
@@ -157,12 +169,16 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
     listings: Listing[],
     properties: Property[]
   ): { filteredListings: Listing[]; filteredProperties: Property[] } => {
-    const filteredListings = listings.filter((listing) =>
-      listing.description?.toLowerCase().includes(value.toLowerCase())
+    const filteredListings = listings.filter(
+      (listing) =>
+        listing.description?.toLowerCase().includes(value.toLowerCase()) ||
+        listing.listingName?.toLowerCase().includes(value.toLowerCase())
     );
 
-    const filteredProperties = properties.filter((property) =>
-      property.description?.toLowerCase().includes(value.toLowerCase())
+    const filteredProperties = properties.filter(
+      (property) =>
+        property.description?.toLowerCase().includes(value.toLowerCase()) ||
+        property.title?.toLowerCase().includes(value.toLowerCase())
     );
 
     return { filteredListings, filteredProperties };
@@ -213,16 +229,22 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
 
     let cleanedValue = value;
 
-    // Loop through each keyword to find its position in the value
-    for (const keyword of addressInfoKeywords) {
-      const keywordIndex = cleanedValue.toLowerCase().indexOf(keyword);
-      if (keywordIndex !== -1) {
-        // Remove everything before and including the keyword
-        cleanedValue = cleanedValue.slice(keywordIndex + keyword.length).trim();
-        break; // Exit the loop once a keyword is found and cleaned
-      }
+    // Create a regular expression to capture the word/phrase after the keyword
+    const addressRegex = new RegExp(
+      `(?:${addressInfoKeywords.join("|")})\\s+(\\w+)`, // Match the keyword, then capture the word after it
+      "i"
+    );
+
+    // Match the value against the regex
+    const match = cleanedValue.match(addressRegex);
+
+    if (match && match[1]) {
+      // If a match is found, cleanedValue becomes the word after the keyword
+      cleanedValue = match[1]; // Capture the word after the keyword
+      console.log("Cleaned Value:", cleanedValue);
     }
 
+    // Filter listings and properties based on the cleanedValue
     const filteredListings = listings.filter((listing) =>
       listing.description?.toLowerCase().includes(cleanedValue.toLowerCase())
     );
@@ -238,79 +260,192 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
     return { filteredListings, filteredProperties };
   };
 
+  // Define filter function for property bedroom
+  const filterByListingsBedroom = (
+    value: string,
+    listings: Listing[],
+    properties: Property[]
+  ): { filteredListings: Listing[]; filteredProperties: Property[] } => {
+    console.log("INITIATING FILTER BY PROPERTY BEDROOM");
+
+    let cleanedValue = value;
+
+    // Create a regular expression to capture any keyword preceded by a word or number
+    const bedroomRegex = new RegExp(
+      `(\\w+)\\s+(${bedroomInfoKeywords.join("|")})`,
+      "i"
+    );
+
+    const match = cleanedValue.match(bedroomRegex);
+
+    if (match && match[1]) {
+      // match[1] contains the word before the keyword
+      cleanedValue = match[1];
+      console.log(cleanedValue);
+    }
+
+    const filteredListings = listings.filter(
+      (listing) =>
+        // listing.description?.toLowerCase().includes(cleanedValue.toLowerCase())
+        listing.bedroom === Number(cleanedValue)
+    );
+
+    const filteredProperties: Property[] = [];
+
+    if (cleanedValue.length === 0) {
+      return { filteredListings: [], filteredProperties: [] };
+    }
+
+    return { filteredListings, filteredProperties };
+  };
+
+  // Define filter function for property bathroom
+  const filterByListingsBathroom = (
+    value: string,
+    listings: Listing[],
+    properties: Property[]
+  ): { filteredListings: Listing[]; filteredProperties: Property[] } => {
+    console.log("INITIATING FILTER BY PROPERTY BATHROOM");
+
+    let cleanedValue = value;
+
+    // Create a regular expression to capture any keyword preceded by a word or number
+    const bathroomRegex = new RegExp(
+      `(\\w+)\\s+(${bathroomInfoKeywords.join("|")})`,
+      "i"
+    );
+
+    const match = cleanedValue.match(bathroomRegex);
+
+    if (match && match[1]) {
+      // match[1] contains the word before the keyword
+      cleanedValue = match[1];
+      console.log(cleanedValue);
+    }
+
+    const filteredListings = listings.filter(
+      (listing) =>
+        // listing.description?.toLowerCase().includes(cleanedValue.toLowerCase())
+        listing.bathroom === Number(cleanedValue)
+    );
+
+    const filteredProperties: Property[] = [];
+
+    if (cleanedValue.length === 0) {
+      return { filteredListings: [], filteredProperties: [] };
+    }
+
+    return { filteredListings, filteredProperties };
+  };
+
+  // Define filter function for property facing side
+
+  // Define filter function by max price
+
   // Perform search based on value and filters
   const performSearch = (
     value: string,
     listings: Listing[],
     properties: Property[]
-  ) => {
+  ): { filteredListings: Listing[]; filteredProperties: Property[] } => {
+    // Determine which filters are active based on the value
     const isListingSearch = containsKeywords(value, listingPropertyKeywords);
     const isAddressSearch = containsKeywords(value, addressInfoKeywords);
+    const isBedroomSearch = containsKeywords(value, bedroomInfoKeywords);
+    const isBathroomSearch = containsKeywords(value, bathroomInfoKeywords);
     const isSearchOnlyProperties = containsKeywords(
       value,
       searchOnlyPropertiesKeywords
     );
-    const issearchonlyListings = containsKeywords(
+    const isSearchOnlyListings = containsKeywords(
       value,
       searchOnlyListingsKeywords
     );
 
-    let filteredListings: Listing[] = [];
-    let filteredProperties: Property[] = [];
+    // Initialize filtered results
+    let filteredListings: Listing[] = [...listings];
+    let filteredProperties: Property[] = [...properties];
 
-    if (isListingSearch && !isAddressSearch) {
-      const result = filterByListingPropertyNames(value, listings, properties);
-      if (isSearchOnlyProperties) {
-        filteredListings = [];
-        filteredProperties = result.filteredProperties;
-        return { filteredListings, filteredProperties };
-      } else if (issearchonlyListings) {
-        filteredListings = result.filteredListings;
-        filteredProperties = [];
-        return { filteredListings, filteredProperties };
-      } else {
-        filteredListings = result.filteredListings;
-        filteredProperties = result.filteredProperties;
-      }
+    // Apply filters sequentially
+
+    // 1. Filter by bedroom if detected
+    if (isBedroomSearch) {
+      const bedroomResult = filterByListingsBedroom(
+        value,
+        listings,
+        properties
+      );
+      filteredListings = filteredListings.filter((listing) =>
+        bedroomResult.filteredListings.includes(listing)
+      );
+      filteredProperties = filteredProperties.filter((property) =>
+        bedroomResult.filteredProperties.includes(property)
+      );
     }
 
-    if (isAddressSearch && !isListingSearch) {
-      const result = filterByAddressInfo(value, listings, properties);
-      if (isSearchOnlyProperties) {
-        filteredListings = [];
-        filteredProperties = result.filteredProperties;
-        return { filteredListings, filteredProperties };
-      } else if (issearchonlyListings) {
-        filteredListings = result.filteredListings;
-        filteredProperties = [];
-        return { filteredListings, filteredProperties };
-      } else {
-        filteredListings = result.filteredListings;
-        filteredProperties = result.filteredProperties;
-      }
+    // 2. Filter by bathroom if detected
+    if (isBathroomSearch) {
+      const bathroomResult = filterByListingsBathroom(
+        value,
+        listings,
+        properties
+      );
+      filteredListings = filteredListings.filter((listing) =>
+        bathroomResult.filteredListings.includes(listing)
+      );
+      filteredProperties = filteredProperties.filter((property) =>
+        bathroomResult.filteredProperties.includes(property)
+      );
     }
 
-    if (isListingSearch && isAddressSearch) {
-      // Handle cases where both types of keywords are present
-      const result = filterByListingPropertyNames(value, listings, properties);
-      if (isSearchOnlyProperties) {
-        filteredListings = [];
-        filteredProperties = result.filteredProperties;
-        return { filteredListings, filteredProperties };
-      } else if (issearchonlyListings) {
-        filteredListings = result.filteredListings;
-        filteredProperties = [];
-        return { filteredListings, filteredProperties };
-      } else {
-        filteredListings = result.filteredListings;
-        filteredProperties = result.filteredProperties;
-      }
+    // 3. Filter by listing/property names if detected
+    if (isListingSearch) {
+      const listingResult = filterByListingPropertyNames(
+        value,
+        listings,
+        properties
+      );
+      filteredListings = filteredListings.filter((listing) =>
+        listingResult.filteredListings.includes(listing)
+      );
+      filteredProperties = filteredProperties.filter((property) =>
+        listingResult.filteredProperties.includes(property)
+      );
     }
 
-    if (!isListingSearch && !isAddressSearch && value != "") {
-      const result = filterDefaultNameTitle(value, listings, properties);
-      filteredListings = result.filteredListings;
-      filteredProperties = result.filteredProperties;
+    // 4. Filter by address if detected
+    if (isAddressSearch) {
+      const addressResult = filterByAddressInfo(value, listings, properties);
+      filteredListings = filteredListings.filter((listing) =>
+        addressResult.filteredListings.includes(listing)
+      );
+      filteredProperties = filteredProperties.filter((property) =>
+        addressResult.filteredProperties.includes(property)
+      );
+    }
+
+    // 5. Default name/title search if no specific search type matches
+    if (
+      !isListingSearch &&
+      !isAddressSearch &&
+      !isBedroomSearch &&
+      !isBathroomSearch &&
+      value !== ""
+    ) {
+      const defaultResult = filterDefaultNameTitle(value, listings, properties);
+      filteredListings = filteredListings.filter((listing) =>
+        defaultResult.filteredListings.includes(listing)
+      );
+      filteredProperties = filteredProperties.filter((property) =>
+        defaultResult.filteredProperties.includes(property)
+      );
+    }
+
+    // Handle "only properties" or "only listings" filters
+    if (isSearchOnlyProperties) {
+      filteredListings = []; // Clear listings, only properties should remain
+    } else if (isSearchOnlyListings) {
+      filteredProperties = []; // Clear properties, only listings should remain
     }
 
     return { filteredListings, filteredProperties };
