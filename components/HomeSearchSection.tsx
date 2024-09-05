@@ -504,10 +504,10 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
 
   return (
     <div
-      className={`flex flex-col items-center h-[545px] w-[1320px] bg-blue-200 `}
+      className={`flex flex-col items-center h-[445px] w-[1320px] bg-blue-200 `}
     >
       <h2
-        className={`mt-36 mb-10 sm:mb-24 text-xl text-center sm:text-5xl dark:text-white text-black ${searchActionClicked ? "opacity-50" : "opacity-100"}`}
+        className={`mt-20 mb-10 sm:mb-16 text-xl text-center sm:text-5xl dark:text-white text-black ${searchActionClicked ? "opacity-50" : "opacity-100"}`}
       >
         Ask US Anything at Mahar-Vertex
       </h2>

@@ -11,12 +11,14 @@ interface BrowseCarouselProps {
   listings: Listing[];
   properties: Property[];
   developers: Developer[];
+  blur: boolean;
 }
 
 const BrowseCarousel: React.FC<BrowseCarouselProps> = ({
   listings,
   properties,
   developers,
+  blur,
 }) => {
   const router = useRouter();
 
@@ -105,7 +107,11 @@ const BrowseCarousel: React.FC<BrowseCarouselProps> = ({
               }}
               className="relative inline-block mb-4 md:mb-0 group"
             >
-              <DirectionAwareHover imageUrl={urlForImage(listing.listingHero)}>
+              {/* ${searchSectionClicked ? "opacity-50" : "opacity-100"} */}
+              <DirectionAwareHover
+                imageUrl={urlForImage(listing.listingHero)}
+                className={`${blur ? "opacity-50" : "opacity-100"}`}
+              >
                 <p className="font-bold text-xl">{listing.listingName}</p>
                 {/* <p className="font-normal text-sm">$1299 / night</p> */}
                 {/* <span className="font-semibold text-sm mr-6">
@@ -115,7 +121,9 @@ const BrowseCarousel: React.FC<BrowseCarouselProps> = ({
                   Price: {listing.price}M Baht
                 </span>
               </DirectionAwareHover>
-              <div className="mt-2 p-2 bg-white rounded-lg mb-8">
+              <div
+                className={`mt-2 p-2 bg-white rounded-lg mb-8 ${blur ? "opacity-50" : "opacity-100"}`}
+              >
                 <span className="flex items-center text-lg font-semibold">
                   {listing.listingName}
                   <img
