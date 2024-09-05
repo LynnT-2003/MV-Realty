@@ -21,13 +21,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
 import SearchResultsSection from "./SearchResultsSection";
 
 const filters = [
@@ -51,13 +44,28 @@ const options: Record<Filter, any[]> = {
 interface BrowseCarouselProps {
   listings: Listing[];
   properties: Property[];
+  onSearchSectionClick: () => void;
+  searchActionClicked: boolean;
 }
 
 const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
   listings,
   properties,
+  onSearchSectionClick,
+  searchActionClicked,
 }) => {
   const router = useRouter();
+
+  (
+      onSearchSectionClick?: (event: React.MouseEvent<HTMLDivElement>) => void,
+      searchSectionClickedInternal?: (
+        event: React.MouseEvent<HTMLDivElement>
+      ) => void
+    ) =>
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      if (onSearchSectionClick) onSearchSectionClick(event);
+      if (searchSectionClickedInternal) searchSectionClickedInternal(event);
+    };
 
   const [filteredListings, setFilteredListings] = useState<Listing[]>([]);
   const [filteredProperties, setFilteredProperties] = useState<Property[]>([]);
@@ -68,6 +76,8 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
   const [priceFilter, setPriceFilter] = useState(null);
   const [locationFilter, setLocationFilter] = useState(null);
   const [transactionOption, setTransactionOption] = useState(null);
+
+  const [isSearchActive, setIsSearchActive] = useState<boolean>(false);
 
   const [selectedValues, setSelectedValues] = useState<Record<Filter, any>>({
     Bedrooms: "",
@@ -455,6 +465,7 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
   // Handle input change and perform search
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
+    setIsSearchActive(value.trim() !== "");
     console.log(value); // Log the input value
 
     // Perform the search and get filtered results
@@ -485,12 +496,19 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-[545px] w-[1320px] bg-blue-200">
-      <h2 className="mb-10 sm:mb-20 text-xl text-center sm:text-5xl dark:text-white text-black">
+    <div
+      className={`flex flex-col items-center justify-center h-[545px] w-[1320px] bg-blue-200 `}
+    >
+      <h2
+        className={`mb-10 sm:mb-20 text-xl text-center sm:text-5xl dark:text-white text-black ${searchActionClicked ? "opacity-50" : "opacity-100"}`}
+      >
         Ask US Anything at Mahar-Vertex
       </h2>
 
-      <div className="md:w-full w-[85vw]">
+      <div
+        className="md:w-full w-[85vw] search-section search-section-internal"
+        onClick={onSearchSectionClick}
+      >
         <PlaceholdersAndVanishInput
           placeholders={placeholders}
           onChange={handleChange}
@@ -498,13 +516,18 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
         />
       </div>
 
-      <SearchResultsSection
-        filteredListings={filteredListings}
-        filteredProperties={filteredProperties}
-      />
+      <div className="z-10">
+        <SearchResultsSection
+          filteredListings={filteredListings}
+          filteredProperties={filteredProperties}
+          isActive={isSearchActive}
+        />
+      </div>
 
       {/* Filter Component */}
-      <div className="flex justify-center items-center w-max-[75%] mt-24">
+      <div
+        className={`flex justify-center items-center w-max-[75%] mt-24  ${searchActionClicked ? "opacity-50 inset-0" : "opacity-100"}`}
+      >
         <div className="bg-red-100 max-sm:hidden inline-flex justify-center items-center shadow-lg space-x-4 py-3 px-3 bg-white rounded">
           {filters.map((filter) => (
             <div key={filter} className="md:px-0">
