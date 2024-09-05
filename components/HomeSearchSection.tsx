@@ -180,55 +180,57 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
     listings: Listing[],
     properties: Property[]
   ): { filteredListings: Listing[]; filteredProperties: Property[] } => {
-    const filteredListings = listings.filter(
-      (listing) =>
-        listing.description?.toLowerCase().includes(value.toLowerCase()) ||
-        listing.listingName?.toLowerCase().includes(value.toLowerCase())
+    // Filter listings by matching the cleaned value with their names
+    const filteredListings = listings.filter((listing) =>
+      [listing.listingName].some((listingField) =>
+        listingField.toLowerCase().includes(value.toLowerCase())
+      )
     );
 
-    const filteredProperties = properties.filter(
-      (property) =>
-        property.description?.toLowerCase().includes(value.toLowerCase()) ||
-        property.title?.toLowerCase().includes(value.toLowerCase())
+    // Filter properties by matching the cleaned value with their descriptions or titles
+    const filteredProperties = properties.filter((property) =>
+      [property.title, property.description].some((propertyField) =>
+        propertyField.toLowerCase().includes(value.toLowerCase())
+      )
     );
 
     return { filteredListings, filteredProperties };
   };
 
   // Define filter function for listing and property names
-  const filterByListingPropertyNames = (
-    value: string,
-    listings: Listing[],
-    properties: Property[]
-  ): { filteredListings: Listing[]; filteredProperties: Property[] } => {
-    console.log("INITIATING FILTER BY LISTING AND PROPERTY NAMES");
+  // const filterByListingPropertyNames = (
+  //   value: string,
+  //   listings: Listing[],
+  //   properties: Property[]
+  // ): { filteredListings: Listing[]; filteredProperties: Property[] } => {
+  //   console.log("INITIATING FILTER BY LISTING AND PROPERTY NAMES");
 
-    let cleanedValue = value;
+  //   let cleanedValue = value;
 
-    // Loop through each keyword to find its position in the value
-    for (const keyword of listingPropertyKeywords) {
-      const keywordIndex = cleanedValue.toLowerCase().indexOf(keyword);
-      if (keywordIndex !== -1) {
-        // Remove everything before and including the keyword
-        cleanedValue = cleanedValue.slice(keywordIndex + keyword.length).trim();
-        break; // Exit the loop once a keyword is found and cleaned
-      }
-    }
+  //   // Loop through each keyword to find its position in the value
+  //   for (const keyword of listingPropertyKeywords) {
+  //     const keywordIndex = cleanedValue.toLowerCase().indexOf(keyword);
+  //     if (keywordIndex !== -1) {
+  //       // Remove everything before and including the keyword
+  //       cleanedValue = cleanedValue.slice(keywordIndex + keyword.length).trim();
+  //       break; // Exit the loop once a keyword is found and cleaned
+  //     }
+  //   }
 
-    if (cleanedValue.length === 0) {
-      return { filteredListings: [], filteredProperties: [] };
-    }
+  //   if (cleanedValue.length === 0) {
+  //     return { filteredListings: [], filteredProperties: [] };
+  //   }
 
-    const filteredListings = listings.filter((listing) =>
-      listing.listingName.toLowerCase().includes(cleanedValue.toLowerCase())
-    );
+  //   const filteredListings = listings.filter((listing) =>
+  //     listing.listingName.toLowerCase().includes(cleanedValue.toLowerCase())
+  //   );
 
-    const filteredProperties = properties.filter((property) =>
-      property.title.toLowerCase().includes(cleanedValue.toLowerCase())
-    );
+  //   const filteredProperties = properties.filter((property) =>
+  //     property.title.toLowerCase().includes(cleanedValue.toLowerCase())
+  //   );
 
-    return { filteredListings, filteredProperties };
-  };
+  //   return { filteredListings, filteredProperties };
+  // };
 
   // Define filter function for address-related queries
   const filterByAddressInfo = (
@@ -360,7 +362,7 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
     properties: Property[]
   ): { filteredListings: Listing[]; filteredProperties: Property[] } => {
     // Determine which filters are active based on the value
-    const isListingSearch = containsKeywords(value, listingPropertyKeywords);
+    // const isListingSearch = containsKeywords(value, listingPropertyKeywords);
     const isAddressSearch = containsKeywords(value, addressInfoKeywords);
     const isBedroomSearch = containsKeywords(value, bedroomInfoKeywords);
     const isBathroomSearch = containsKeywords(value, bathroomInfoKeywords);
@@ -410,19 +412,19 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
     }
 
     // 3. Filter by listing/property names if detected
-    if (isListingSearch) {
-      const listingResult = filterByListingPropertyNames(
-        value,
-        listings,
-        properties
-      );
-      filteredListings = filteredListings.filter((listing) =>
-        listingResult.filteredListings.includes(listing)
-      );
-      filteredProperties = filteredProperties.filter((property) =>
-        listingResult.filteredProperties.includes(property)
-      );
-    }
+    // if (isListingSearch) {
+    //   const listingResult = filterByListingPropertyNames(
+    //     value,
+    //     listings,
+    //     properties
+    //   );
+    //   filteredListings = filteredListings.filter((listing) =>
+    //     listingResult.filteredListings.includes(listing)
+    //   );
+    //   filteredProperties = filteredProperties.filter((property) =>
+    //     listingResult.filteredProperties.includes(property)
+    //   );
+    // }
 
     // 4. Filter by address if detected
     if (isAddressSearch) {
@@ -437,7 +439,6 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
 
     // 5. Default name/title search if no specific search type matches
     if (
-      !isListingSearch &&
       !isAddressSearch &&
       !isBedroomSearch &&
       !isBathroomSearch &&
