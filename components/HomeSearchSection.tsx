@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { PlaceholdersAndVanishInput } from "./ui/placeholders-and-vanish-input";
 import { Listing, Property } from "@/types";
 import { useRouter } from "next/navigation";
@@ -77,6 +77,12 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
   const [locationFilter, setLocationFilter] = useState(null);
   const [transactionOption, setTransactionOption] = useState(null);
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // Add these event handlers
+  const handleInputFocus = () => {
+    setIsSearchActive(true);
+  };
   const [isSearchActive, setIsSearchActive] = useState<boolean>(false);
 
   const [selectedValues, setSelectedValues] = useState<Record<Filter, any>>({
@@ -453,12 +459,12 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
       );
     }
 
-    // Handle "only properties" or "only listings" filters
-    if (isSearchOnlyProperties) {
-      filteredListings = []; // Clear listings, only properties should remain
-    } else if (isSearchOnlyListings) {
-      filteredProperties = []; // Clear properties, only listings should remain
-    }
+    // // Handle "only properties" or "only listings" filters
+    // if (isSearchOnlyProperties) {
+    //   filteredListings = []; // Clear listings, only properties should remain
+    // } else if (isSearchOnlyListings) {
+    //   filteredProperties = []; // Clear properties, only listings should remain
+    // }
 
     return { filteredListings, filteredProperties };
   };
@@ -498,17 +504,18 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
 
   return (
     <div
-      className={`flex flex-col items-center justify-center h-[545px] w-[1320px] bg-blue-200 `}
+      className={`flex flex-col items-center h-[545px] w-[1320px] bg-blue-200 `}
     >
       <h2
-        className={`mb-10 sm:mb-20 text-xl text-center sm:text-5xl dark:text-white text-black ${searchActionClicked ? "opacity-50" : "opacity-100"}`}
+        className={`mt-36 mb-10 sm:mb-24 text-xl text-center sm:text-5xl dark:text-white text-black ${searchActionClicked ? "opacity-50" : "opacity-100"}`}
       >
         Ask US Anything at Mahar-Vertex
       </h2>
 
       <div
-        className="md:w-full w-[85vw] search-section search-section-internal"
+        className="md:w-[600px] w-[85vw] search-section search-section-internal"
         onClick={onSearchSectionClick}
+        onFocus={handleInputFocus}
       >
         <PlaceholdersAndVanishInput
           placeholders={placeholders}
@@ -517,17 +524,19 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
         />
       </div>
 
-      <div className="z-10">
-        <SearchResultsSection
-          filteredListings={filteredListings}
-          filteredProperties={filteredProperties}
-          isActive={isSearchActive}
-        />
+      <div className="z-10 w-screen">
+        {searchActionClicked && (
+          <SearchResultsSection
+            filteredListings={filteredListings}
+            filteredProperties={filteredProperties}
+            isActive={isSearchActive}
+          />
+        )}
       </div>
 
       {/* Filter Component */}
       <div
-        className={`flex justify-center items-center w-max-[75%] mt-24  ${searchActionClicked ? "opacity-50 inset-0" : "opacity-100"}`}
+        className={`flex justify-center items-center w-max-[75%] mt-12  ${searchActionClicked ? "opacity-50 inset-0" : "opacity-100"}`}
       >
         <div className="bg-red-100 max-sm:hidden inline-flex justify-center items-center shadow-lg space-x-4 py-3 px-3 bg-white rounded">
           {filters.map((filter) => (
