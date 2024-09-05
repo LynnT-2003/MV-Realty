@@ -36,6 +36,9 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
   const [filteredListingsState, setFilteredListingsState] =
     useState<Listing[]>(filteredListings);
 
+  const [filteredPropertiesState, setFilteredPropertiesState] =
+    useState<Property[]>(filteredProperties);
+
   console.log(isActive);
 
   const handleListingClick = (slug: string) => {
@@ -49,6 +52,7 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
   // Effect to filter listings when any filter changes
   useEffect(() => {
     let updatedListings = [...filteredListings];
+    let updatedProperties = [...filteredProperties];
 
     // Filter by bedroom
     if (bedroomFilter) {
@@ -59,10 +63,23 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
 
     // Filter by location
     if (locationFilter) {
-      updatedListings = updatedListings.filter((listing) =>
-        listing?.description
-          .toLowerCase()
-          .includes(locationFilter.toLowerCase())
+      updatedListings = updatedListings.filter(
+        (listing) =>
+          listing?.description
+            ?.toLowerCase()
+            .includes(locationFilter.toLowerCase()) ||
+          listing?.listingName
+            ?.toLowerCase()
+            .includes(locationFilter.toLowerCase())
+      );
+      updatedProperties = updatedProperties.filter(
+        (property) =>
+          property?.title
+            ?.toLowerCase()
+            .includes(locationFilter.toLowerCase()) ||
+          property?.description
+            ?.toLowerCase()
+            .includes(locationFilter.toLowerCase())
       );
     }
 
@@ -81,6 +98,7 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
     }
 
     setFilteredListingsState(updatedListings); // Update filtered listings
+    setFilteredPropertiesState(updatedProperties);
   }, [
     bedroomFilter,
     locationFilter,
@@ -97,7 +115,7 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
   return (
     <div style={sectionStyle} className="search-section">
       <div className="mt-2 w-screen w-[1300px] h-screen relative mx-auto max-h-[0px]">
-        <div className="rounded-3xl shadow-lg h-[500px] overflow-scroll bg-gray-100 ">
+        <div className="rounded-3xl shadow-lg h-[500px] overflow-scroll py-8 bg-gray-100 ">
           {filteredListings.length === 0 && filteredProperties.length === 0 ? (
             <div className="bg-red-500 w-[300px] h-[200px] mx-auto my-16">
               {/* Red block for testing when there are no listings or properties */}
@@ -109,7 +127,7 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
             <div className="flex space-x-8">
               {/* Listings Column */}
               <div className="w-1/3">
-                <h2 className="text-center font-semibold text-gray-600 my-2">
+                <h2 className="text-center font-semibold text-gray-600 mb-8">
                   Listings
                 </h2>
                 {filteredListingsState.map((listing) => (
@@ -131,10 +149,10 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
 
               {/* Properties Column */}
               <div className="w-1/3">
-                <h2 className="text-center font-semibold text-gray-600 my-2">
+                <h2 className="text-center font-semibold text-gray-600 mb-8">
                   Properties
                 </h2>
-                {filteredProperties.map((property) => (
+                {filteredPropertiesState.map((property) => (
                   <div
                     key={property._id}
                     className="flex items-center space-x-8 py-3 bg-gray-100 hover:bg-gray-200 hover:cursor-pointer pl-8 text-gray-600 hover:text-black mb-4"
@@ -254,7 +272,10 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
                   </Select>
                 </div>
                 <div className="flex justify-center items-center pt-4">
-                  <Button>See all Results -</Button>
+                  <Button>Clear all Filters</Button>
+                </div>
+                <div className="flex justify-center items-center pt-2">
+                  <Button>See all Results</Button>
                 </div>
               </div>
             </div>

@@ -167,6 +167,7 @@ const HomePage: React.FC = () => {
         listings={listings}
         properties={properties}
         developers={developers}
+        blur={searchSectionClicked}
       />
 
       <div className="w-full flex items-center justify-center">
