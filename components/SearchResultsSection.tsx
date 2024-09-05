@@ -2,7 +2,18 @@ import React from "react";
 import { Listing, Property } from "@/types";
 import { useRouter } from "next/navigation";
 import { urlForImage } from "@/sanity/lib/image";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Button } from "./ui/button";
+
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface SearchResultsSectionProps {
   filteredListings: Listing[];
@@ -17,6 +28,14 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
 }) => {
   const router = useRouter();
 
+  const [bedroomFilter, setBedroomFilter] = useState<number | null>(null);
+  const [minPriceFilter, setMinPriceFilter] = useState<number | null>(null);
+  const [maxPriceFilter, setMaxPriceFilter] = useState<number | null>(null);
+  const [locationFilter, setLocationFilter] = useState<string | null>(null);
+
+  const [filteredListingsState, setFilteredListingsState] =
+    useState<Listing[]>(filteredListings);
+
   console.log(isActive);
 
   const handleListingClick = (slug: string) => {
@@ -26,6 +45,49 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
   const handlePropertyClick = (slug: string) => {
     router.push(`/Details/${slug}`);
   };
+
+  // Effect to filter listings when any filter changes
+  useEffect(() => {
+    let updatedListings = [...filteredListings];
+
+    // Filter by bedroom
+    if (bedroomFilter) {
+      updatedListings = updatedListings.filter(
+        (listing) => listing?.bedroom === bedroomFilter
+      );
+    }
+
+    // Filter by location
+    if (locationFilter) {
+      updatedListings = updatedListings.filter((listing) =>
+        listing?.description
+          .toLowerCase()
+          .includes(locationFilter.toLowerCase())
+      );
+    }
+
+    // Filter by min price
+    if (minPriceFilter) {
+      updatedListings = updatedListings.filter(
+        (listing) => listing?.price >= minPriceFilter
+      );
+    }
+
+    // Filter by max price
+    if (maxPriceFilter) {
+      updatedListings = updatedListings.filter(
+        (listing) => listing?.price <= maxPriceFilter
+      );
+    }
+
+    setFilteredListingsState(updatedListings); // Update filtered listings
+  }, [
+    bedroomFilter,
+    locationFilter,
+    minPriceFilter,
+    maxPriceFilter,
+    filteredListings,
+  ]);
 
   // Inline style for opacity
   const sectionStyle = {
@@ -47,13 +109,13 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
             <div className="flex space-x-8">
               {/* Listings Column */}
               <div className="w-1/3">
-                <h2 className="text-center font-semibold text-gray-600 my-8">
+                <h2 className="text-center font-semibold text-gray-600 my-2">
                   Listings
                 </h2>
-                {filteredListings.map((listing) => (
+                {filteredListingsState.map((listing) => (
                   <div
                     key={listing._id}
-                    className="flex items-center space-x-8 py-4 bg-gray-100 hover:bg-gray-200 hover:cursor-pointer pl-8 text-gray-600 hover:text-black mb-4"
+                    className="flex items-center space-x-8 py-3 bg-gray-100 hover:bg-gray-200 hover:cursor-pointer pl-8 text-gray-600 hover:text-black mb-4"
                     onClick={() => handleListingClick(listing._id)}
                   >
                     <img src={urlForImage(listing.listingHero)} width={140} />
@@ -69,13 +131,13 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
 
               {/* Properties Column */}
               <div className="w-1/3">
-                <h2 className="text-center font-semibold text-gray-600 my-8">
+                <h2 className="text-center font-semibold text-gray-600 my-2">
                   Properties
                 </h2>
                 {filteredProperties.map((property) => (
                   <div
                     key={property._id}
-                    className="flex items-center space-x-8 py-4 bg-gray-100 hover:bg-gray-200 hover:cursor-pointer pl-8 text-gray-600 hover:text-black mb-4"
+                    className="flex items-center space-x-8 py-3 bg-gray-100 hover:bg-gray-200 hover:cursor-pointer pl-8 text-gray-600 hover:text-black mb-4"
                     onClick={() => handlePropertyClick(property._id)}
                   >
                     <img src={urlForImage(property.propertyHero)} width={140} />
@@ -100,11 +162,99 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
               {/* Empty Column for Later */}
               <div className="w-1/3">
                 <h2 className="text-center font-semibold text-gray-600 my-8">
-                  Empty Column
+                  Filters
                 </h2>
-                <div className="flex items-center justify-center h-full text-gray-400">
+                <div
+                  className="flex justify-center text-gray-400 py-2"
+                  onClick={(e) => e.stopPropagation()}
+                >
                   {/* Placeholder content */}
-                  <span>No data yet</span>
+                  <Select
+                    onValueChange={(value) => setBedroomFilter(Number(value))}
+                  >
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Select a bedroom" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Bedroom</SelectLabel>
+                        <SelectItem value="1">1 Bedroom</SelectItem>
+                        <SelectItem value="2">2 Bedroom</SelectItem>
+                        <SelectItem value="3">3 Bedroom</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div
+                  className="flex justify-center text-gray-400 py-2"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {/* Placeholder content */}
+                  <Select onValueChange={(value) => setLocationFilter(value)}>
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Select a location" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Bedroom</SelectLabel>
+                        <SelectItem value="Siam">Siam</SelectItem>
+                        <SelectItem value="Asoke">Asoke</SelectItem>
+                        <SelectItem value="Phrom Phong">Phrom Phong</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div
+                  className="flex justify-center text-gray-400 py-2"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {/* Placeholder content */}
+                  <Select
+                    onValueChange={(value) => setMinPriceFilter(Number(value))}
+                  >
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Min Price (THB)" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Price in THB</SelectLabel>
+                        <SelectItem value="10">0 Million</SelectItem>
+                        <SelectItem value="10">10 Million</SelectItem>
+                        <SelectItem value="20">20 Million</SelectItem>
+                        <SelectItem value="30">30 Million</SelectItem>
+                        <SelectItem value="40">40 Million</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div
+                  className="flex justify-center text-gray-400 py-2"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  {/* Placeholder content */}
+                  <Select
+                    onValueChange={(value) => setMaxPriceFilter(Number(value))}
+                  >
+                    <SelectTrigger className="w-[180px]">
+                      <SelectValue placeholder="Max Price (THB)" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Price in THB</SelectLabel>
+                        <SelectItem value="10">10 Million</SelectItem>
+                        <SelectItem value="10">20 Million</SelectItem>
+                        <SelectItem value="20">30 Million</SelectItem>
+                        <SelectItem value="30">40 Million</SelectItem>
+                        <SelectItem value="40">50 Million</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="flex justify-center items-center pt-4">
+                  <Button>See all Results -</Button>
                 </div>
               </div>
             </div>

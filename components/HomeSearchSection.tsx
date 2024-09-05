@@ -143,11 +143,11 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
   //////////////////////////////////////////////////////////////////////////////
 
   const placeholders = [
-    "I want to know more info on LIFE Asoke Rama ..",
-    "Details about The Address - 2BR ?",
-    "Listings around Phra Khanong ..",
-    "Properties near Chiang Mai ..",
     "Any listing close to BTS ?",
+    "Close to MRT Hua Lamphong ?",
+    "Listings around BTS Phrom Phong ?",
+    "Listings around BTS with 2 bathroom ?",
+    "2 Bedroom near BTS ?",
   ];
 
   // Define all keywords for different filters
