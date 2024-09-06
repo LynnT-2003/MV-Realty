@@ -6,13 +6,13 @@ import { DirectionAwareHover } from "./ui/direction-aware-hover";
 interface ListingCardCollectionProps {
   listings: Listing[];
   properties: Property[];
-  developers: Developer[];
+  // developers: Developer[];
 }
 
 const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
   listings,
   properties,
-  developers,
+  // developers,
 }) => {
   return (
     <div className="w-full flex justify-center pt-3 pb-12 md:pb-20">
@@ -22,9 +22,9 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
             properties.find((prop) => prop._id === listing.property._ref) ||
             properties[0];
 
-          const developer =
-            developers.find((dev) => dev._id === property.developer._ref) ||
-            developers[0];
+          // const developer =
+          //   developers.find((dev) => dev._id === property.developer._ref) ||
+          //   developers[0];
 
           return (
             <div
@@ -40,13 +40,13 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
                 </span>
               </DirectionAwareHover>
               <div className="mt-2 p-2 bg-white rounded-lg mb-8">
-                <span className="flex items-center text-lg font-semibold">
+                {/* <span className="flex items-center text-lg font-semibold">
                   {listing.listingName}
                   <img
                     src={urlForImage(developer.profileIcon)}
                     className="w-8 h-8 ml-1"
                   />
-                </span>
+                </span> */}
                 {/* <p className="font-normal text-sm">$1299 / night</p> */}
                 <div className="flex pt-2">
                   <span className="pr-6 flex">

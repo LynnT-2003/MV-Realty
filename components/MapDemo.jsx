@@ -7,7 +7,7 @@ export const MapDemo = ({ lat, lng }) => {
   const mapRef = React.useRef(null);
   const [nearestBTS, setNearestBTS] = useState([]);
 
-  const btsStations = [
+  const btsStationsSukhumvitLine = [
     "Ratchathewi",
     "Asok",
     "Mo Chit",
@@ -42,6 +42,22 @@ export const MapDemo = ({ lat, lng }) => {
     "Saphan Khwai",
   ];
 
+  const btsStationsSilomLine = [
+    "National Stadium",
+    "Siam",
+    "Ratchadamri",
+    "Sala Daeng",
+    "Chong Nonsi",
+    "Surasak",
+    "Saphan Taksin",
+    "Krung Thon Buri",
+    "Wongwian Yai",
+    "Pho Nimit",
+    "Talat Phlu",
+    "Wutthakat",
+    "Bang Wa",
+  ];
+
   useEffect(() => {
     const initMap = async () => {
       const loader = new Loader({
@@ -60,7 +76,7 @@ export const MapDemo = ({ lat, lng }) => {
         {
           featureType: "all",
           elementType: "labels",
-          stylers: [{ visibility: "off" }],
+          stylers: [{ visibility: "on" }],
         },
         {
           featureType: "transit.station",
@@ -70,22 +86,36 @@ export const MapDemo = ({ lat, lng }) => {
         {
           featureType: "poi",
           elementType: "all",
-          stylers: [{ visibility: "off" }],
+          stylers: [{ visibility: "on" }],
         },
       ];
 
       const mapOptions = {
         center: position,
-        zoom: 16,
+        zoom: 1,
         styles: mapStyles, // Apply custom styles
       };
 
       const map = new google.maps.Map(mapRef.current, mapOptions);
 
-      new google.maps.Marker({
+      const customMarkerIcon = {
+        url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
+        scaledSize: new google.maps.Size(40, 40),
+      };
+
+      const marker = new google.maps.Marker({
         map: map,
         position: position,
+        icon: customMarkerIcon,
       });
+
+      // Create an InfoWindow with "You are here" text
+      const infoWindow = new google.maps.InfoWindow({
+        content: `<div style="text-align:center;text-sm;">You are here!</div>`,
+      });
+
+      // Automatically open the InfoWindow when the map is loaded
+      infoWindow.open(map, marker);
 
       const service = new google.maps.places.PlacesService(map);
       const request = {
@@ -97,84 +127,21 @@ export const MapDemo = ({ lat, lng }) => {
       service.nearbySearch(request, (results, status) => {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
           const directionsService = new google.maps.DirectionsService();
-          const directionsRenderer = new google.maps.DirectionsRenderer({
-            map: map,
-            suppressMarkers: true, // Prevent automatic markers, as we'll add custom ones
-          });
 
           const btsList = []; // Temporary array to store BTS information
 
-          // results.forEach((place) => {
-          //   if (
-          //     (place.name.includes("Ratchathewi") ||
-          //       place.name.includes("Asok")) &&
-          //     !place.name.includes("Exit")
-          //   ) {
-          //     const marker = new google.maps.Marker({
-          //       map: map,
-          //       position: place.geometry.location,
-          //       title: place.name,
-          //     });
-
-          //     // Calculate walking distance and draw the route
-          //     const calculateWalkingDistance = () => {
-          //       const directionsRequest = {
-          //         origin: position,
-          //         destination: place.geometry.location,
-          //         travelMode: google.maps.TravelMode.WALKING,
-          //       };
-
-          //       directionsService.route(directionsRequest, (result, status) => {
-          //         if (status === google.maps.DirectionsStatus.OK) {
-          //           const distance = result.routes[0].legs[0].distance.text;
-          //           const duration = result.routes[0].legs[0].duration.text;
-
-          //           // Draw the route on the map
-          //           directionsRenderer.setDirections(result);
-
-          //           // Create a custom InfoWindow
-          //           const infoWindowContent = `
-          //             <div>
-          //               <strong>${place.name}</strong><br>
-          //               Distance: ${distance}<br>
-          //               Walking duration: ${duration}
-          //             </div>
-          //           `;
-
-          //           // Create a new InfoWindow instance
-          //           const infoWindow = new google.maps.InfoWindow({
-          //             content: infoWindowContent,
-          //             disableAutoPan: true,
-          //           });
-
-          //           marker.addListener("mouseover", () => {
-          //             infoWindow.open(map, marker);
-          //           });
-
-          //           marker.addListener("mouseout", () => {
-          //             infoWindow.close();
-          //           });
-
-          //           // Add BTS information to the list
-          //           btsList.push({
-          //             name: place.name,
-          //             distance,
-          //             duration,
-          //           });
-
-          //           // Update state with BTS list
-          //           setNearestBTS([...btsList]);
-          //         }
-          //       });
-          //     };
-
-          //     calculateWalkingDistance();
-          //   }
-          // });
-
           results.forEach((place) => {
+            const directionsRenderer = new google.maps.DirectionsRenderer({
+              map: map,
+              suppressMarkers: true, // Prevent automatic markers, as we'll add custom ones
+            });
             if (
-              btsStations.some((station) => place.name.includes(station)) &&
+              (btsStationsSukhumvitLine.some((station) =>
+                place.name.includes(station)
+              ) ||
+                btsStationsSilomLine.some((station) =>
+                  place.name.includes(station)
+                )) &&
               !place.name.includes("Exit")
             ) {
               const marker = new google.maps.Marker({
@@ -214,6 +181,20 @@ export const MapDemo = ({ lat, lng }) => {
                       disableAutoPan: true,
                     });
 
+                    // Flag to track whether the InfoWindow is open
+                    let infoWindowOpen = false;
+
+                    // Marker click event listener
+                    marker.addListener("click", () => {
+                      if (!infoWindowOpen) {
+                        infoWindow.open(map, marker); // Open the InfoWindow
+                        infoWindowOpen = true;
+                      } else {
+                        infoWindow.close(); // Close the InfoWindow
+                        infoWindowOpen = false;
+                      }
+                    });
+
                     marker.addListener("mouseover", () => {
                       infoWindow.open(map, marker);
                     });
@@ -227,6 +208,9 @@ export const MapDemo = ({ lat, lng }) => {
                       name: place.name,
                       distance,
                       duration,
+                      line: btsStationsSukhumvitLine.includes(place.name)
+                        ? "Sukhumvit Line"
+                        : "Silom Line", // Categorize by line
                     });
 
                     // Update state with BTS list
@@ -245,43 +229,13 @@ export const MapDemo = ({ lat, lng }) => {
     initMap();
   }, [lat, lng]);
 
-  return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        width: "100%",
-        height: "auto",
-        minHeight: "500px",
-        paddingBottom: "400px",
-      }}
-    >
-      <div
-        style={{
-          width: "100%",
-          maxWidth: "1150px",
-          height: "0",
-          paddingBottom: "60%", // Maintain aspect ratio
-          position: "relative",
-        }}
-      >
-        <div
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-          }}
-          ref={mapRef}
-        ></div>
-      </div>
-
+  const renderNearestStations = (lineName, stations) => {
+    return (
       <div className="pl-4 pt-4">
         <p className="pl-4 poppins-text-title-small md:property-details-title-text">
-          Nearest Transit
+          {lineName}
         </p>
-        {nearestBTS.map((bts, index) => (
+        {stations.map((bts, index) => (
           <Grid
             container
             rowSpacing={{ xs: 4, md: 3 }}
@@ -317,6 +271,57 @@ export const MapDemo = ({ lat, lng }) => {
           </Grid>
         ))}
       </div>
+    );
+  };
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        width: "100%",
+        height: "auto",
+        minHeight: "500px",
+        paddingBottom: "400px",
+      }}
+    >
+      <div
+        style={{
+          width: "100%",
+          maxWidth: "1150px",
+          height: "0",
+          paddingBottom: "60%", // Maintain aspect ratio
+          position: "relative",
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+          }}
+          ref={mapRef}
+        ></div>
+      </div>
+
+      {/* Render nearest BTS stations by line */}
+      {nearestBTS.length > 0 && (
+        <>
+          {nearestBTS.some((bts) => bts.line === "Sukhumvit Line") &&
+            renderNearestStations(
+              "Sukhumvit Line",
+              nearestBTS.filter((bts) => bts.line === "Sukhumvit Line")
+            )}
+
+          {nearestBTS.some((bts) => bts.line === "Silom Line") &&
+            renderNearestStations(
+              "Silom Line",
+              nearestBTS.filter((bts) => bts.line === "Silom Line")
+            )}
+        </>
+      )}
     </div>
   );
 };
