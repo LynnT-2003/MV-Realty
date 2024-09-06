@@ -508,7 +508,7 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
 
   return (
     <div
-      className={`flex flex-col items-center ipad-screen:h-[445px] h-[300px] w-[1320px] bg-blue-200 `}
+      className={`flex flex-col items-center ipad-screen:h-[445px] h-[300px] md:w-[1320px] w-screen bg-blue-200 `}
     >
       <h2
         className={`mt-20 mb-10 sm:mb-16 text-xl text-center lg:text-5xl ipad-screen:text-4xl text-xl dark:text-white text-black ${searchActionClicked ? "opacity-50" : "opacity-100"}`}
