@@ -508,10 +508,10 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
 
   return (
     <div
-      className={`flex flex-col items-center h-[445px] w-[1320px] bg-blue-200 `}
+      className={`flex flex-col items-center ipad-screen:h-[445px] h-[300px] w-[1320px] bg-blue-200 `}
     >
       <h2
-        className={`mt-20 mb-10 sm:mb-16 text-xl text-center sm:text-5xl dark:text-white text-black ${searchActionClicked ? "opacity-50" : "opacity-100"}`}
+        className={`mt-20 mb-10 sm:mb-16 text-xl text-center lg:text-5xl ipad-screen:text-4xl text-xl dark:text-white text-black ${searchActionClicked ? "opacity-50" : "opacity-100"}`}
       >
         Ask US Anything at Mahar-Vertex
       </h2>
@@ -540,9 +540,9 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
 
       {/* Filter Component */}
       <div
-        className={`flex justify-center items-center w-max-[75%] mt-12  ${searchActionClicked ? "opacity-50 inset-0" : "opacity-100"}`}
+        className={`flex justify-center items-center w-max-[75%] w-[500px] mt-12  ${searchActionClicked ? "opacity-50 inset-0" : "opacity-100"}`}
       >
-        <div className="bg-red-100 max-sm:hidden inline-flex justify-center items-center shadow-lg space-x-4 py-3 px-3 bg-white rounded">
+        <div className="bg-red-100 max-sm:hidden inline-flex justify-center items-center shadow-lg space-x-1 py-3 px-3 bg-white rounded">
           {filters.map((filter) => (
             <div key={filter} className="md:px-0">
               <Popover
@@ -559,7 +559,7 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
                     <span className="flex-1 text-left">
                       {selectedValues[filter] || filter}
                     </span>
-                    <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50 ml-10" />
+                    <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50 lg:ml-10 ipad-screen:ml-2" />
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-[200px] p-0">

@@ -22,6 +22,7 @@ const config = {
         poppins: ["Poppins", "sans-serif"],
       },
       screens: {
+        "ipad-screen": "768px",
         "3xl": "1920px",
         "macbook-air": "1440px",
       },

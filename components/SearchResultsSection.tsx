@@ -124,7 +124,7 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
 
   return (
     <div style={sectionStyle} className="search-section">
-      <div className="mt-2 w-[1250px] h-screen relative mx-auto max-h-[0px]">
+      <div className="hidden ipad-screen:hidden lg:block mt-2 w-[1250px] h-screen relative mx-auto max-h-[0px]">
         <div className="rounded-3xl shadow-lg h-[500px] overflow-scroll py-8 bg-gray-100 ">
           {filteredListings.length === 0 && filteredProperties.length === 0 ? (
             <div className="bg-red-500 w-[300px] h-[200px] mx-auto my-16">
@@ -291,6 +291,38 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
             </div>
           )}
         </div>
+      </div>
+      <div className="lg:hidden mt-2 w-screen h-screen relative max-w-xl mx-auto max-h-[0px]">
+        <ul className="rounded-3xl shadow-lg max-h-[160px] overflow-scroll">
+          {filteredListings.map((listing) => (
+            <div
+              key={listing._id}
+              className="bg-gray-100 hover:bg-gray-300 hover:cursor-pointer pl-8 py-2 text-gray-600 hover:text-black"
+              onClick={() => handleListingClick(listing._id)}
+            >
+              <span key={listing._id}>
+                <span className="text-gray-500 text-xs items-center pr-3">
+                  <i>Listing:</i>
+                </span>
+                {listing.listingName}
+              </span>
+            </div>
+          ))}
+          {filteredProperties.map((property) => (
+            <div
+              key={property._id}
+              className="bg-gray-100 hover:bg-gray-300 hover:cursor-pointer pl-8 py-2 text-gray-600 hover:text-black"
+              onClick={() => handlePropertyClick(property.slug.current)}
+            >
+              <span key={property._id}>
+                <span className="text-gray-500 text-xs items-center pr-3">
+                  <i>Property:</i>
+                </span>
+                {property.title}
+              </span>
+            </div>
+          ))}
+        </ul>
       </div>
     </div>
   );
