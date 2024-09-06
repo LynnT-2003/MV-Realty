@@ -94,6 +94,11 @@ export const MapDemo = ({ lat, lng }) => {
         center: position,
         zoom: 16,
         styles: mapStyles, // Apply custom styles
+        mapTypeControl: false, // Disable map type control (satellite, terrain, etc.)
+        streetViewControl: false, // Disable street view control
+        fullscreenControl: false, // Disable fullscreen control
+        rotateControl: false, // Disable rotate control
+        zoomControl: true, // Enable zoom control
       };
 
       const map = new google.maps.Map(mapRef.current, mapOptions);
