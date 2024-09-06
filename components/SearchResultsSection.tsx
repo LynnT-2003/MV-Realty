@@ -124,7 +124,7 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
 
   return (
     <div style={sectionStyle} className="search-section">
-      <div className="mt-2 w-screen w-[1250px] h-screen relative mx-auto max-h-[0px]">
+      <div className="mt-2 w-[1250px] h-screen relative mx-auto max-h-[0px]">
         <div className="rounded-3xl shadow-lg h-[500px] overflow-scroll py-8 bg-gray-100 ">
           {filteredListings.length === 0 && filteredProperties.length === 0 ? (
             <div className="bg-red-500 w-[300px] h-[200px] mx-auto my-16">
