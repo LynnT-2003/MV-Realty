@@ -92,7 +92,7 @@ export const MapDemo = ({ lat, lng }) => {
 
       const mapOptions = {
         center: position,
-        zoom: 1,
+        zoom: 16,
         styles: mapStyles, // Apply custom styles
       };
 
@@ -134,6 +134,7 @@ export const MapDemo = ({ lat, lng }) => {
             const directionsRenderer = new google.maps.DirectionsRenderer({
               map: map,
               suppressMarkers: true, // Prevent automatic markers, as we'll add custom ones
+              preserveViewport: true,
             });
             if (
               (btsStationsSukhumvitLine.some((station) =>
