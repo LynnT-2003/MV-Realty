@@ -22,6 +22,7 @@ import {
 } from "@/components/ui/popover";
 
 import SearchResultsSection from "./SearchResultsSection";
+import SearchResultsPage from "@/app/SearchResultsPage/page";
 
 const filters = [
   "Bedrooms",
@@ -500,6 +501,9 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("submitted");
+
+    // Navigate to /searchResultsPage
+    router.push("/SearchResultsPage");
   };
 
   return (

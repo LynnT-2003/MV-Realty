@@ -99,6 +99,16 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
 
     setFilteredListingsState(updatedListings); // Update filtered listings
     setFilteredPropertiesState(updatedProperties);
+
+    // Store the filtered data in localStorage
+    localStorage.setItem(
+      "filteredListingsState",
+      JSON.stringify(updatedListings)
+    );
+    localStorage.setItem(
+      "filteredPropertiesState",
+      JSON.stringify(updatedProperties)
+    );
   }, [
     bedroomFilter,
     locationFilter,
@@ -156,7 +166,7 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
                   <div
                     key={property._id}
                     className="flex items-center space-x-8 py-3 bg-gray-100 hover:bg-gray-200 hover:cursor-pointer pl-8 text-gray-600 hover:text-black mb-4"
-                    onClick={() => handlePropertyClick(property._id)}
+                    onClick={() => handlePropertyClick(property.slug.current)}
                   >
                     <img src={urlForImage(property.propertyHero)} width={140} />
                     <div className="flex flex-col">
