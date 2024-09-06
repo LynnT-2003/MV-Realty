@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ClipLoader } from "react-spinners"; // Import spinner
 
 import {
   Command,
@@ -85,6 +86,7 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
     setIsSearchActive(true);
   };
   const [isSearchActive, setIsSearchActive] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const [selectedValues, setSelectedValues] = useState<Record<Filter, any>>({
     Bedrooms: "",
@@ -101,6 +103,8 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
 
   const handleFilter = () => {
     console.log("Filter Submit clicked");
+
+    setLoading(true);
 
     // Construct the query string
     const query = new URLSearchParams({
@@ -501,6 +505,7 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("submitted");
+    setLoading(true);
 
     // Navigate to /searchResultsPage
     router.push("/SearchResultsPage");
@@ -527,6 +532,13 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
           onSubmit={onSubmit}
         />
       </div>
+
+      {/* Loading Spinner */}
+      {loading && (
+        <div className="fixed inset-0 flex items-center justify-center bg-opacity-50 bg-gray-800">
+          <ClipLoader color="#ffffff" loading={loading} size={50} />
+        </div>
+      )}
 
       <div className="z-10 w-screen">
         {searchActionClicked && (
