@@ -21,9 +21,9 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
         <div className="lg:block bg-blue-500 ipad-screen:w-[300px] w-[0px] text-center">
           Placeholder for filter section
         </div>
-
         {/* Second column (listings, taking 2/3 width) */}
-        <div className="ipad-screen:w-full w-screenrounded-lg overflow-hidden bg-red-500 ipad-screen:pl-[24px] pl-0 flex justify-end items-end text-right 3xl:ml-0">
+        <div className="ipad-screen:w-full w-screenrounded-lg overflow-hidden bg-red-500 ipad-screen:pl-[24px] pl-0 flex flex-col 3xl:ml-0">
+          <h1 className="pb-4">Listings</h1>
           <div className="flex grid grid-cols-1 ipad-screen:grid-cols-1 ipad-screen:gap-[24px] lg:grid-cols-3 lg:gap-2 3xl:gap-[12px] gap-[24px]">
             {listings.map((listing, index) => {
               const property =
@@ -66,6 +66,29 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
                       </span>
                     </div>
                   </div>
+                </div>
+              );
+            })}
+          </div>
+          <h1 className="pb-4">Properties</h1>
+          <div className="flex grid grid-cols-1 ipad-screen:grid-cols-1 ipad-screen:gap-[24px] lg:grid-cols-3 lg:gap-2 3xl:gap-[12px] gap-[24px]">
+            {properties.map((property, index) => {
+              return (
+                <div
+                  key={index}
+                  onClick={() => {
+                    // handlePropertyClick(property._id);
+                  }}
+                  className="lg:ml-0 ipad-screen:ml-12≠ ipad-screen:px-0 px-5 relative rounded-lg overflow-hidden inline-block mb-4 md:mb-0 group w-full"
+                >
+                  <DirectionAwareHover
+                    imageUrl={urlForImage(property.propertyHero)}
+                    className=""
+                  >
+                    <span className="font-semibold text-sm">
+                      {property.title}
+                    </span>
+                  </DirectionAwareHover>
                 </div>
               );
             })}
