@@ -184,7 +184,61 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
             <div className="flex flex-col space-y-4">
               {/* Horizontal filter row */}
               <div className="flex justify-between space-x-2">
-                {filters.map((filter) => (
+                {filters.slice(0, 2).map((filter) => (
+                  <Popover key={filter} open={openFilterMobile === filter}>
+                    <PopoverTrigger asChild>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        aria-expanded={openFilterMobile === filter}
+                        className="flex justify-between text-right pr-4 w-full"
+                        onClick={() =>
+                          setOpenFilterMobile(
+                            openFilterMobile === filter ? null : filter
+                          )
+                        }
+                      >
+                        <span className="flex-1 text-left">
+                          {filter === "Bedrooms"
+                            ? `${selectedValues[filter]} Bedroom`
+                            : selectedValues[filter] || filter}
+                        </span>
+                        <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50 ml-2" />
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[200px] p-0">
+                      <Command>
+                        <CommandInput placeholder={`Search ${filter}...`} />
+                        <CommandList>
+                          <CommandEmpty>No {filter} found.</CommandEmpty>
+                          <CommandGroup>
+                            {options[filter].map((option) => (
+                              <CommandItem
+                                key={option}
+                                onSelect={() => handleSelect(filter, option)}
+                              >
+                                <Check
+                                  className={cn(
+                                    "mr-2 h-4 w-4",
+                                    selectedValues[filter] === option
+                                      ? "opacity-100"
+                                      : "opacity-0"
+                                  )}
+                                />
+                                {filter === "Bedrooms"
+                                  ? `${option}-Bedroom`
+                                  : option}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
+                      </Command>
+                    </PopoverContent>
+                  </Popover>
+                ))}
+              </div>
+              <div className="flex w-full justify-between space-x-2">
+                {filters.slice(2, 4).map((filter) => (
                   <Popover key={filter} open={openFilterMobile === filter}>
                     <PopoverTrigger asChild>
                       <Button
@@ -238,15 +292,15 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
                 ))}
               </div>
 
-              {/* Max price slider below filters */}
+              {/* Max price slider */}
               <div>
-                <h1 className="mt-2">Max Price: {maxPrice} Million THB</h1>
+                <h1 className="my-2">Max Price: {maxPrice} Million THB</h1>
                 <Slider
                   defaultValue={[33]}
                   max={50}
                   step={2}
                   onValueChange={handleSliderChange}
-                  className="mt-2"
+                  className="mt-2 mb-6"
                 />
               </div>
             </div>
