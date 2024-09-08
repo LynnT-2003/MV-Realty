@@ -83,17 +83,25 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
       );
     }
 
-    // Filter by min price
-    if (minPriceFilter) {
-      updatedListings = updatedListings.filter(
-        (listing) => listing?.price >= minPriceFilter
-      );
-    }
-
     // Filter by max price
     if (maxPriceFilter) {
       updatedListings = updatedListings.filter(
-        (listing) => listing?.price <= maxPriceFilter
+        (listing) => Number(listing?.price) <= Number(maxPriceFilter)
+      );
+    }
+
+    // Filter by min price
+    if (minPriceFilter) {
+      updatedListings = updatedListings.filter(
+        (listing) => Number(listing?.price) >= Number(minPriceFilter)
+      );
+    }
+
+    // Filter by price range
+    if (maxPriceFilter && minPriceFilter) {
+      updatedListings = updatedListings.filter(
+        (listing) =>
+          listing?.price >= minPriceFilter && listing?.price <= maxPriceFilter
       );
     }
 
@@ -116,6 +124,15 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
     maxPriceFilter,
     filteredListings,
   ]);
+  useEffect(() => {
+    console.log("Filtering listings...");
+    console.log("Max Price Filter:", maxPriceFilter);
+    filteredListings.forEach((listing) => {
+      console.log("Listing Price:", listing.price);
+    });
+
+    // ... Rest of the filtering logic
+  }, [maxPriceFilter, filteredListings]);
 
   // Inline style for opacity
   const sectionStyle = {
@@ -143,7 +160,7 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
                 {filteredListingsState.map((listing) => (
                   <div
                     key={listing._id}
-                    className="flex items-center space-x-8 py-3 bg-gray-100 hover:bg-gray-200 hover:cursor-pointer pl-8 text-gray-600 hover:text-black mb-4"
+                    className="flex items-center space-x-8 py-3 hover:bg-gray-200 hover:cursor-pointer pl-8 text-gray-600 hover:text-black mb-4"
                     onClick={() => handleListingClick(listing._id)}
                   >
                     <img src={urlForImage(listing.listingHero)} width={140} />
@@ -151,7 +168,8 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
                       <span className="text-gray-500 text-xs items-center pr-3 ">
                         <i>Listing:</i>
                       </span>
-                      {listing.listingName}
+                      <h1>{listing.listingName}</h1>
+                      {listing.price}M
                     </span>
                   </div>
                 ))}
@@ -248,7 +266,7 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
                     <SelectContent>
                       <SelectGroup>
                         <SelectLabel>Price in THB</SelectLabel>
-                        <SelectItem value="10">0 Million</SelectItem>
+                        <SelectItem value="0">0 Million</SelectItem>
                         <SelectItem value="10">10 Million</SelectItem>
                         <SelectItem value="20">20 Million</SelectItem>
                         <SelectItem value="30">30 Million</SelectItem>
@@ -273,10 +291,10 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
                       <SelectGroup>
                         <SelectLabel>Price in THB</SelectLabel>
                         <SelectItem value="10">10 Million</SelectItem>
-                        <SelectItem value="10">20 Million</SelectItem>
-                        <SelectItem value="20">30 Million</SelectItem>
-                        <SelectItem value="30">40 Million</SelectItem>
-                        <SelectItem value="40">50 Million</SelectItem>
+                        <SelectItem value="20">20 Million</SelectItem>
+                        <SelectItem value="30">30 Million</SelectItem>
+                        <SelectItem value="40">40 Million</SelectItem>
+                        <SelectItem value="50">50 Million</SelectItem>
                       </SelectGroup>
                     </SelectContent>
                   </Select>
