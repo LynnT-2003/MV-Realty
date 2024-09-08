@@ -1,4 +1,5 @@
 "use client";
+import "./page.css";
 import React, { useEffect, useState } from "react";
 import { Property, Listing } from "@/types";
 import ListingCardCollection from "@/components/ListingCardCollection";
@@ -22,7 +23,7 @@ const SearchResultsPage: React.FC = () => {
   }, []);
 
   return (
-    <div className="pt-12">
+    <div className=" pt-12">
       <ListingCardCollection listings={listings} properties={properties} />
     </div>
   );

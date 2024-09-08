@@ -142,7 +142,7 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
   return (
     <div style={sectionStyle} className="search-section">
       <div className="hidden ipad-screen:hidden lg:block mt-2 w-[1250px] h-screen relative mx-auto max-h-[0px]">
-        <div className="rounded-3xl shadow-lg h-[500px] overflow-scroll py-8 bg-gray-100 ">
+        <div className="rounded-3xl shadow-lg h-[500px] overflow-scroll py-8 glass ">
           {filteredListings.length === 0 && filteredProperties.length === 0 ? (
             <div className="bg-red-500 w-[300px] h-[200px] mx-auto my-16">
               {/* Red block for testing when there are no listings or properties */}
@@ -160,16 +160,21 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
                 {filteredListingsState.map((listing) => (
                   <div
                     key={listing._id}
-                    className="flex items-center space-x-8 py-3 hover:bg-gray-200 hover:cursor-pointer pl-8 text-gray-600 hover:text-black mb-4"
+                    className="flex items-center space-x-8 py-3 bg-transparent rounded-2xl hover:bg-gray-200 hover:cursor-pointer pl-8 text-gray-600 hover:text-black mb-4"
                     onClick={() => handleListingClick(listing._id)}
                   >
-                    <img src={urlForImage(listing.listingHero)} width={140} />
+                    <img
+                      src={urlForImage(listing.listingHero)}
+                      width={140}
+                      className="rounded-lg"
+                    />
                     <span key={listing._id}>
-                      <span className="text-gray-500 text-xs items-center pr-3 ">
-                        <i>Listing:</i>
-                      </span>
-                      <h1>{listing.listingName}</h1>
-                      {listing.price}M
+                      <h1>
+                        <b>{listing.listingName}</b>
+                      </h1>
+                      <h1 className="pt-2">
+                        Price: <i>{listing.price}M THB</i>
+                      </h1>
                     </span>
                   </div>
                 ))}
@@ -183,10 +188,14 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
                 {filteredPropertiesState.map((property) => (
                   <div
                     key={property._id}
-                    className="flex items-center space-x-8 py-3 bg-gray-100 hover:bg-gray-200 hover:cursor-pointer pl-8 text-gray-600 hover:text-black mb-4"
+                    className="flex items-center space-x-8 py-3 bg-transparent rounded-2xl hover:bg-white/30 hover:cursor-pointer pl-8 text-gray-600 hover:text-black mb-4"
                     onClick={() => handlePropertyClick(property.slug.current)}
                   >
-                    <img src={urlForImage(property.propertyHero)} width={140} />
+                    <img
+                      src={urlForImage(property.propertyHero)}
+                      width={140}
+                      className="rounded-lg"
+                    />
                     <div className="flex flex-col">
                       <span key={property._id}>
                         {/* <span className="text-gray-500 text-xs items-center pr-3 ">
