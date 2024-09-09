@@ -20,7 +20,6 @@ interface SearchResultsSectionProps {
   filteredProperties: Property[];
   isActive: boolean; // Prop to manage the active state
 }
-
 const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
   filteredListings,
   filteredProperties,
@@ -47,6 +46,11 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
 
   const handlePropertyClick = (slug: string) => {
     router.push(`/Details/${slug}`);
+  };
+
+  const handleClickAfterFilter = () => {
+    console.log("Filter Submit clicked");
+    router.push("/SearchResultsPage");
   };
 
   // Effect to filter listings when any filter changes
@@ -309,10 +313,21 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
                   </Select>
                 </div>
                 <div className="flex justify-center items-center pt-4">
-                  <Button>Clear all Filters</Button>
+                  <Button
+                    onClick={() => {
+                      setBedroomFilter(null);
+                      setMinPriceFilter(null);
+                      setMaxPriceFilter(null);
+                      setLocationFilter(null);
+                    }}
+                  >
+                    Clear all Filters
+                  </Button>
                 </div>
                 <div className="flex justify-center items-center pt-2">
-                  <Button>See all Results</Button>
+                  <Button onClick={() => handleClickAfterFilter()}>
+                    See all Results
+                  </Button>
                 </div>
               </div>
             </div>
