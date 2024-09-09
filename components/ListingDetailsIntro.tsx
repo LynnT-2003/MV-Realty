@@ -6,6 +6,7 @@ interface ListingDetailsIntroProps {
   listingDetails: Listing;
 }
 
+const tags = ['Condo', 'EV Charger', 'Ready to Move In', 'Built : 2024', '24 Hour Security'];
 const ListingDetailsIntro: React.FC<ListingDetailsIntroProps> = ({
   listingDetails,
 }) => {
@@ -20,6 +21,16 @@ const ListingDetailsIntro: React.FC<ListingDetailsIntroProps> = ({
             <p className="poppins-text-small md:poppins-text-avg mt-4">
               {listingDetails.description}
             </p>
+            <div className="flex flex-wrap gap-2 mt-5">
+              {tags.map((tag, index) => (
+                <span
+                  key={index}
+                  className="px-3 py-1 rounded-full bg-blue-100 text-blue-600 font-medium text-sm"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
           </Grid>
           <Grid
             item

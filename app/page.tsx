@@ -1,12 +1,14 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Property, Listing, Developer } from "@/types";
+import { Property, Listing, Developer, Collections } from "@/types";
 import { fetchAllProperties } from "@/services/PropertyServices";
 import BrowseCarouselProperty from "@/components/BrowseCarouselProperty";
+import BrowseCarouselCollection from "@/components/BrowseCarouselCollection";
 import { fetchAllListings } from "@/services/ListingServices";
 import BrowseCarouselListing from "@/components/BrowseCarouselListing";
 import { fetchAllDevelopers } from "@/services/DeveloperServices";
+import { fetchAllCollections } from "@/services/CollectionsServices";
 import HomeSearchSection from "@/components/HomeSearchSection";
 
 const filters = ["Bedrooms", "Price", "Location", "Buy/Rent"] as const;
@@ -26,6 +28,7 @@ const HomePage: React.FC = () => {
   const [properties, setProperties] = useState<Property[]>([]);
   const [listings, setListings] = useState<Listing[]>([]);
   const [developers, setDevelopers] = useState<Developer[]>([]);
+  const [collections, setCollections] = useState<Collections[]>([]);
 
   const [openFilter, setOpenFilter] = useState<Filter | null>(null);
 
@@ -73,17 +76,19 @@ const HomePage: React.FC = () => {
     const fetchData = async () => {
       try {
         // Fetch data in parallel, using cached data if available
-        const [propertiesData, listingsData, developersData] =
+        const [propertiesData, listingsData, developersData, collectionsData] =
           await Promise.all([
             fetchDataWithCache("properties", fetchAllProperties),
             fetchDataWithCache("listings", fetchAllListings),
             fetchDataWithCache("developers", fetchAllDevelopers),
+            fetchDataWithCache("collections", fetchAllCollections),
           ]);
 
         // Update state with fetched data
         setProperties(propertiesData);
         setListings(listingsData);
         setDevelopers(developersData);
+        setCollections(collectionsData);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -157,7 +162,7 @@ const HomePage: React.FC = () => {
 
       <div className="w-full flex items-center justify-center">
         <div className="xl:w-[1200px] overflow-x-scroll scroll whitespace-nowrap scroll-smooth">
-          <p className="poppins-text pt-[62px] pb-[37px]">Featured Listings</p>
+          <p className="poppins-text pt-[62px] pb-[37px] font-semibold">Featured Listings</p>
         </div>
       </div>
       <BrowseCarouselListing
@@ -174,6 +179,15 @@ const HomePage: React.FC = () => {
         </div>
       </div>
       <BrowseCarouselProperty properties={properties} />
+
+      <div className="w-full flex items-center justify-center">
+        <div className="xl:w-[1200px] overflow-x-scroll scroll whitespace-nowrap scroll-smooth">
+          <p className="poppins-text pt-[62px] pb-[37px]">
+            Available Collections
+          </p>
+        </div>
+      </div>
+      <BrowseCarouselCollection collections={collections} />
     </div>
   );
 };
