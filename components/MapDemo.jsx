@@ -312,6 +312,14 @@ export const MapDemo = ({ lat, lng }) => {
         ></div>
       </div>
 
+      {nearestBTS.length == 0 && (
+        <>
+          <h1 className="text-red-300 pt-4 text-center">
+            No nearby BTS station within 1000 metres.
+          </h1>
+        </>
+      )}
+
       {/* Render nearest BTS stations by line */}
       {nearestBTS.length > 0 && (
         <>

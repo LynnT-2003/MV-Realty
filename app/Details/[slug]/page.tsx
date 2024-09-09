@@ -64,7 +64,10 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
   return (
     <div>
       <PropertyDetailsImageBento propertyDetails={property} />
-      <PropertyDetailsIntro propertyDetails={property} />
+      <PropertyDetailsIntro
+        propertyDetails={property}
+        pdf_file_url={pdf_file_url}
+      />
 
       <FacilitiesAccordion
         propertyDetails={property}

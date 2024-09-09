@@ -1,17 +1,36 @@
 import React from "react";
 import Grid from "@mui/material/Grid";
 import { Property } from "@/types";
+import { Button } from "./ui/button";
 
 interface PropertyDetailsIntroProps {
   propertyDetails: Property;
+  pdf_file_url: string | null;
 }
+
+const downloadFile = (url: string) => {
+  if (!url) return;
+
+  fetch(url)
+    .then((response) => response.blob())
+    .then((blob) => {
+      const blobURL = window.URL.createObjectURL(new Blob([blob]));
+      const aTag = document.createElement("a");
+      aTag.href = blobURL;
+      aTag.setAttribute("download", "brochure.pdf");
+      document.body.appendChild(aTag);
+      aTag.click();
+      aTag.remove();
+    });
+};
 
 const PropertyDetailsIntro: React.FC<PropertyDetailsIntroProps> = ({
   propertyDetails,
+  pdf_file_url,
 }) => {
   return (
-    <div className="w-full flex justify-center pb-24">
-      <div className="md:max-w-[1200px] w-[95vw]">
+    <div className="w-full flex justify-center pb-6 md:pb-20">
+      <div className="md:max-w-[1150px] w-[85vw]">
         {/* {propertyDetails.title} */}
         <Grid container columnSpacing={10}>
           <Grid item md={7}>
@@ -22,28 +41,38 @@ const PropertyDetailsIntro: React.FC<PropertyDetailsIntroProps> = ({
               {propertyDetails.description}
             </p>
           </Grid>
-          <Grid item xs={5} className="flex items-center justify-center">
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <div className="bg-red-300">xs=6</div>
-              </Grid>
-              <Grid item xs={6}>
-                <div className="flex">
-                  <img src="/icons/bedroom.png" />
-                  <p className="ml-2">Bedroom</p>
+
+          <Grid
+            item
+            md={5}
+            className="pt-10 md:pt-0 items-center justify-center hidden md:flex"
+          >
+            <Grid
+              container
+              rowSpacing={{ xs: 4, md: 3 }}
+              columnSpacing={{ xs: 1, md: 2 }}
+              //   spacing={{ xs: 0, md: 2 }}
+              spacing={2}
+            >
+              <Grid item xs={12}>
+                <div className="w-full flex flex-col justify-center mb-24 pb-24 md:pb-18 px-20 pt-5">
+                  <Button
+                    onClick={() => {
+                      if (pdf_file_url) downloadFile(pdf_file_url);
+                    }}
+                    className="my-2"
+                  >
+                    Download Brochure
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      alert("LOL this doesnt work yet.");
+                    }}
+                    className="my-2 px-14"
+                  >
+                    Contact Us !
+                  </Button>
                 </div>
-              </Grid>
-              <Grid item xs={6}>
-                <div className="bg-blue-300">xs=6</div>
-              </Grid>
-              <Grid item xs={6}>
-                <div>xs=6</div>
-              </Grid>
-              <Grid item xs={6}>
-                <div>xs=6</div>
-              </Grid>
-              <Grid item xs={6}>
-                <div>xs=6</div>
               </Grid>
             </Grid>
           </Grid>
