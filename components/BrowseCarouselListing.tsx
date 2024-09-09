@@ -84,7 +84,7 @@ const BrowseCarousel: React.FC<BrowseCarouselProps> = ({
       <div
         id="slider"
         ref={carouselRef}
-        className="md:w-[1200px] w-screen mx-4 md:mx-0 overflow-hidden md:overflow-x-scroll scroll whitespace-nowrap scroll-smooth flex flex-col md:flex-row "
+        className="md:w-[1200px] w-screen mx-4 md:mx-0 overflow-hidden md:overflow-x-scroll scroll scrollbar-hide whitespace-nowrap scroll-smooth flex flex-col md:flex-row "
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
@@ -121,18 +121,36 @@ const BrowseCarousel: React.FC<BrowseCarouselProps> = ({
                   Price: {listing.price}M Baht
                 </span>
               </DirectionAwareHover>
-              <div
-                className={`mt-2 p-2 bg-white rounded-lg mb-8 ${blur ? "opacity-50" : "opacity-100"}`}
-              >
-                <span className="flex items-center text-lg font-semibold">
-                  {listing.listingName}
-                  <img
-                    src={urlForImage(developer.profileIcon)}
-                    className="w-8 h-8 ml-1"
-                  />
-                </span>
-                {/* <p className="font-normal text-sm">$1299 / night</p> */}
-                <div className="flex pt-2">
+              <div className="mt-4 pt-2 pr-2 bg-white rounded-lg mb-8">
+                <div className="relative flex">
+                  <div className="w-80 inline-flex items-center overflow-hidden pr-3">
+                    <span className="truncate text-lg font-light overflow-hidden whitespace-nowrap">
+                      {listing.listingName}
+                    </span>
+                    <img
+                      src={urlForImage(developer.profileIcon)}
+                      className="w-8 h-8 ml-1 flex-shrink-0"
+                    />
+                  </div>
+                  <div className="w-20">
+                    <p className="mr-3 ml-3 absolute top-0 right-0 font-semibold text-xl text-[#193158]">
+                      {listing.price} MB
+                    </p>
+                  </div>
+                </div>
+
+                {/* <div className="relative flex items-center justify-between text-lg font-light w-full">
+                  <div className="flex-1 pr-16 truncate w-1/2">
+                    <span className="inline-flex item-baseline">
+                    {listing.listingName}
+                    <img
+                      src={urlForImage(developer.profileIcon)}
+                      className="w-8 h-8 ml-1"
+                    /> 
+                    </span>
+                  </div>
+                </div> */}
+                <div className="flex pt-4">
                   <span className="pr-6 flex">
                     <img src="/icons/bedroom.png" className="pr-2" />
                     {listing.bedroom}
