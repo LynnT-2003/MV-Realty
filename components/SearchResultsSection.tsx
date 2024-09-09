@@ -141,7 +141,7 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
 
   return (
     <div style={sectionStyle} className="search-section">
-      <div className="hidden ipad-screen:hidden lg:block mt-2 lg:w-screen w-[1250px] h-screen relative mx-auto max-h-[0px]">
+      <div className="hidden ipad-screen:hidden lg:block mt-2 lg:w-screen xl:w-[1250px] w-[1250px] h-screen relative mx-auto max-h-[0px]">
         <div className="rounded-3xl shadow-lg h-[500px] overflow-scroll py-8 glass ">
           {filteredListings.length === 0 && filteredProperties.length === 0 ? (
             <div className="bg-red-500 w-[300px] h-[200px] mx-auto my-16">
