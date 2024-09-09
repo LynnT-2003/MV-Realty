@@ -1,11 +1,12 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { PlaceholdersAndVanishInput } from "./ui/placeholders-and-vanish-input";
 import { Listing, Property } from "@/types";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { ClipLoader } from "react-spinners"; // Import spinner
 
 import {
   Command,
@@ -21,13 +22,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
+import SearchResultsSection from "./SearchResultsSection";
+import SearchResultsPage from "@/app/SearchResultsPage/page";
 
 const filters = [
   "Bedrooms",
@@ -50,13 +46,28 @@ const options: Record<Filter, any[]> = {
 interface BrowseCarouselProps {
   listings: Listing[];
   properties: Property[];
+  onSearchSectionClick: () => void;
+  searchActionClicked: boolean;
 }
 
 const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
   listings,
   properties,
+  onSearchSectionClick,
+  searchActionClicked,
 }) => {
   const router = useRouter();
+
+  (
+      onSearchSectionClick?: (event: React.MouseEvent<HTMLDivElement>) => void,
+      searchSectionClickedInternal?: (
+        event: React.MouseEvent<HTMLDivElement>
+      ) => void
+    ) =>
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      if (onSearchSectionClick) onSearchSectionClick(event);
+      if (searchSectionClickedInternal) searchSectionClickedInternal(event);
+    };
 
   const [filteredListings, setFilteredListings] = useState<Listing[]>([]);
   const [filteredProperties, setFilteredProperties] = useState<Property[]>([]);
@@ -67,6 +78,15 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
   const [priceFilter, setPriceFilter] = useState(null);
   const [locationFilter, setLocationFilter] = useState(null);
   const [transactionOption, setTransactionOption] = useState(null);
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  // Add these event handlers
+  const handleInputFocus = () => {
+    setIsSearchActive(true);
+  };
+  const [isSearchActive, setIsSearchActive] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const [selectedValues, setSelectedValues] = useState<Record<Filter, any>>({
     Bedrooms: "",
@@ -83,6 +103,8 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
 
   const handleFilter = () => {
     console.log("Filter Submit clicked");
+
+    setLoading(true);
 
     // Construct the query string
     const query = new URLSearchParams({
@@ -123,16 +145,28 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
     "Sathorn",
   ];
 
+  //////////////////////////////////////////////////////////////////////////////
+
   const placeholders = [
-    "I want to know more info on LIFE Asoke Rama ..",
-    "Details about The Address - 2BR ?",
-    "Listings around Phra Khanong ..",
-    "Properties near Chiang Mai ..",
     "Any listing close to BTS ?",
+    "Close to MRT Hua Lamphong ?",
+    "Listings around BTS Phrom Phong ?",
+    "Listings around BTS with 2 bathroom ?",
+    "2 Bedroom near BTS ?",
   ];
 
   // Define all keywords for different filters
+  const bedroomInfoKeywords = ["bed", "bedrooms", "bedroom", "-bedroom"];
+  const bathroomInfoKeywords = ["bath", "bathrooms", "bathroom", "-bathroom"];
+
   const listingPropertyKeywords = [" on", " about", " for", " in"];
+
+  const developerInfoKeywords = [
+    "by",
+    "from",
+    "developed by",
+    "developed from",
+  ];
 
   const addressInfoKeywords = [
     "close to",
@@ -157,51 +191,57 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
     listings: Listing[],
     properties: Property[]
   ): { filteredListings: Listing[]; filteredProperties: Property[] } => {
+    // Filter listings by matching the cleaned value with their names
     const filteredListings = listings.filter((listing) =>
-      listing.description?.toLowerCase().includes(value.toLowerCase())
+      [listing.listingName].some((listingField) =>
+        listingField.toLowerCase().includes(value.toLowerCase())
+      )
     );
 
+    // Filter properties by matching the cleaned value with their descriptions or titles
     const filteredProperties = properties.filter((property) =>
-      property.description?.toLowerCase().includes(value.toLowerCase())
+      [property.title, property.description].some((propertyField) =>
+        propertyField.toLowerCase().includes(value.toLowerCase())
+      )
     );
 
     return { filteredListings, filteredProperties };
   };
 
   // Define filter function for listing and property names
-  const filterByListingPropertyNames = (
-    value: string,
-    listings: Listing[],
-    properties: Property[]
-  ): { filteredListings: Listing[]; filteredProperties: Property[] } => {
-    console.log("INITIATING FILTER BY LISTING AND PROPERTY NAMES");
+  // const filterByListingPropertyNames = (
+  //   value: string,
+  //   listings: Listing[],
+  //   properties: Property[]
+  // ): { filteredListings: Listing[]; filteredProperties: Property[] } => {
+  //   console.log("INITIATING FILTER BY LISTING AND PROPERTY NAMES");
 
-    let cleanedValue = value;
+  //   let cleanedValue = value;
 
-    // Loop through each keyword to find its position in the value
-    for (const keyword of listingPropertyKeywords) {
-      const keywordIndex = cleanedValue.toLowerCase().indexOf(keyword);
-      if (keywordIndex !== -1) {
-        // Remove everything before and including the keyword
-        cleanedValue = cleanedValue.slice(keywordIndex + keyword.length).trim();
-        break; // Exit the loop once a keyword is found and cleaned
-      }
-    }
+  //   // Loop through each keyword to find its position in the value
+  //   for (const keyword of listingPropertyKeywords) {
+  //     const keywordIndex = cleanedValue.toLowerCase().indexOf(keyword);
+  //     if (keywordIndex !== -1) {
+  //       // Remove everything before and including the keyword
+  //       cleanedValue = cleanedValue.slice(keywordIndex + keyword.length).trim();
+  //       break; // Exit the loop once a keyword is found and cleaned
+  //     }
+  //   }
 
-    if (cleanedValue.length === 0) {
-      return { filteredListings: [], filteredProperties: [] };
-    }
+  //   if (cleanedValue.length === 0) {
+  //     return { filteredListings: [], filteredProperties: [] };
+  //   }
 
-    const filteredListings = listings.filter((listing) =>
-      listing.listingName.toLowerCase().includes(cleanedValue.toLowerCase())
-    );
+  //   const filteredListings = listings.filter((listing) =>
+  //     listing.listingName.toLowerCase().includes(cleanedValue.toLowerCase())
+  //   );
 
-    const filteredProperties = properties.filter((property) =>
-      property.title.toLowerCase().includes(cleanedValue.toLowerCase())
-    );
+  //   const filteredProperties = properties.filter((property) =>
+  //     property.title.toLowerCase().includes(cleanedValue.toLowerCase())
+  //   );
 
-    return { filteredListings, filteredProperties };
-  };
+  //   return { filteredListings, filteredProperties };
+  // };
 
   // Define filter function for address-related queries
   const filterByAddressInfo = (
@@ -213,16 +253,22 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
 
     let cleanedValue = value;
 
-    // Loop through each keyword to find its position in the value
-    for (const keyword of addressInfoKeywords) {
-      const keywordIndex = cleanedValue.toLowerCase().indexOf(keyword);
-      if (keywordIndex !== -1) {
-        // Remove everything before and including the keyword
-        cleanedValue = cleanedValue.slice(keywordIndex + keyword.length).trim();
-        break; // Exit the loop once a keyword is found and cleaned
-      }
+    // Create a regular expression to capture the word/phrase after the keyword
+    const addressRegex = new RegExp(
+      `(?:${addressInfoKeywords.join("|")})\\s+(\\w+)`, // Match the keyword, then capture the word after it
+      "i"
+    );
+
+    // Match the value against the regex
+    const match = cleanedValue.match(addressRegex);
+
+    if (match && match[1]) {
+      // If a match is found, cleanedValue becomes the word after the keyword
+      cleanedValue = match[1]; // Capture the word after the keyword
+      console.log("Cleaned Value:", cleanedValue);
     }
 
+    // Filter listings and properties based on the cleanedValue
     const filteredListings = listings.filter((listing) =>
       listing.description?.toLowerCase().includes(cleanedValue.toLowerCase())
     );
@@ -238,80 +284,192 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
     return { filteredListings, filteredProperties };
   };
 
+  // Define filter function for property bedroom
+  const filterByListingsBedroom = (
+    value: string,
+    listings: Listing[],
+    properties: Property[]
+  ): { filteredListings: Listing[]; filteredProperties: Property[] } => {
+    console.log("INITIATING FILTER BY PROPERTY BEDROOM");
+
+    let cleanedValue = value;
+
+    // Create a regular expression to capture any keyword preceded by a word or number
+    const bedroomRegex = new RegExp(
+      `(\\w+)\\s+(${bedroomInfoKeywords.join("|")})`,
+      "i"
+    );
+
+    const match = cleanedValue.match(bedroomRegex);
+
+    if (match && match[1]) {
+      // match[1] contains the word before the keyword
+      cleanedValue = match[1];
+      console.log(cleanedValue);
+    }
+
+    const filteredListings = listings.filter(
+      (listing) =>
+        // listing.description?.toLowerCase().includes(cleanedValue.toLowerCase())
+        listing.bedroom === Number(cleanedValue)
+    );
+
+    const filteredProperties: Property[] = [];
+
+    if (cleanedValue.length === 0) {
+      return { filteredListings: [], filteredProperties: [] };
+    }
+
+    return { filteredListings, filteredProperties };
+  };
+
+  // Define filter function for property bathroom
+  const filterByListingsBathroom = (
+    value: string,
+    listings: Listing[],
+    properties: Property[]
+  ): { filteredListings: Listing[]; filteredProperties: Property[] } => {
+    console.log("INITIATING FILTER BY PROPERTY BATHROOM");
+
+    let cleanedValue = value;
+
+    // Create a regular expression to capture any keyword preceded by a word or number
+    const bathroomRegex = new RegExp(
+      `(\\w+)\\s+(${bathroomInfoKeywords.join("|")})`,
+      "i"
+    );
+
+    const match = cleanedValue.match(bathroomRegex);
+
+    if (match && match[1]) {
+      // match[1] contains the word before the keyword
+      cleanedValue = match[1];
+      console.log(cleanedValue);
+    }
+
+    const filteredListings = listings.filter(
+      (listing) =>
+        // listing.description?.toLowerCase().includes(cleanedValue.toLowerCase())
+        listing.bathroom === Number(cleanedValue)
+    );
+
+    const filteredProperties: Property[] = [];
+
+    if (cleanedValue.length === 0) {
+      return { filteredListings: [], filteredProperties: [] };
+    }
+
+    return { filteredListings, filteredProperties };
+  };
+
+  // Define filter function for property facing side
+
+  // Define filter function by max price
+
   // Perform search based on value and filters
   const performSearch = (
     value: string,
     listings: Listing[],
     properties: Property[]
-  ) => {
-    const isListingSearch = containsKeywords(value, listingPropertyKeywords);
+  ): { filteredListings: Listing[]; filteredProperties: Property[] } => {
+    // Determine which filters are active based on the value
+    // const isListingSearch = containsKeywords(value, listingPropertyKeywords);
     const isAddressSearch = containsKeywords(value, addressInfoKeywords);
+    const isBedroomSearch = containsKeywords(value, bedroomInfoKeywords);
+    const isBathroomSearch = containsKeywords(value, bathroomInfoKeywords);
     const isSearchOnlyProperties = containsKeywords(
       value,
       searchOnlyPropertiesKeywords
     );
-    const issearchonlyListings = containsKeywords(
+    const isSearchOnlyListings = containsKeywords(
       value,
       searchOnlyListingsKeywords
     );
 
-    let filteredListings: Listing[] = [];
-    let filteredProperties: Property[] = [];
+    // Initialize filtered results
+    let filteredListings: Listing[] = [...listings];
+    let filteredProperties: Property[] = [...properties];
 
-    if (isListingSearch && !isAddressSearch) {
-      const result = filterByListingPropertyNames(value, listings, properties);
-      if (isSearchOnlyProperties) {
-        filteredListings = [];
-        filteredProperties = result.filteredProperties;
-        return { filteredListings, filteredProperties };
-      } else if (issearchonlyListings) {
-        filteredListings = result.filteredListings;
-        filteredProperties = [];
-        return { filteredListings, filteredProperties };
-      } else {
-        filteredListings = result.filteredListings;
-        filteredProperties = result.filteredProperties;
-      }
+    // Apply filters sequentially
+
+    // 1. Filter by bedroom if detected
+    if (isBedroomSearch) {
+      const bedroomResult = filterByListingsBedroom(
+        value,
+        listings,
+        properties
+      );
+      filteredListings = filteredListings.filter((listing) =>
+        bedroomResult.filteredListings.includes(listing)
+      );
+      filteredProperties = filteredProperties.filter((property) =>
+        bedroomResult.filteredProperties.includes(property)
+      );
     }
 
-    if (isAddressSearch && !isListingSearch) {
-      const result = filterByAddressInfo(value, listings, properties);
-      if (isSearchOnlyProperties) {
-        filteredListings = [];
-        filteredProperties = result.filteredProperties;
-        return { filteredListings, filteredProperties };
-      } else if (issearchonlyListings) {
-        filteredListings = result.filteredListings;
-        filteredProperties = [];
-        return { filteredListings, filteredProperties };
-      } else {
-        filteredListings = result.filteredListings;
-        filteredProperties = result.filteredProperties;
-      }
+    // 2. Filter by bathroom if detected
+    if (isBathroomSearch) {
+      const bathroomResult = filterByListingsBathroom(
+        value,
+        listings,
+        properties
+      );
+      filteredListings = filteredListings.filter((listing) =>
+        bathroomResult.filteredListings.includes(listing)
+      );
+      filteredProperties = filteredProperties.filter((property) =>
+        bathroomResult.filteredProperties.includes(property)
+      );
     }
 
-    if (isListingSearch && isAddressSearch) {
-      // Handle cases where both types of keywords are present
-      const result = filterByListingPropertyNames(value, listings, properties);
-      if (isSearchOnlyProperties) {
-        filteredListings = [];
-        filteredProperties = result.filteredProperties;
-        return { filteredListings, filteredProperties };
-      } else if (issearchonlyListings) {
-        filteredListings = result.filteredListings;
-        filteredProperties = [];
-        return { filteredListings, filteredProperties };
-      } else {
-        filteredListings = result.filteredListings;
-        filteredProperties = result.filteredProperties;
-      }
+    // 3. Filter by listing/property names if detected
+    // if (isListingSearch) {
+    //   const listingResult = filterByListingPropertyNames(
+    //     value,
+    //     listings,
+    //     properties
+    //   );
+    //   filteredListings = filteredListings.filter((listing) =>
+    //     listingResult.filteredListings.includes(listing)
+    //   );
+    //   filteredProperties = filteredProperties.filter((property) =>
+    //     listingResult.filteredProperties.includes(property)
+    //   );
+    // }
+
+    // 4. Filter by address if detected
+    if (isAddressSearch) {
+      const addressResult = filterByAddressInfo(value, listings, properties);
+      filteredListings = filteredListings.filter((listing) =>
+        addressResult.filteredListings.includes(listing)
+      );
+      filteredProperties = filteredProperties.filter((property) =>
+        addressResult.filteredProperties.includes(property)
+      );
     }
 
-    if (!isListingSearch && !isAddressSearch && value != "") {
-      const result = filterDefaultNameTitle(value, listings, properties);
-      filteredListings = result.filteredListings;
-      filteredProperties = result.filteredProperties;
+    // 5. Default name/title search if no specific search type matches
+    if (
+      !isAddressSearch &&
+      !isBedroomSearch &&
+      !isBathroomSearch &&
+      value !== ""
+    ) {
+      const defaultResult = filterDefaultNameTitle(value, listings, properties);
+      filteredListings = filteredListings.filter((listing) =>
+        defaultResult.filteredListings.includes(listing)
+      );
+      filteredProperties = filteredProperties.filter((property) =>
+        defaultResult.filteredProperties.includes(property)
+      );
     }
+
+    // // Handle "only properties" or "only listings" filters
+    // if (isSearchOnlyProperties) {
+    //   filteredListings = []; // Clear listings, only properties should remain
+    // } else if (isSearchOnlyListings) {
+    //   filteredProperties = []; // Clear properties, only listings should remain
+    // }
 
     return { filteredListings, filteredProperties };
   };
@@ -319,6 +477,7 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
   // Handle input change and perform search
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
+    setIsSearchActive(value.trim() !== "");
     console.log(value); // Log the input value
 
     // Perform the search and get filtered results
@@ -346,58 +505,56 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("submitted");
+    setLoading(true);
+
+    // Navigate to /searchResultsPage
+    router.push("/SearchResultsPage");
   };
 
   return (
-    <div className="flex flex-col items-center justify-center h-[545px] w-[1320px] bg-blue-200">
-      <h2 className="mb-10 sm:mb-20 text-xl text-center sm:text-5xl dark:text-white text-black">
+    <div
+      className={`flex flex-col items-center ipad-screen:h-[445px] h-[300px] md:w-[1320px] w-screen bg-blue-200 `}
+    >
+      <h2
+        className={`mt-20 mb-10 sm:mb-16 text-xl text-center lg:text-5xl ipad-screen:text-4xl text-xl dark:text-white text-black ${searchActionClicked ? "opacity-50" : "opacity-100"}`}
+      >
         Ask US Anything at Mahar-Vertex
       </h2>
-      <PlaceholdersAndVanishInput
-        placeholders={placeholders}
-        onChange={handleChange}
-        onSubmit={onSubmit}
-      />
 
-      <div className="mt-2 w-full relative max-w-xl mx-auto max-h-[0px]">
-        <ul className="rounded-3xl shadow-lg max-h-[160px] overflow-scroll">
-          {filteredListings.map((listing) => (
-            <div
-              key={listing._id}
-              className="bg-gray-100 hover:bg-gray-300 hover:cursor-pointer pl-8 py-2 text-gray-600 hover:text-black"
-              onClick={() => {
-                handleListingClick(listing._id);
-              }}
-            >
-              <span key={listing._id}>
-                <span className="text-gray-500 text-xs items-center pr-3">
-                  <i>Listing:</i>
-                </span>
-                {listing.listingName}
-              </span>
-            </div>
-          ))}
-          {filteredProperties.map((property) => (
-            <div
-              key={property._id}
-              className="bg-gray-100 hover:bg-gray-300 hover:cursor-pointer pl-8 py-2 text-gray-600 hover:text-black"
-              onClick={() => {
-                handlePropertyClick(property.slug.current);
-              }}
-            >
-              <span key={property._id}>
-                <span className="text-gray-500 text-xs items-center pr-3">
-                  <i>Property:</i>
-                </span>
-                {property.title}
-              </span>
-            </div>
-          ))}
-        </ul>
+      <div
+        className="md:w-[600px] w-[85vw] search-section search-section-internal"
+        onClick={onSearchSectionClick}
+        onFocus={handleInputFocus}
+      >
+        <PlaceholdersAndVanishInput
+          placeholders={placeholders}
+          onChange={handleChange}
+          onSubmit={onSubmit}
+        />
       </div>
 
-      <div className="flex justify-center items-center w-max-[75%] mt-24">
-        <div className="bg-red-100 max-sm:hidden inline-flex justify-center items-center shadow-lg space-x-4 py-3 px-3 bg-white rounded">
+      {/* Loading Spinner */}
+      {loading && (
+        <div className="fixed inset-0 flex items-center justify-center bg-opacity-50 bg-gray-800">
+          <ClipLoader color="#ffffff" loading={loading} size={50} />
+        </div>
+      )}
+
+      <div className="z-10 w-screen">
+        {searchActionClicked && (
+          <SearchResultsSection
+            filteredListings={filteredListings}
+            filteredProperties={filteredProperties}
+            isActive={isSearchActive}
+          />
+        )}
+      </div>
+
+      {/* Filter Component */}
+      <div
+        className={`flex justify-center items-center w-max-[75%] w-[500px] mt-12  ${searchActionClicked ? "opacity-50 inset-0" : "opacity-100"}`}
+      >
+        <div className="bg-red-100 max-sm:hidden inline-flex justify-center items-center shadow-lg space-x-1 py-3 px-3 bg-white rounded">
           {filters.map((filter) => (
             <div key={filter} className="md:px-0">
               <Popover
@@ -414,7 +571,7 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
                     <span className="flex-1 text-left">
                       {selectedValues[filter] || filter}
                     </span>
-                    <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50 ml-10" />
+                    <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50 lg:ml-10 ipad-screen:ml-2" />
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-[200px] p-0">

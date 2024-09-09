@@ -44,10 +44,7 @@ const HomePage: React.FC = () => {
     "Buy/Rent": "",
   });
 
-  // useEffect(() => {
-  //   fetchProperties();
-  //   fetchListings();
-  // }, []);
+  const [searchSectionClicked, setSearchSectionClicked] = useState(false);
 
   const setLocalStorage = (key: string, data: any) => {
     localStorage.setItem(key, JSON.stringify(data));
@@ -139,28 +136,34 @@ const HomePage: React.FC = () => {
     router.push(`/Details/${property.slug.current}`);
   };
 
+  const handleSearchSectionClick = () => {
+    setSearchSectionClicked(true);
+    console.log("Opacity should be low.");
+  };
+
+  const handleClickOutsideSearchSection = (
+    e: React.MouseEvent<HTMLDivElement>
+  ) => {
+    if (!(e.target as HTMLElement).closest(".search-section")) {
+      setSearchSectionClicked(false);
+      console.log("Opacity reverted!");
+    }
+  };
+
   return (
-    <div className="">
-      {/* <AnimatedHero /> */}
-
-      <div className="relative">
-        {/* <div className="flex items-center justify-center">
-          <img
-            src="/mv_home_hero.jpg"
-            // className="h-[600px] w-[1600px] macbook-air:w-[1280px] object-cover py-10"
-          />
-        </div> */}
-      </div>
-
-      {/* <div className="md:py-16 md:w-max-xl flex flex-col items-center justify-center">
-        <LayoutGridDemo />
-      </div> */}
-
+    <div onClick={handleClickOutsideSearchSection}>
       <div className="flex justify-center">
-        <HomeSearchSection listings={listings} properties={properties} />
+        <HomeSearchSection
+          listings={listings}
+          properties={properties}
+          onSearchSectionClick={handleSearchSectionClick}
+          searchActionClicked={searchSectionClicked}
+        />
       </div>
 
-      <div className="w-full flex items-center justify-center">
+      <div
+        className={`w-full flex items-center justify-center transition-opacity duration-300 ${searchSectionClicked ? "opacity-50" : "opacity-100"}`}
+      >
         <div className="xl:w-[1200px] overflow-x-scroll scroll whitespace-nowrap scroll-smooth">
           <p className="poppins-text pt-[62px] pb-[37px] font-semibold">Featured Listings</p>
         </div>
@@ -169,6 +172,7 @@ const HomePage: React.FC = () => {
         listings={listings}
         properties={properties}
         developers={developers}
+        blur={searchSectionClicked}
       />
 
       <div className="w-full flex items-center justify-center">

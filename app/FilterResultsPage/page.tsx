@@ -90,7 +90,7 @@ const FilterResultsPage: React.FC = () => {
       <ListingCardCollection
         listings={listings}
         properties={properties}
-        developers={developers}
+        // developers={developers}
       />
     </div>
   );
