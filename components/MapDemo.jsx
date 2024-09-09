@@ -48,6 +48,7 @@ export const MapDemo = ({ lat, lng }) => {
     "Ratchadamri",
     "Sala Daeng",
     "Chong Nonsi",
+    "Saint Louis",
     "Surasak",
     "Saphan Taksin",
     "Krung Thon Buri",
