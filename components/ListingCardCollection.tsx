@@ -5,6 +5,7 @@ import LensDemo from "./LensDemo";
 import { Slider } from "./ui/slider";
 import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 import {
   Command,
@@ -42,7 +43,19 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
   properties,
   // developers,
 }) => {
+  const router = useRouter();
+
   const [maxPrice, setMaxPrice] = useState(99);
+  const [maxInitPrice, setMaxInitPrice] = useState(99);
+
+  useEffect(() => {
+    if (listings.length > 0) {
+      let maxListingPrice = Math.max(
+        ...listings.map((listing) => listing.price)
+      );
+      setMaxInitPrice(maxListingPrice);
+    }
+  }, [listings]);
 
   // Desktop filter state
   const [openFilter, setOpenFilter] = useState<Filter | null>(null);
@@ -91,6 +104,10 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
   const handleSliderChange = (value: number[]) => {
     setMaxPrice(value[0]);
     console.log(maxPrice);
+  };
+
+  const handleListingClick = (slug: string) => {
+    router.push(`/ListingDetails/${slug}`);
   };
 
   return (
@@ -160,11 +177,14 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
               </div>
             ))}
             <div className="">
-              <h1 className="mt-12">Max Price:</h1>
-              <h1>{maxPrice} Million THB</h1>
+              <span className="mt-12">Max Price:</span>
+              {maxPrice < 99 && (
+                <h1 className="my-2">{maxPrice} Million THB</h1>
+              )}
+              {maxPrice >= 99 && <span className="my-2 ml-2">Not set</span>}
               <Slider
-                defaultValue={[33]}
-                max={50}
+                defaultValue={[maxInitPrice]}
+                max={maxInitPrice}
                 step={2}
                 onValueChange={handleSliderChange}
                 className="mt-2"
@@ -294,10 +314,12 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
 
               {/* Max price slider */}
               <div>
-                <h1 className="my-2">Max Price: {maxPrice} Million THB</h1>
+                {maxPrice < 99 && (
+                  <h1 className="my-2">Max Price: {maxPrice} Million THB</h1>
+                )}
                 <Slider
-                  defaultValue={[33]}
-                  max={50}
+                  defaultValue={[maxInitPrice]}
+                  max={maxInitPrice}
                   step={2}
                   onValueChange={handleSliderChange}
                   className="mt-2 mb-6"
@@ -316,7 +338,7 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
                 <div
                   key={index}
                   onClick={() => {
-                    // handlePropertyClick(listing._id);
+                    handleListingClick(listing._id);
                   }}
                   className="lg:ml-0 ipad-screen:px-0 px-5 relative rounded-lg overflow-hidden inline-block mb-4 md:mb-0 group w-full"
                 >
