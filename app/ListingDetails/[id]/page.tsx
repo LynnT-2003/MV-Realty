@@ -105,10 +105,10 @@ const ListingDetailPage = ({ params }: { params: { id: string } }) => {
       </div>
       <div className="w-full flex justify-center mb-24 pb-24 md:pb-20">
         <PopupButton
-        className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105"
-        url="https://calendly.com/tanat-navin/30min"
-        rootElement={document.getElementById("root") || document.body}
-        text="Schedule a Meeting!"
+          className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105"
+          url="https://calendly.com/tanat-navin/30min"
+          rootElement={document.getElementById("root") || document.body}
+          text="Schedule a Meeting!"
         />
       </div>
     </div>
