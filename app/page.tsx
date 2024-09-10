@@ -165,7 +165,7 @@ const HomePage: React.FC = () => {
         className={`w-full flex items-center justify-center transition-opacity duration-300 ${searchSectionClicked ? "opacity-50" : "opacity-100"}`}
       >
         <div className="xl:w-[1200px] overflow-x-scroll scroll whitespace-nowrap scroll-smooth">
-          <p className="poppins-text pt-[62px] pb-[37px] font-semibold">Featured Listings</p>
+          <p className="poppins-text pt-[62px] pb-[27px] font-semibold">Featured Listings</p>
         </div>
       </div>
       <BrowseCarouselListing
@@ -177,16 +177,16 @@ const HomePage: React.FC = () => {
 
       <div className="w-full flex items-center justify-center">
         <div className="xl:w-[1200px] overflow-x-scroll scroll whitespace-nowrap scroll-smooth">
-          <p className="poppins-text pt-[62px] pb-[37px]">
+          <p className="poppins-text pt-[42px] pb-[27px] font-semibold">
             Available Properties
           </p>
         </div>
       </div>
-      <BrowseCarouselProperty properties={properties} />
+      <BrowseCarouselProperty properties={properties} developers={developers} />
 
       <div className="w-full flex items-center justify-center">
         <div className="xl:w-[1200px] overflow-x-scroll scroll whitespace-nowrap scroll-smooth">
-          <p className="poppins-text pt-[62px] pb-[37px]">
+          <p className="poppins-text pt-[42px] pb-[27px] font-semibold">
             Available Collections
           </p>
         </div>

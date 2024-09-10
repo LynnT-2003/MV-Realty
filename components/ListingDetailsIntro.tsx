@@ -1,15 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
-import { Listing } from "@/types";
+import { Listing, Tag } from "@/types";
+import { fetchTagsFromListing } from "@/services/TagsServices";
 
 interface ListingDetailsIntroProps {
   listingDetails: Listing;
 }
 
-const tags = ['Condo', 'EV Charger', 'Ready to Move In', 'Built : 2024', '24 Hour Security'];
 const ListingDetailsIntro: React.FC<ListingDetailsIntroProps> = ({
   listingDetails,
 }) => {
+  const [tags, setTags] = useState<Tag[]>([]);
+
+  // Fetch tags when the component mounts or when listingDetails changes
+  useEffect(() => {
+    const fetchTags = async () => {
+      if (listingDetails._id) {
+        const fetchedTags = await fetchTagsFromListing(listingDetails._id);
+        setTags(fetchedTags || []);
+      }
+    };
+
+    fetchTags();
+  }, [listingDetails._id]);
+
   return (
     <div className="w-full flex justify-center pb-12 md:pb-20">
       <div className="md:max-w-[1150px] w-[85vw]">
@@ -23,19 +37,19 @@ const ListingDetailsIntro: React.FC<ListingDetailsIntroProps> = ({
             </p>
             <div className="flex flex-wrap gap-2 mt-5">
               {tags.map((tag, index) => (
-                <span
+                <button
                   key={index}
-                  className="px-3 py-1 rounded-full bg-blue-100 text-blue-600 font-medium text-sm"
+                  className="px-5 py-1 rounded-full bg-white border border-[#002194] text-[#002194] font-semibold text-sm
+                  transition-colors duration-200 hover:bg-[#002194] hover:text-white"
                 >
-                  {tag}
-                </span>
+                  {tag.tag}
+                </button>
               ))}
             </div>
           </Grid>
           <Grid
             item
             md={5}
-            className="pt-10 md:pt-0 flex items-center justify-center"
           >
             <Grid
               container
@@ -45,7 +59,7 @@ const ListingDetailsIntro: React.FC<ListingDetailsIntroProps> = ({
               spacing={2}
             >
               <Grid item xs={6}>
-                <div className="flex ">
+                <div className="flex">
                   <img src="/icons/bedroom.png" />
                   <p className="ml-3.5">{listingDetails.bedroom} Bedroom</p>
                 </div>
@@ -83,6 +97,22 @@ const ListingDetailsIntro: React.FC<ListingDetailsIntroProps> = ({
                 </div>
               </Grid>
             </Grid>
+            <div className="flex justify-between gap-4 mt-20">
+              <button className="py-2 bg-[#193158] text-white font-semibold rounded-lg w-1/2 text-xs">
+                SHARE THIS LISTING
+              </button>
+              <button className="py-2 bg-[#193158] text-white font-semibold rounded-lg w-1/2 text-xs">
+                CONTACT US
+              </button>
+            </div>
+            <div className="mt-4">
+              <button className="py-2 bg-[#193158] text-white font-semibold rounded-lg w-full text-xs">
+                MORE FROM THIS PROPERTY
+              </button>
+              <p className="mt-4 text-[#193158] font-bold text-center text-lg">
+                Unit ID: {listingDetails._id}
+              </p>
+            </div>
           </Grid>
         </Grid>
       </div>

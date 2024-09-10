@@ -18,7 +18,7 @@ export interface Property {
   tags: { _ref: string; _type: string }[];  // Reference to tags
   propertyHero: SanityImageWithKey;
   photos: SanityImageWithKey[];
-  built: number;
+  completedOn: number;
   propertyFaqs: {
     question: { _ref: string; _type: string };  // Reference to PropertyFaqs
     answer: string;  // Text for the answer
