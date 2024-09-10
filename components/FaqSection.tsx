@@ -7,6 +7,8 @@ import MuiAccordionSummary, {
 } from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
+import { Listing } from "@/types";
+import exp from "constants";
 
 const Accordion = styled((props: AccordionProps) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -39,7 +41,13 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   borderTop: "1px solid rgba(0, 0, 0, .125)",
 }));
 
-export default function CustomizedAccordions() {
+interface CustomizedAccordionsProps {
+  listingDetails: Listing;
+}
+
+const CustomizedAccordions: React.FC<CustomizedAccordionsProps> =({
+  listingDetails,
+})=> {
   const [expanded, setExpanded] = React.useState<string | false>("panel1");
 
   const handleChange =
@@ -115,3 +123,5 @@ export default function CustomizedAccordions() {
     </div>
   );
 }
+
+export default CustomizedAccordions;

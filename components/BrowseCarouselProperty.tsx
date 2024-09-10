@@ -3,16 +3,18 @@ import React, { useRef, useState } from "react";
 import { Image } from "sanity";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { DirectionAwareHover } from "./ui/direction-aware-hover";
-import { Property } from "@/types";
+import { Developer, Property } from "@/types";
 import { useRouter } from "next/navigation";
 
 // Define the prop types
 interface BrowseCarouselProps {
   properties: Property[];
+  developers: Developer[];
 }
 
 const BrowseCarouselProperty: React.FC<BrowseCarouselProps> = ({
   properties,
+  developers
 }) => {
   const router = useRouter();
 
@@ -78,29 +80,52 @@ const BrowseCarouselProperty: React.FC<BrowseCarouselProps> = ({
       <div
         id="slider"
         ref={carouselRef}
-        className="md:w-[1200px] w-screen mx-4 md:mx-0 overflow-hidden md:overflow-x-scroll scroll whitespace-nowrap scroll-smooth flex flex-col md:flex-row"
+        className="md:w-[1200px] w-screen mx-4 md:mx-0 overflow-hidden md:overflow-x-scroll scroll scrollbar-hide whitespace-nowrap scroll-smooth flex flex-col md:flex-row"
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseLeave}
       >
-        {properties.map((property, index) => (
-          <div
-            key={index}
-            onClick={() => {
-              handlePropertyClick(property.slug.current);
-            }}
-            className="relative inline-block macbook-air:w-[24.2rem] macbook-air:h-[16.60rem] md:w-[30.55rem] mb-4 md:mb-0 md:h-[20.78rem] md:mr-[1vw] group"
-          >
-            <DirectionAwareHover imageUrl={urlForImage(property.propertyHero)}>
-              <p className="font-bold text-xl">{property.title}</p>
-              <p className="font-normal text-sm">$1299 / night</p>
-            </DirectionAwareHover>
-            <div className="absolute bottom-0 w-full bg-gradient-to-t from-gray-800 to-transparent text-white p-4 group-hover:hidden">
-              <p className="text-lg font-semibold">{property.title}</p>
+        {properties.map((property, index) => {
+          const developer =
+            developers.find((dev) => dev._id === property.developer._ref) ||
+            developers[0];
+          return (
+            <div
+              key={index}
+              onClick={() => {
+                handlePropertyClick(property.slug.current);
+              }}
+              // className="relative inline-block macbook-air:w-[24.2rem] macbook-air:h-[16.60rem] md:w-[30.55rem] mb-4 md:mb-0 md:h-[20.78rem] md:mr-[1vw] group"
+              className="relative inline-block mb-4 md:mb-0 group"
+            >
+              <DirectionAwareHover
+                imageUrl={urlForImage(property.propertyHero)}
+              >
+                <p className="font-bold text-xl">{property.title}</p>
+                <p className="font-normal text-sm">$1299 / night</p>
+              </DirectionAwareHover>
+              <div className="mt-4 pt-2 pr-2 bg-white rounded-lg mb-8">
+                <div className="relative flex">
+                  <div className="w-80 inline-flex items-center overflow-hidden pr-10">
+                    <span className="truncate text-lg font-light overflow-hidden whitespace-nowrap">
+                      {property.title}
+                    </span>
+                    <img
+                      src={urlForImage(developer.profileIcon)}
+                      className="w-8 h-8 ml-1 flex-shrink-0"
+                    />
+                  </div>
+                  <div className="w-20 ml-4">
+                    <p className="mr-3 ml-3 absolute top-0 right-0 font-semibold text-xl text-[#193158]">
+                      {property.minPrice}-{property.maxPrice} MB
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       <button

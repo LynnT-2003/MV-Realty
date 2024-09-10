@@ -22,6 +22,24 @@ import ListingDetailsIntro from "@/components/ListingDetailsIntro";
 import FaqSection from "@/components/FaqSection";
 import FacilitiesAccordion from "@/components/FacilitiesAccordion";
 import { fetchAllFacilityTypes } from "@/services/FacilityServices";
+import { urlForFile } from "@/sanity/lib/image";
+
+
+const downloadFile = (url: string) => {
+  if (!url) return "No Url";
+
+  fetch(url)
+    .then((response) => response.blob())
+    .then((blob) => {
+      const blobURL = window.URL.createObjectURL(new Blob([blob]));
+      const aTag = document.createElement("a");
+      aTag.href = blobURL;
+      aTag.setAttribute("download", "brochure.pdf");
+      document.body.appendChild(aTag);
+      aTag.click();
+      aTag.remove();
+    });
+};
 
 const ListingDetailPage = ({ params }: { params: { id: string } }) => {
   const router = useRouter();
@@ -69,7 +87,11 @@ const ListingDetailPage = ({ params }: { params: { id: string } }) => {
   if (!listing || !property) {
     return <div>Loading...</div>;
   }
-
+  console.log(property)
+  const pdf_file_url = property.brochure
+  ? urlForFile(property.brochure) // Generate the correct URL for the PDF
+  : null;
+  
   return (
     <div>
       {/* <PropertyDetailsImageBento propertyDetails={property} />
@@ -80,7 +102,7 @@ const ListingDetailPage = ({ params }: { params: { id: string } }) => {
       />
       <ListingDetailsIntro listingDetails={listing} />
 
-      <FaqSection />
+      <FaqSection listingDetails={listing} />
 
       <FacilitiesAccordion
         propertyDetails={property}
@@ -95,7 +117,7 @@ const ListingDetailPage = ({ params }: { params: { id: string } }) => {
         </div>
       </div>
 
-      <div className="w-full flex justify-center mb-24 pb-24 md:pb-20">
+      <div className="w-full flex justify-center pb-24 md:pb-20">
         <div className="md:max-w-[1100px] w-[100vw] md:max-h-[805px] h-[80vw]">
           <MapDemo
             lat={property?.geoLocation.lat}
@@ -103,13 +125,22 @@ const ListingDetailPage = ({ params }: { params: { id: string } }) => {
           />
         </div>
       </div>
-      <div className="w-full flex justify-center mb-24 pb-24 md:pb-20">
+      <div className="w-full flex justify-center gap-16 mb-24 pb-24 px-56 md:pb-20">
         <PopupButton
-          className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105"
+          className="w-1/2 py-3 bg-[#193158] hover:bg-[#132441] text-white text-sm font-bold rounded-lg shadow-md"
           url="https://calendly.com/tanat-navin/30min"
           rootElement={document.getElementById("root") || document.body}
-          text="Schedule a Meeting!"
+          text="Schedule a viewing"
         />
+        <button
+          onClick={() => {
+            if (pdf_file_url) downloadFile(pdf_file_url);
+          }}
+          className="w-1/2 py-3 bg-[#193158] hover:bg-[#132441] text-white text-sm font-bold rounded-lg shadow-md"
+        >
+          Download Brochure
+        </button>
+        
       </div>
     </div>
   );

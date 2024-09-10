@@ -11,6 +11,7 @@ import PropertyDetailsImageBento from "@/components/PropertyDetailsImageBento";
 import PropertyDetailsIntro from "@/components/PropertyDetailsIntro";
 import FacilitiesAccordion from "@/components/FacilitiesAccordion";
 import { fetchAllFacilityTypes } from "@/services/FacilityServices";
+import { PopupButton } from "react-calendly";
 
 const downloadFile = (url: string) => {
   if (!url) return;
@@ -65,8 +66,7 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
     <div>
       <PropertyDetailsImageBento propertyDetails={property} />
       <PropertyDetailsIntro
-        propertyDetails={property}
-        pdf_file_url={pdf_file_url}
+        propertyDetails={property} developer={developer}
       />
 
       <FacilitiesAccordion
@@ -87,14 +87,22 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
           />
         </div>
       </div>
-      <div className="w-full flex justify-center mb-24 pb-24 md:pb-20">
-        <Button
+      <div className="w-full flex justify-center gap-16 mb-24 pb-24 px-56 md:pb-20">
+        <PopupButton
+          className="w-1/2 py-3 bg-[#193158] hover:bg-[#132441] text-white text-sm font-bold rounded-lg shadow-md"
+          url="https://calendly.com/tanat-navin/30min"
+          rootElement={document.getElementById("root") || document.body}
+          text="Schedule a viewing"
+        />
+        <button
           onClick={() => {
             if (pdf_file_url) downloadFile(pdf_file_url);
           }}
+          className="w-1/2 py-3 bg-[#193158] hover:bg-[#132441] text-white text-sm font-bold rounded-lg shadow-md"
         >
           Download Brochure
-        </Button>
+        </button>
+        
       </div>
     </div>
   );
