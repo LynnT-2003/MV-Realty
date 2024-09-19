@@ -12,6 +12,7 @@ import PropertyDetailsIntro from "@/components/PropertyDetailsIntro";
 import FacilitiesAccordion from "@/components/FacilitiesAccordion";
 import { fetchAllFacilityTypes } from "@/services/FacilityServices";
 import { PopupButton } from "react-calendly";
+import LoadingPage from "./loading";
 
 const downloadFile = (url: string) => {
   if (!url) return;
@@ -35,6 +36,7 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
   const [property, setProperty] = React.useState<Property | null>(null);
   const [developer, setDeveloper] = React.useState<Developer | null>(null);
   const [facilityType, setFacilityType] = React.useState<FacilityType[]>([]);
+  const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
     if (slug) {
@@ -49,11 +51,17 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
         console.log("Fetched all Facility Types", facilityTypeData);
         setFacilityType(facilityTypeData);
       });
+
+      const timer = setTimeout(() => {
+        setLoading(false); // Stop loading after some time or when data is ready
+      }, 1000);
+  
+      return () => clearTimeout(timer);
     }
   }, [slug]);
 
-  if (!property || !developer) {
-    return <div>Loading...</div>;
+  if (!property || !developer || loading) {
+    return <LoadingPage/>;
   }
 
   console.log(property);
