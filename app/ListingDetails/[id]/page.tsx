@@ -23,6 +23,7 @@ import FaqSection from "@/components/FaqSection";
 import FacilitiesAccordion from "@/components/FacilitiesAccordion";
 import { fetchAllFacilityTypes } from "@/services/FacilityServices";
 import { urlForFile } from "@/sanity/lib/image";
+import LoadingPage from "./loading";
 
 
 const downloadFile = (url: string) => {
@@ -48,6 +49,7 @@ const ListingDetailPage = ({ params }: { params: { id: string } }) => {
   const [listing, setListing] = React.useState<Listing | null>(null);
   const [property, setProperty] = React.useState<Property | null>(null);
   const [facilityType, setFacilityType] = React.useState<FacilityType[]>([]);
+  const [loading, setLoading] = React.useState(true);
 
   //   const [developer, setDeveloper] = React.useState<Developer | null>(null);
 
@@ -81,12 +83,19 @@ const ListingDetailPage = ({ params }: { params: { id: string } }) => {
         console.log("Fetched all Facility Types", facilityTypeData);
         setFacilityType(facilityTypeData);
       });
+
+      const timer = setTimeout(() => {
+        setLoading(false); // Stop loading after some time or when data is ready
+      }, 1000);
+  
+      return () => clearTimeout(timer);
     }
   }, [id]);
 
-  if (!listing || !property) {
-    return <div>Loading...</div>;
+  if (!listing || !property || loading) {
+    return <LoadingPage />;
   }
+
   console.log(property)
   const pdf_file_url = property.brochure
   ? urlForFile(property.brochure) // Generate the correct URL for the PDF

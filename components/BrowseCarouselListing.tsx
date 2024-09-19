@@ -130,6 +130,7 @@ const BrowseCarousel: React.FC<BrowseCarouselProps> = ({
                     <img
                       src={urlForImage(developer.profileIcon)}
                       className="w-8 h-8 ml-1 flex-shrink-0"
+                      loading="lazy"
                     />
                   </div>
                   <div className="w-20">
