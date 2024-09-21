@@ -111,7 +111,7 @@ const ListingDetailPage = ({ params }: { params: { id: string } }) => {
       />
       <ListingDetailsIntro listingDetails={listing} />
 
-      <FaqSection listingDetails={listing} />
+      <FaqSection />
 
       <FacilitiesAccordion
         propertyDetails={property}

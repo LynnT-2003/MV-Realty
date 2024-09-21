@@ -7,8 +7,8 @@ import MuiAccordionSummary, {
 } from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import Typography from "@mui/material/Typography";
-import { Listing } from "@/types";
-import exp from "constants";
+import { fetchAllFaqs } from "@/services/faqsServices"; // Ensure the correct path
+import { Faqs } from "@/types";
 
 const Accordion = styled((props: AccordionProps) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
@@ -41,14 +41,21 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   borderTop: "1px solid rgba(0, 0, 0, .125)",
 }));
 
-interface CustomizedAccordionsProps {
-  listingDetails: Listing;
-}
+const CustomizedAccordions: React.FC = () => {
+  const [expanded, setExpanded] = React.useState<string | false>(false);
+  const [faqs, setFaqs] = React.useState<Faqs[]>([]);
 
-const CustomizedAccordions: React.FC<CustomizedAccordionsProps> =({
-  listingDetails,
-})=> {
-  const [expanded, setExpanded] = React.useState<string | false>("panel1");
+  React.useEffect(() => {
+    const fetchFaqs = async () => {
+      try {
+        const data = await fetchAllFaqs();
+        setFaqs(data);
+      } catch (error) {
+        console.error("Failed to fetch FAQs", error);
+      }
+    };
+    fetchFaqs();
+  }, []);
 
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
@@ -59,69 +66,38 @@ const CustomizedAccordions: React.FC<CustomizedAccordionsProps> =({
     <div className="w-full flex justify-center pb-12 md:pb-20">
       <div className="md:max-w-[1150px] w-[85vw]">
         <p className="poppins-text-title-small md:property-details-title-text">
-          Frequently Asked questions
+          Frequently Asked Questions
         </p>
-        <Accordion
-          className="pt-6"
-          //   expanded={expanded === "panel1"}
-          //   onChange={handleChange("panel1")}
-        >
-          <AccordionSummary aria-controls="panel1d-content" id="panel1d-header">
-            <span className="poppins-text-small-bold md:poppins-text-avg-bold">
-              How much is the maintenance cost?
-            </span>
-          </AccordionSummary>
-          <AccordionDetails>
-            <span className="poppins-text-small md:poppins-text-avg">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-              eget. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-              eget.
-            </span>
-          </AccordionDetails>
-        </Accordion>
-        <Accordion
-        //   expanded={expanded === "panel2"}
-        //   onChange={handleChange("panel2")}
-        >
-          <AccordionSummary aria-controls="panel2d-content" id="panel2d-header">
-            <span className="poppins-text-small-bold md:poppins-text-avg-bold">
-              What is the specific address of the property?
-            </span>
-          </AccordionSummary>
-          <AccordionDetails>
-            <span className="poppins-text-small md:poppins-text-avg">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-              eget. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-              eget.
-            </span>
-          </AccordionDetails>
-        </Accordion>
-        <Accordion
-        //   expanded={expanded === "panel3"}
-        //   onChange={handleChange("panel3")}
-        >
-          <AccordionSummary aria-controls="panel3d-content" id="panel3d-header">
-            <span className="poppins-text-small-bold md:poppins-text-avg-bold">
-              How much is the transfer fee?
-            </span>
-          </AccordionSummary>
-          <AccordionDetails>
-            <span className="poppins-text-small md:poppins-text-avg">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-              eget. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Suspendisse malesuada lacus ex, sit amet blandit leo lobortis
-              eget.
-            </span>
-          </AccordionDetails>
-        </Accordion>
+
+        {faqs.length > 0 ? (
+          faqs.map((faq, index) => (
+            <Accordion
+              key={faq._id}
+              expanded={expanded === `panel${index}`}
+              onChange={handleChange(`panel${index}`)}
+              className="pt-6"
+            >
+              <AccordionSummary
+                aria-controls={`panel${index}-content`}
+                id={`panel${index}-header`}
+              >
+                <span className="poppins-text-small-bold md:poppins-text-avg-bold">
+                  {faq.question}
+                </span>
+              </AccordionSummary>
+              <AccordionDetails>
+                <span className="poppins-text-small md:poppins-text-avg">
+                  {faq.answer}
+                </span>
+              </AccordionDetails>
+            </Accordion>
+          ))
+        ) : (
+          <Typography>No FAQs available</Typography>
+        )}
       </div>
     </div>
   );
-}
+};
 
 export default CustomizedAccordions;

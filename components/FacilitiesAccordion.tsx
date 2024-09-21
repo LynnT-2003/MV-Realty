@@ -6,7 +6,7 @@ import MuiAccordionSummary, {
   AccordionSummaryProps,
 } from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
-import { FacilityType, Listing, Property } from "@/types";
+import { FacilityType, Property } from "@/types";
 import { urlForImage } from "@/sanity/lib/image";
 
 interface FacilitiesAccordionProps {
@@ -49,9 +49,6 @@ const FacilitiesAccordion: React.FC<FacilitiesAccordionProps> = ({
   propertyDetails,
   facilityTypeDetails,
 }) => {
-  console.log("Property Facility Details:", propertyDetails.facilities);
-  console.log("Property FacilityType Details:", facilityTypeDetails);
-
   // Create a mapping from facilityType _id to name
   const facilityTypeMap = facilityTypeDetails.reduce(
     (acc, type) => {
@@ -82,7 +79,7 @@ const FacilitiesAccordion: React.FC<FacilitiesAccordionProps> = ({
         </p>
 
         {Object.keys(groupedFacilities).map((facilityType, index) => (
-          <Accordion key={index} className="py-3">
+          <Accordion key={index} expanded={true} className="py-3">
             <AccordionSummary
               aria-controls={`panel-${index}-content`}
               id={`panel-${index}-header`}
