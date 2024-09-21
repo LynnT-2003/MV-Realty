@@ -20,6 +20,19 @@ interface SearchResultsSectionProps {
   filteredProperties: Property[];
   isActive: boolean; // Prop to manage the active state
 }
+
+/**
+ * SearchResultsSection component renders the search results in a tabular format.
+ * The component takes in three props: filteredListings, filteredProperties, and isActive.
+ * The filteredListings and filteredProperties props are arrays of objects, where each object
+ * represents a listing or property. The isActive prop is a boolean that determines whether
+ * the search section is shown or not.
+ * @param {Listing[]} filteredListings - The filtered list of listings
+ * @param {Property[]} filteredProperties - The filtered list of properties
+ * @param {boolean} isActive - Whether the search section is active or not
+ * @returns {JSX.Element} - The rendered SearchResultsSection component
+ */
+
 const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
   filteredListings,
   filteredProperties,

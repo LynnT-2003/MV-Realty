@@ -41,13 +41,31 @@ const downloadFile = (url: string) => {
     });
 };
 
+/**
+ * A page that displays a single listing and its associated property.
+ * Given a listing id, fetches the listing and its associated property.
+ * Fetches all facility types and displays them in a accordion.
+ * Displays the location of the property on a map.
+ * Allows the user to schedule a viewing or download the property brochure.
+ *
+ * @param {Object} params - The id of the listing to fetch.
+ * @param {string} params.id - The id of the listing to fetch.
+ */
+
 const ListingDetailPage = ({ params }: { params: { id: string } }) => {
   const router = useRouter();
   const { id } = params;
 
+  // Create a state variable to hold the retrieved listing
   const [listing, setListing] = React.useState<Listing | null>(null);
+
+  // Create a state variable to hold the retrieved property
   const [property, setProperty] = React.useState<Property | null>(null);
+
+  // Create a state variable to hold the retrieved facility types
   const [facilityType, setFacilityType] = React.useState<FacilityType[]>([]);
+
+  // Create a state variable to control the loading state
   const [loading, setLoading] = React.useState(true);
 
   //   const [developer, setDeveloper] = React.useState<Developer | null>(null);
@@ -63,39 +81,47 @@ const ListingDetailPage = ({ params }: { params: { id: string } }) => {
   //     }
   //   }, [slug]);
 
+  // When the component mounts, fetch the listing and the associated property
+  // and facility types
   React.useEffect(() => {
     if (id) {
+      // Fetch the listing
       fetchListingById(id).then((listingData) => {
         console.log("Received ID: ", id);
         setListing(listingData);
-        // if (listingData?.property) {
-        // }
 
-        // Fetch and log the associated property
+        // Fetch the associated property
         const propertyId = listingData.property._ref;
         fetchPropertyById(propertyId).then((propertyData) => {
           setProperty(propertyData);
         });
       });
 
+      // Fetch all facility types
       fetchAllFacilityTypes().then((facilityTypeData) => {
         console.log("Fetched all Facility Types", facilityTypeData);
         setFacilityType(facilityTypeData);
       });
 
+      // Set a timer to stop loading after some time
       const timer = setTimeout(() => {
         setLoading(false); // Stop loading after some time or when data is ready
       }, 1000);
 
+      // When the effect is cleaned up, clear the timer
       return () => clearTimeout(timer);
     }
   }, [id]);
 
+  // If the loading is in progress or the data is not ready, return the loading page
   if (!listing || !property || loading) {
     return <LoadingPage />;
   }
 
+  // Log the property data
   console.log(property);
+
+  // Generate the URL for the PDF file
   const pdf_file_url = property.brochure
     ? urlForFile(property.brochure) // Generate the correct URL for the PDF
     : null;

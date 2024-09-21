@@ -50,6 +50,24 @@ interface BrowseCarouselProps {
   searchActionClicked: boolean;
 }
 
+/**
+ * The HomeSearchSection component renders a search bar with a filter section
+ * and a section to display search results. It takes in three props: listings,
+ * properties, and onSearchSectionClick. The onSearchSectionClick prop is a
+ * function that is called when the user clicks on the search section. The
+ * component also has a searchActionClicked prop that is used to determine
+ * whether to show the search results section or not. The component renders a
+ * search bar with a filter section and a section to display search results.
+ * When the user types in the search bar, the component performs a search and
+ * updates the state with the filtered results. When the user clicks on the
+ * search section, the component calls the onSearchSectionClick function.
+ * @param {Listing[]} listings - An array of Listing objects
+ * @param {Property[]} properties - An array of Property objects
+ * @param {function} onSearchSectionClick - A function that is called when the user clicks on the search section
+ * @param {boolean} searchActionClicked - A boolean that is used to determine whether to show the search results section or not
+ * @returns {JSX.Element} - The rendered HomeSearchSection component
+ */
+
 const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
   listings,
   properties,

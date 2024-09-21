@@ -3,10 +3,32 @@ import React, { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
 import { Loader } from "@googlemaps/js-api-loader";
 
+/**
+ * A component that renders a map with the nearest BTS stations.
+ *
+ * Props:
+ * - lat: The latitude of the starting point.
+ * - lng: The longitude of the starting point.
+ *
+ * The component will render a map with the nearest BTS stations within 1000 meters.
+ * If no BTS stations are found within 1000 meters, it will render a message indicating
+ * that no stations were found.
+ *
+ * The map is rendered with custom styles to hide other details, and the nearest BTS
+ * stations are marked with a custom icon. The InfoWindow for each station will show
+ * the name of the station, the walking distance, and the walking duration.
+ *
+ * The component also renders a list of the nearest BTS stations by line.
+ */
+
 export const MapDemo = ({ lat, lng }) => {
+  // Ref to the map element
   const mapRef = React.useRef(null);
+
+  // State to store the nearest BTS stations
   const [nearestBTS, setNearestBTS] = useState([]);
 
+  // List of BTS stations on the Sukhumvit Line
   const btsStationsSukhumvitLine = [
     "Ratchathewi",
     "Asok",
@@ -42,6 +64,7 @@ export const MapDemo = ({ lat, lng }) => {
     "Saphan Khwai",
   ];
 
+  // List of BTS stations on the Silom Line
   const btsStationsSilomLine = [
     "National Stadium",
     "Siam",
@@ -59,8 +82,10 @@ export const MapDemo = ({ lat, lng }) => {
     "Bang Wa",
   ];
 
+  // Effect to initialize the map
   useEffect(() => {
     const initMap = async () => {
+      // Load the Google Maps API
       const loader = new Loader({
         apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
         version: "weekly",
@@ -69,6 +94,7 @@ export const MapDemo = ({ lat, lng }) => {
 
       await loader.load();
 
+      // Create the map
       const google = window.google;
       const position = { lat, lng };
 
@@ -104,11 +130,13 @@ export const MapDemo = ({ lat, lng }) => {
 
       const map = new google.maps.Map(mapRef.current, mapOptions);
 
+      // Custom marker icon
       const customMarkerIcon = {
         url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
         scaledSize: new google.maps.Size(40, 40),
       };
 
+      // Add a marker for the current location
       const marker = new google.maps.Marker({
         map: map,
         position: position,
@@ -123,6 +151,7 @@ export const MapDemo = ({ lat, lng }) => {
       // Automatically open the InfoWindow when the map is loaded
       infoWindow.open(map, marker);
 
+      // Search for BTS stations within 1000 meters radius
       const service = new google.maps.places.PlacesService(map);
       const request = {
         location: position,
@@ -142,6 +171,7 @@ export const MapDemo = ({ lat, lng }) => {
               suppressMarkers: true, // Prevent automatic markers, as we'll add custom ones
               preserveViewport: true,
             });
+
             if (
               (btsStationsSukhumvitLine.some((station) =>
                 place.name.includes(station)
@@ -236,6 +266,7 @@ export const MapDemo = ({ lat, lng }) => {
     initMap();
   }, [lat, lng]);
 
+  // Function to render nearest BTS stations by line
   const renderNearestStations = (lineName, stations) => {
     return (
       <div className="pl-4 pt-4">
@@ -281,6 +312,7 @@ export const MapDemo = ({ lat, lng }) => {
     );
   };
 
+  // Render the map
   return (
     <div
       style={{
@@ -298,6 +330,7 @@ export const MapDemo = ({ lat, lng }) => {
           maxWidth: "1150px",
           height: "0",
           paddingBottom: "60%", // Maintain aspect ratio
+
           position: "relative",
         }}
       >

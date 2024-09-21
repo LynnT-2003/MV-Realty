@@ -38,6 +38,25 @@ const downloadFile = (url: string) => {
     });
 };
 
+/**
+ * The PropertyDetailPage component is responsible for rendering the details of a property with a given slug.
+ * The PropertyDetailPage component renders the details of a property with a given slug.
+ * It fetches the property data, associated listings, developer, and facility types,
+ * and shows a loading page until all the data is ready.
+ * It also shows a map demo component and buttons for scheduling a viewing and downloading the brochure.
+ *
+ * The component takes in a `params` object as a prop, which contains the value of the `slug` parameter from the URL.
+ * It uses this value to fetch the data for the property with the given slug, and then renders the property details page.
+ *
+ * The component fetches the property data, associated listings, developer, and facility types
+ * and shows a loading page until all the data is ready.
+ * It also shows a map demo component and buttons for scheduling a viewing and downloading the brochure.
+ *
+ * @param {Object} params - The object containing the value of the `slug` parameter from the URL
+ * @param {string} params.slug - The slug of the property to render
+ * @returns {JSX.Element} The JSX element for the property details page
+ */
+
 const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
   // The `params` object contains the value of the `slug` parameter from the URL
   const router = useRouter();
@@ -52,23 +71,28 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
 
   // When the component mounts, fetch the data for the property with the given slug
   // and its associated listings, developer, and facility types
+  // and show a loading page until all the data is ready
   React.useEffect(() => {
     if (slug) {
       // Fetch the property with the given slug
+      // and set the property state to the fetched data
       fetchPropertyBySlug(slug).then((propertyData) => {
         setProperty(propertyData);
         if (propertyData?.developer) {
           // Fetch the developer associated with the property
+          // and set the developer state to the fetched data
           fetchDeveloperById(propertyData.developer._ref).then(setDeveloper);
         }
         if (propertyData._id) {
           // Fetch the listings associated with the property
+          // and set the listings state to the fetched data
           fetchListingsByPropertyId(propertyData._id).then(setListings);
           console.log("Fetched all Listings by Property ID", listings);
         }
       });
 
       // Fetch all facility types
+      // and set the facilityType state to the fetched data
       fetchAllFacilityTypes().then((facilityTypeData) => {
         console.log("Fetched all Facility Types", facilityTypeData);
         setFacilityType(facilityTypeData);

@@ -12,6 +12,12 @@ interface BrowseCarouselProps {
   collections: Collections[];
 }
 
+/**
+ * A carousel component for browsing collections
+ * @param collections A list of collection objects
+ * @returns A carousel component that renders a list of collections
+ */
+
 const BrowseCarouselCollection: React.FC<BrowseCarouselProps> = ({
   collections,
 }) => {

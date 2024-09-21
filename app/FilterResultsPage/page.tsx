@@ -6,18 +6,34 @@ import { Property, Listing, Developer } from "@/types";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 
+/**
+ * The FilterResultsPage component is a client-side rendered page that shows
+ * a list of listings and properties filtered by the query parameters.
+ *
+ * The component fetches data from the cache if available, and falls back to
+ * fetching from the server if not. It also handles filtering of the data
+ * based on the query parameters.
+ *
+ * The component takes no props.
+ *
+ * @returns A React component that renders a list of listings and properties
+ * filtered by the query parameters.
+ */
 const FilterResultsPage: React.FC = () => {
   const searchParams = useSearchParams();
 
+  // State variables to store the properties, listings, and developers data
   const [properties, setProperties] = useState<Property[]>([]);
   const [listings, setListings] = useState<Listing[]>([]);
   const [developers, setDevelopers] = useState<Developer[]>([]);
 
+  // A function to retrieve data from local storage
   const getLocalStorage = (key: string) => {
     const storedData = localStorage.getItem(key);
     return storedData ? JSON.parse(storedData) : null;
   };
 
+  // A function to fetch data from the cache if available, or from the server if not
   const fetchDataWithCache = async (key: string) => {
     const storedData = getLocalStorage(key);
     if (storedData) {
@@ -25,6 +41,7 @@ const FilterResultsPage: React.FC = () => {
     }
   };
 
+  // useEffect hook to fetch data when the component mounts
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -36,30 +53,38 @@ const FilterResultsPage: React.FC = () => {
             fetchDataWithCache("developers"),
           ]);
 
+        // Filter the listings based on the query parameters
         const filteredBedroom = listingsData.filter((listing: Listing) => {
+          // If the bedrooms parameter is provided, filter listings that have the same
+          // number of bedrooms as the parameter
           return bedrooms ? listing.bedroom === Number(bedrooms) : true;
         });
 
         const filteredMinPrice = filteredBedroom.filter((listing: Listing) => {
-          // Check if minprice is provided and greater than 0
+          // If the minprice parameter is provided and greater than 0, filter listings
+          // that have a price greater than or equal to the parameter
           return minprice && Number(minprice) > 0
             ? listing.price >= Number(minprice)
             : true;
         });
 
         const filteredMaxPrice = filteredMinPrice.filter((listing: Listing) => {
-          // Check if maxprice is provided and greater than 0
+          // If the maxprice parameter is provided and greater than 0, filter listings
+          // that have a price less than or equal to the parameter
           return maxprice && Number(maxprice) > 0
             ? listing.price <= Number(maxprice)
             : true;
         });
 
         const filteredLocation = filteredMaxPrice.filter((listing: Listing) => {
+          // If the location parameter is provided, filter listings that have the same
+          // location as the parameter
           return location ? listing.listingName.includes(location) : true;
         });
 
         const FilteredListings = filteredLocation;
 
+        // Update the state variables with the filtered data
         setProperties(propertiesData);
         setListings(FilteredListings);
         setDevelopers(developersData);
