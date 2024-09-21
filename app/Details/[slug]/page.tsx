@@ -1,9 +1,15 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { urlForFile, urlForImage } from "@/sanity/lib/image";
 import { Button } from "@/components/ui/button";
-import { Developer, Facility, FacilityType, Property } from "../../../types";
+import {
+  Developer,
+  Facility,
+  FacilityType,
+  Listing,
+  Property,
+} from "../../../types";
 import { fetchPropertyBySlug } from "@/services/PropertyServices";
 import { fetchDeveloperById } from "@/services/DeveloperServices";
 import MapDemo from "@/components/MapDemo";
@@ -13,6 +19,8 @@ import FacilitiesAccordion from "@/components/FacilitiesAccordion";
 import { fetchAllFacilityTypes } from "@/services/FacilityServices";
 import { PopupButton } from "react-calendly";
 import LoadingPage from "./loading";
+import InfiniteMovingCardsDemo from "@/components/infinite-cards-demo";
+import { fetchListingsByPropertyId } from "@/services/ListingServices";
 
 const downloadFile = (url: string) => {
   if (!url) return;
@@ -34,6 +42,7 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
   const router = useRouter();
   const { slug } = params;
   const [property, setProperty] = React.useState<Property | null>(null);
+  const [listings, setListings] = React.useState<Listing[]>([]);
   const [developer, setDeveloper] = React.useState<Developer | null>(null);
   const [facilityType, setFacilityType] = React.useState<FacilityType[]>([]);
   const [loading, setLoading] = React.useState(true);
@@ -45,6 +54,10 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
         if (propertyData?.developer) {
           fetchDeveloperById(propertyData.developer._ref).then(setDeveloper);
         }
+        if (propertyData._id) {
+          fetchListingsByPropertyId(propertyData._id).then(setListings);
+          console.log("Fetched all Listings by Property ID", listings);
+        }
       });
 
       fetchAllFacilityTypes().then((facilityTypeData) => {
@@ -55,13 +68,13 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
       const timer = setTimeout(() => {
         setLoading(false); // Stop loading after some time or when data is ready
       }, 1000);
-  
+
       return () => clearTimeout(timer);
     }
   }, [slug]);
 
   if (!property || !developer || loading) {
-    return <LoadingPage/>;
+    return <LoadingPage />;
   }
 
   console.log(property);
@@ -73,9 +86,7 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
   return (
     <div>
       <PropertyDetailsImageBento propertyDetails={property} />
-      <PropertyDetailsIntro
-        propertyDetails={property} developer={developer}
-      />
+      <PropertyDetailsIntro propertyDetails={property} developer={developer} />
 
       <FacilitiesAccordion
         propertyDetails={property}
@@ -87,7 +98,9 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
         <DetailsImageGridLayout photos={property.photos} />
       </div> */}
 
-      <div className="w-full flex justify-center mb-24 pb-24 md:pb-20">
+      <InfiniteMovingCardsDemo listings={listings} />
+
+      <div className="w-full flex justify-center mb-24 py-24 md:py-20">
         <div className="md:max-w-[1100px] w-[100vw] md:max-h-[805px] h-[80vw]">
           <MapDemo
             lat={property.geoLocation.lat}
@@ -110,7 +123,6 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
         >
           Download Brochure
         </button>
-        
       </div>
     </div>
   );
