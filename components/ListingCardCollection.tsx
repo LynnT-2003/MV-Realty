@@ -146,7 +146,7 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
       {!showFilter && (
         <div className="flex w-screen lg:w-[1320px]">
           <div className="ipad-screen:w-full w-screenrounded-lg overflow-hidden px-2 flex flex-col h-[85vh] overflow-y-scroll">
-            {filteredListings.length > 1 && listings.length > 0 && (
+            {filteredListings.length > 0 && listings.length > 0 && (
               <h1 className="pb-1 ipad-screen:ml-5 ml-9 font-semibold poppins-text">
                 Available Listings
               </h1>
@@ -300,27 +300,30 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
                 })}
               </div>
             )}
-
-            <h1 className="pb-1 ipad-screen:ml-5 ml-9 font-semibold poppins-text">
-              Available Properties
-            </h1>
-            <div className="flex grid ml-5 grid-cols-1 ipad-screen:grid-cols-2 lg:grid-cols-3">
-              {properties.map((property, index) => {
-                return (
-                  <div
-                    key={index}
-                    onClick={() => {
-                      // handleListingClick(listing._id);
-                    }}
-                    className="lg:ml-0 ipad-screen:px-0 px-5 relative rounded-lg overflow-hidden inline-block mb-4 md:mb-0 group w-full"
-                  >
-                    {/* <LensDemo listing={listing} properties={properties} /> */}
-                    {/* <h1>{property.title}</h1> */}
-                    <LensCardProperties property={property} />
-                  </div>
-                );
-              })}
-            </div>
+            {properties.length > 0 && (
+              <h1 className="pb-1 ipad-screen:ml-5 ml-9 font-semibold poppins-text">
+                Available Properties
+              </h1>
+            )}
+            {properties.length > 0 && (
+              <div className="flex grid ml-5 grid-cols-1 ipad-screen:grid-cols-2 lg:grid-cols-3">
+                {properties.map((property, index) => {
+                  return (
+                    <div
+                      key={index}
+                      onClick={() => {
+                        // handleListingClick(listing._id);
+                      }}
+                      className="lg:ml-0 ipad-screen:px-0 px-5 relative rounded-lg overflow-hidden inline-block mb-4 md:mb-0 group w-full"
+                    >
+                      {/* <LensDemo listing={listing} properties={properties} /> */}
+                      {/* <h1>{property.title}</h1> */}
+                      <LensCardProperties property={property} />
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -409,7 +412,7 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
 
           {/* Second column (listings, taking 2/3 width) */}
           <div className="ipad-screen:w-full w-screenrounded-lg overflow-hidden px-2 flex flex-col h-[85vh] overflow-y-scroll">
-            {filteredListings.length > 1 && listings.length > 0 && (
+            {filteredListings.length > 0 && listings.length > 0 && (
               <h1 className="pb-1 ipad-screen:ml-5 ml-9 font-semibold poppins-text">
                 Available Listings
               </h1>
@@ -544,7 +547,7 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
               </div>
             </div>
 
-            {filteredListings.length > 1 && listings.length > 0 && (
+            {filteredListings.length > 0 && listings.length > 0 && (
               <div className="flex grid grid-cols-1 ipad-screen:grid-cols-2 lg:grid-cols-3">
                 {filteredListings.map((listing, index) => {
                   return (
@@ -562,27 +565,32 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
               </div>
             )}
 
-            <h1 className="pb-1 ipad-screen:ml-5 ml-9 font-semibold poppins-text">
-              Available Properties
-            </h1>
-            <div className="flex grid grid-cols-1 ipad-screen:grid-cols-2 lg:grid-cols-3">
-              {properties.map((property, index) => {
-                return (
-                  <div
-                    key={index}
-                    onClick={() => {
-                      // handleListing
-                      // handleListingClick(listing._id);
-                    }}
-                    className="lg:ml-0 ipad-screen:px-0 px-5 relative rounded-lg overflow-hidden inline-block mb-4 md:mb-0 group w-full"
-                  >
-                    {/* <LensDemo listing={listing} properties={properties} /> */}
-                    {/* <h1>{property.title}</h1> */}
-                    <LensCardProperties property={property} />
-                  </div>
-                );
-              })}
-            </div>
+            {properties.length > 0 && (
+              <h1 className="pb-1 ipad-screen:ml-5 ml-9 font-semibold poppins-text">
+                Available Properties
+              </h1>
+            )}
+
+            {properties.length > 0 && (
+              <div className="flex grid grid-cols-1 ipad-screen:grid-cols-2 lg:grid-cols-3">
+                {properties.map((property, index) => {
+                  return (
+                    <div
+                      key={index}
+                      onClick={() => {
+                        // handleListing
+                        // handleListingClick(listing._id);
+                      }}
+                      className="lg:ml-0 ipad-screen:px-0 px-5 relative rounded-lg overflow-hidden inline-block mb-4 md:mb-0 group w-full"
+                    >
+                      {/* <LensDemo listing={listing} properties={properties} /> */}
+                      {/* <h1>{property.title}</h1> */}
+                      <LensCardProperties property={property} />
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
       )}
