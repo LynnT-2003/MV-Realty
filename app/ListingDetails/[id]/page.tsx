@@ -25,7 +25,6 @@ import { fetchAllFacilityTypes } from "@/services/FacilityServices";
 import { urlForFile } from "@/sanity/lib/image";
 import LoadingPage from "./loading";
 
-
 const downloadFile = (url: string) => {
   if (!url) return "No Url";
 
@@ -87,7 +86,7 @@ const ListingDetailPage = ({ params }: { params: { id: string } }) => {
       const timer = setTimeout(() => {
         setLoading(false); // Stop loading after some time or when data is ready
       }, 1000);
-  
+
       return () => clearTimeout(timer);
     }
   }, [id]);
@@ -96,11 +95,11 @@ const ListingDetailPage = ({ params }: { params: { id: string } }) => {
     return <LoadingPage />;
   }
 
-  console.log(property)
+  console.log(property);
   const pdf_file_url = property.brochure
-  ? urlForFile(property.brochure) // Generate the correct URL for the PDF
-  : null;
-  
+    ? urlForFile(property.brochure) // Generate the correct URL for the PDF
+    : null;
+
   return (
     <div>
       {/* <PropertyDetailsImageBento propertyDetails={property} />
@@ -149,7 +148,6 @@ const ListingDetailPage = ({ params }: { params: { id: string } }) => {
         >
           Download Brochure
         </button>
-        
       </div>
     </div>
   );

@@ -22,8 +22,8 @@ const BrowseCarouselCollection: React.FC<BrowseCarouselProps> = ({
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
 
-  const handleCollectionClick = (slug: String) => {
-    router.push(`/Collections/${slug}`); // Here
+  const handleCollectionClick = (id: String) => {
+    router.push(`/Collections/${id}`); // Here
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {
