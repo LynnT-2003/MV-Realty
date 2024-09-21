@@ -3,11 +3,13 @@
 import React, { useState, useEffect } from "react";
 import { fetchCollectionsById } from "@/services/CollectionsServices";
 import { fetchPropertyById } from "@/services/PropertyServices";
-import { Property } from "@/types";
+import { Property, Listing } from "@/types";
+import ListingCardCollection from "@/components/ListingCardCollection";
 
 const CollectionsPage = ({ params }: { params: { id: string } }) => {
   const { id } = params;
 
+  const [listings, setListings] = useState<Listing[]>([]);
   const [collectionProperties, setCollectionProperties] = useState<Property[]>(
     []
   );
@@ -35,10 +37,14 @@ const CollectionsPage = ({ params }: { params: { id: string } }) => {
   }, [id, fetched]);
 
   return (
-    <div>
-      {collectionProperties.map((property) => (
-        <div key={property._id}>{property.title}</div>
-      ))}
+    <div className="w-full flex justify-center pb-16">
+      <div className="md:max-w-[1320px] w-[95vw] bg-blue-100">
+        <ListingCardCollection
+          listings={listings}
+          properties={collectionProperties}
+          showFilter={false}
+        />
+      </div>
     </div>
   );
 };

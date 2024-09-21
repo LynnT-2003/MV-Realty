@@ -9,13 +9,11 @@ import { Listing, Property, Developer } from "@/types";
 
 interface LensDemoProps {
   listing: Listing;
-  properties: Property[];
   //   developers: Developer[];
 }
 
-const LensDemo: React.FC<LensDemoProps> = ({
+const LensCardListings: React.FC<LensDemoProps> = ({
   listing,
-  properties,
   //   developers,
 }) => {
   const [hovering, setHovering] = useState(false);
@@ -477,4 +475,4 @@ const Rays = ({ className }: { className?: string }) => {
   );
 };
 
-export default LensDemo;
+export default LensCardListings;

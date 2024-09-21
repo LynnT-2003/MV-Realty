@@ -24,7 +24,11 @@ const SearchResultsPage: React.FC = () => {
 
   return (
     <div className=" pt-12">
-      <ListingCardCollection listings={listings} properties={properties} />
+      <ListingCardCollection
+        listings={listings}
+        properties={properties}
+        showFilter={true}
+      />
     </div>
   );
 };
