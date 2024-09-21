@@ -269,12 +269,20 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
     }
 
     // Filter listings and properties based on the cleanedValue
-    const filteredListings = listings.filter((listing) =>
-      listing.description?.toLowerCase().includes(cleanedValue.toLowerCase())
+    const filteredListings = listings.filter(
+      (listing) =>
+        listing.description
+          ?.toLowerCase()
+          .includes(cleanedValue.toLowerCase()) ||
+        listing.listingName?.toLowerCase().includes(cleanedValue.toLowerCase())
     );
 
-    const filteredProperties = properties.filter((property) =>
-      property.description.toLowerCase().includes(cleanedValue.toLowerCase())
+    const filteredProperties = properties.filter(
+      (property) =>
+        property.description
+          .toLowerCase()
+          .includes(cleanedValue.toLowerCase()) ||
+        property.title.toLowerCase().includes(cleanedValue.toLowerCase())
     );
 
     if (cleanedValue.length === 0) {
