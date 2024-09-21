@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Listing, Property, Developer } from "@/types";
 
 import LensCardListings from "./LensCardListings";
+import LensCardProperties from "./LensCardProperties";
 import { Slider } from "./ui/slider";
 import { Button } from "./ui/button";
 import { cn } from "@/lib/utils";
@@ -146,8 +147,8 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
         <div className="flex w-screen lg:w-[1320px]">
           <div className="ipad-screen:w-full w-screenrounded-lg overflow-hidden px-2 flex flex-col h-[85vh] overflow-y-scroll">
             {filteredListings.length > 1 && listings.length > 0 && (
-              <h1 className="pb-1 ipad-screen:ml-5 ml-9 font-medium">
-                Listings
+              <h1 className="pb-1 ipad-screen:ml-5 ml-9 font-semibold poppins-text">
+                Available Listings
               </h1>
             )}
 
@@ -300,10 +301,10 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
               </div>
             )}
 
-            <h1 className="pb-1 ipad-screen:ml-5 ml-9 font-medium">
-              Properties
+            <h1 className="pb-1 ipad-screen:ml-5 ml-9 font-semibold poppins-text">
+              Available Properties
             </h1>
-            <div className="flex grid ml-5 bg-red-500 grid-cols-1 ipad-screen:grid-cols-2 lg:grid-cols-3">
+            <div className="flex grid ml-5 grid-cols-1 ipad-screen:grid-cols-2 lg:grid-cols-3">
               {properties.map((property, index) => {
                 return (
                   <div
@@ -314,7 +315,8 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
                     className="lg:ml-0 ipad-screen:px-0 px-5 relative rounded-lg overflow-hidden inline-block mb-4 md:mb-0 group w-full"
                   >
                     {/* <LensDemo listing={listing} properties={properties} /> */}
-                    <h1>{property.title}</h1>
+                    {/* <h1>{property.title}</h1> */}
+                    <LensCardProperties property={property} />
                   </div>
                 );
               })}
@@ -327,8 +329,8 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
         <div className="flex w-screen lg:w-[1320px]">
           {/* First column (blank, taking 1/3 width) */}
           <div className="mx-5 position:fixed ipad-screen:block rounded-3xl ipad-screen:w-[300px] w-[0px] hidden">
-            <div className="px-7 pt-10 pb-16 rounded-lg ">
-              <h1 className="text-center font-medium">Filters</h1>
+            <div className="px-7 pt-10 pb-16 mt-[42px] rounded-lg bg-blue-100 ">
+              <h1 className="poppins-text ml-1 font-lg">Filter Listings:</h1>
               {filters.map((filter) => (
                 <div key={filter} className="md:px-0 my-10">
                   <Popover
@@ -339,7 +341,7 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
                   >
                     <PopoverTrigger
                       asChild
-                      className="bg-blue-100 hover:bg-slate-300 border-0"
+                      className="hover:bg-slate-300 py-6 border-0"
                     >
                       <Button
                         variant="outline"
@@ -347,7 +349,7 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
                         aria-expanded={openFilter === filter}
                         className="flex justify-between text-right pr-4 w-full"
                       >
-                        <span className="flex-1 text-left">
+                        <span className="flex-1 text-left text-lg text-slate-700 font-thin poppins-text">
                           {filter === "Bedrooms"
                             ? `${selectedValues[filter]} Bedroom`
                             : `
@@ -408,8 +410,8 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
           {/* Second column (listings, taking 2/3 width) */}
           <div className="ipad-screen:w-full w-screenrounded-lg overflow-hidden px-2 flex flex-col h-[85vh] overflow-y-scroll">
             {filteredListings.length > 1 && listings.length > 0 && (
-              <h1 className="pb-1 ipad-screen:ml-5 ml-9 font-medium">
-                Listings
+              <h1 className="pb-1 ipad-screen:ml-5 ml-9 font-semibold poppins-text">
+                Available Listings
               </h1>
             )}
 
@@ -560,8 +562,8 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
               </div>
             )}
 
-            <h1 className="pb-1 ipad-screen:ml-5 ml-9 font-medium">
-              Properties
+            <h1 className="pb-1 ipad-screen:ml-5 ml-9 font-semibold poppins-text">
+              Available Properties
             </h1>
             <div className="flex grid grid-cols-1 ipad-screen:grid-cols-2 lg:grid-cols-3">
               {properties.map((property, index) => {
@@ -575,7 +577,8 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
                     className="lg:ml-0 ipad-screen:px-0 px-5 relative rounded-lg overflow-hidden inline-block mb-4 md:mb-0 group w-full"
                   >
                     {/* <LensDemo listing={listing} properties={properties} /> */}
-                    <h1>{property.title}</h1>
+                    {/* <h1>{property.title}</h1> */}
+                    <LensCardProperties property={property} />
                   </div>
                 );
               })}

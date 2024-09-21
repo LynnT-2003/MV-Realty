@@ -38,7 +38,7 @@ const CollectionsPage = ({ params }: { params: { id: string } }) => {
 
   return (
     <div className="w-full flex justify-center pb-16">
-      <div className="md:max-w-[1320px] w-[95vw] bg-blue-100">
+      <div className="md:max-w-[1320px] w-[95vw]">
         <ListingCardCollection
           listings={listings}
           properties={collectionProperties}
