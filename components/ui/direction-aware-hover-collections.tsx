@@ -66,7 +66,7 @@ export const DirectionAwareHoverCollections = ({
       onMouseEnter={handleMouseEnter}
       ref={ref}
       className={cn(
-        "macbook-air:w-[25rem] macbook-air:h-[14rem] w-full h-[60vw] md:w-[30.55rem] md:h-[20.78rem] mr-[1vw] rounded-lg overflow-hidden group/card relative",
+        "macbook-air:w-[24.2rem] macbook-air:h-[16.60rem] w-full h-[60vw] md:w-[30.55rem] md:h-[20.78rem] mr-[1vw] rounded-lg overflow-hidden group/card relative",
         className
       )}
     >
@@ -77,10 +77,10 @@ export const DirectionAwareHoverCollections = ({
           whileHover={direction}
           exit="exit"
         >
-          <motion.div className="group-hover/card:block hidden absolute inset-0 w-full h-full bg-black/40 z-10 transition duration-500" />
+          <motion.div className="group-hover/card:block hidden absolute inset-0 w-full h-full z-10 transition duration-500" />
           <motion.div
             variants={variants}
-            className="h-full w-full relative bg-gray-50 dark:bg-black"
+            className="h-full w-full relative"
             transition={{
               duration: 0.2,
               ease: "easeOut",
@@ -126,16 +126,16 @@ const variants = {
     y: 0,
   },
   top: {
-    y: 20,
+    y: 10,
   },
   bottom: {
-    y: -20,
+    y: -10,
   },
   left: {
-    x: 20,
+    y: -10,
   },
   right: {
-    x: -20,
+    y: -10,
   },
 };
 

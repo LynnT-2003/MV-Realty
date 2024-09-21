@@ -3,7 +3,7 @@ import React, { useRef, useState } from "react";
 import { Image } from "sanity";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { DirectionAwareHover } from "./ui/direction-aware-hover";
-import {DirectionAwareHoverCollections} from "./ui/direction-aware-hover-collections";
+import { DirectionAwareHoverCollections } from "./ui/direction-aware-hover-collections";
 import { Collections } from "@/types";
 import { useRouter } from "next/navigation";
 
@@ -90,7 +90,8 @@ const BrowseCarouselCollection: React.FC<BrowseCarouselProps> = ({
             onClick={() => {
               handleCollectionClick(collection._id);
             }}
-            className="relative inline-block macbook-air:w-[25rem] macbook-air:h-[14rem] md:w-[30.55rem] mb-4 md:mb-0 md:h-[20.78rem] md:mr-[1vw] group"
+            // className="relative inline-block macbook-air:w-[25rem] h-full md:w-[30.55rem] mb-4 md:mb-0 md:mr-[1vw] group"
+            className=""
           >
             <DirectionAwareHoverCollections
               imageUrl={urlForImage(collection.thumbnail)}

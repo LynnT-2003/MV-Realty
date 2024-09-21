@@ -14,7 +14,7 @@ interface BrowseCarouselProps {
 
 const BrowseCarouselProperty: React.FC<BrowseCarouselProps> = ({
   properties,
-  developers
+  developers,
 }) => {
   const router = useRouter();
 
@@ -96,8 +96,8 @@ const BrowseCarouselProperty: React.FC<BrowseCarouselProps> = ({
               onClick={() => {
                 handlePropertyClick(property.slug.current);
               }}
-              // className="relative inline-block macbook-air:w-[24.2rem] macbook-air:h-[16.60rem] md:w-[30.55rem] mb-4 md:mb-0 md:h-[20.78rem] md:mr-[1vw] group"
-              className="relative inline-block mb-4 md:mb-0 group"
+              className="relative inline-block macbook-air:w-[24.2rem] macbook-air:h-[16.60rem] md:w-[30.55rem] mb-4 md:mb-0 md:h-[20.78rem] md:mr-[1vw] group"
+              // className="relative inline-block mb-4 md:mb-0 group"
             >
               <DirectionAwareHover
                 imageUrl={urlForImage(property.propertyHero)}
