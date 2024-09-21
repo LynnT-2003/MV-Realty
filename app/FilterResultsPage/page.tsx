@@ -91,6 +91,7 @@ const FilterResultsPage: React.FC = () => {
         listings={listings}
         properties={properties}
         // developers={developers}
+        showFilter={true}
       />
     </div>
   );
