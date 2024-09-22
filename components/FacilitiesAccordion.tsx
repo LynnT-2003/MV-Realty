@@ -71,6 +71,20 @@ const FacilitiesAccordion: React.FC<FacilitiesAccordionProps> = ({
     {} as Record<string, any[]>
   );
 
+  // Manage expanded state for all accordions, open all by default
+  const [expanded, setExpanded] = React.useState<string[]>(
+    Object.keys(groupedFacilities) // Initialize with all facility types open
+  );
+
+  const handleChange =
+    (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+      setExpanded((prevExpanded) =>
+        isExpanded
+          ? [...prevExpanded, panel] // Add to expanded array if not already expanded
+          : prevExpanded.filter((p) => p !== panel) // Remove from expanded array if collapsed
+      );
+    };
+
   return (
     <div className="w-full flex justify-center md:pt-0 pt-6 pb-16">
       <div className="md:max-w-[1150px] w-[85vw]">
@@ -79,7 +93,12 @@ const FacilitiesAccordion: React.FC<FacilitiesAccordionProps> = ({
         </p>
 
         {Object.keys(groupedFacilities).map((facilityType, index) => (
-          <Accordion key={index} expanded={true} className="py-3">
+          <Accordion
+            key={index}
+            expanded={expanded.includes(facilityType)} // Check if the current panel is expanded
+            onChange={handleChange(facilityType)}
+            className="py-3"
+          >
             <AccordionSummary
               aria-controls={`panel-${index}-content`}
               id={`panel-${index}-header`}
