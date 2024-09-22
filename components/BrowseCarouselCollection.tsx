@@ -84,7 +84,7 @@ const BrowseCarouselCollection: React.FC<BrowseCarouselProps> = ({
       <div
         id="slider"
         ref={carouselRef}
-        className="md:w-[1200px] w-screen mx-4 md:mx-0 overflow-hidden md:overflow-x-scroll scroll whitespace-nowrap scroll-smooth flex flex-col md:flex-row"
+        className="md:w-[1210px] w-screen mx-4 md:mx-0 overflow-hidden md:overflow-x-scroll scroll whitespace-nowrap scroll-smooth flex flex-col md:flex-row"
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
@@ -97,7 +97,7 @@ const BrowseCarouselCollection: React.FC<BrowseCarouselProps> = ({
               handleCollectionClick(collection._id);
             }}
             // className="relative inline-block macbook-air:w-[25rem] h-full md:w-[30.55rem] mb-4 md:mb-0 md:mr-[1vw] group"
-            className=""
+            className="relative inline-block mb-4 md:mb-0 group"
           >
             <DirectionAwareHoverCollections
               imageUrl={urlForImage(collection.thumbnail)}

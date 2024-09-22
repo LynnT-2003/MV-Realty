@@ -67,7 +67,7 @@ const BrowseCarouselProperty: React.FC<BrowseCarouselProps> = ({
   };
 
   return (
-    <div className="w-full flex items-center justify-center pb-12">
+    <div className="w-full flex items-center justify-center pb-4">
       <div></div>
       <button
         className="hidden md:block mr-10 bg-white shadow-md rounded-full"
@@ -80,7 +80,7 @@ const BrowseCarouselProperty: React.FC<BrowseCarouselProps> = ({
       <div
         id="slider"
         ref={carouselRef}
-        className="md:w-[1200px] w-screen mx-4 md:mx-0 overflow-hidden md:overflow-x-scroll scroll scrollbar-hide whitespace-nowrap scroll-smooth flex flex-col md:flex-row"
+        className="md:w-[1210px] w-screen mx-4 md:mx-0 overflow-hidden md:overflow-x-scroll scroll scrollbar-hide whitespace-nowrap scroll-smooth flex flex-col md:flex-row"
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
@@ -96,8 +96,8 @@ const BrowseCarouselProperty: React.FC<BrowseCarouselProps> = ({
               onClick={() => {
                 handlePropertyClick(property.slug.current);
               }}
-              className="relative inline-block macbook-air:w-[24.2rem] macbook-air:h-[16.60rem] md:w-[30.55rem] mb-4 md:mb-0 md:h-[20.78rem] md:mr-[1vw] group"
-              // className="relative inline-block mb-4 md:mb-0 group"
+              // className="relative inline-block macbook-air:w-[24.2rem] macbook-air:h-[16.60rem] md:w-[30.55rem] mb-4 md:mb-0 md:h-[20.78rem] md:mr-[1vw] group"
+              className="relative inline-block mb-4 md:mb-0 group"
             >
               <DirectionAwareHover
                 imageUrl={urlForImage(property.propertyHero)}
@@ -107,18 +107,19 @@ const BrowseCarouselProperty: React.FC<BrowseCarouselProps> = ({
               </DirectionAwareHover>
               <div className="mt-4 pt-2 pr-2 bg-white rounded-lg mb-8">
                 <div className="relative flex">
-                  <div className="w-80 inline-flex items-center overflow-hidden pr-10">
+                  <div className="w-80 inline-flex items-center overflow-hidden pr-3">
                     <span className="truncate text-lg font-light overflow-hidden whitespace-nowrap">
                       {property.title}
                     </span>
                     <img
                       src={urlForImage(developer.profileIcon)}
                       className="w-8 h-8 ml-1 flex-shrink-0"
+                      loading="lazy"
                     />
                   </div>
-                  <div className="w-20 ml-4">
+                  <div className="w-20">
                     <p className="mr-3 ml-3 absolute top-0 right-0 font-semibold text-xl text-[#193158]">
-                      {property.minPrice}-{property.maxPrice} MB
+                      {property.minPrice} MB
                     </p>
                   </div>
                 </div>

@@ -180,7 +180,7 @@ const HomePage: React.FC = () => {
       <div className="w-full flex items-center justify-center">
         <div className="xl:w-[1200px] overflow-x-scroll scroll whitespace-nowrap scroll-smooth">
           <p className="poppins-text pt-[42px] pb-[27px] font-semibold">
-            Available Properties
+            Featured Properties
           </p>
         </div>
       </div>

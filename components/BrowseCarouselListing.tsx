@@ -84,7 +84,7 @@ const BrowseCarousel: React.FC<BrowseCarouselProps> = ({
       <div
         id="slider"
         ref={carouselRef}
-        className="md:w-[1200px] w-screen mx-4 md:mx-0 overflow-hidden md:overflow-x-scroll scroll scrollbar-hide whitespace-nowrap scroll-smooth flex flex-col md:flex-row "
+        className="md:w-[1210px] w-screen mx-4 md:mx-0 overflow-hidden md:overflow-x-scroll scroll scrollbar-hide whitespace-nowrap scroll-smooth flex flex-col md:flex-row "
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
@@ -105,18 +105,14 @@ const BrowseCarousel: React.FC<BrowseCarouselProps> = ({
               onClick={() => {
                 handlePropertyClick(listing._id);
               }}
+              // className="relative inline-block macbook-air:w-[24.2rem] macbook-air:h-[16.60rem] md:w-[30.55rem] mb-4 md:mb-0 md:h-[20.78rem] md:mr-[1vw] group"
               className="relative inline-block mb-4 md:mb-0 group"
             >
-              {/* ${searchSectionClicked ? "opacity-50" : "opacity-100"} */}
               <DirectionAwareHover
                 imageUrl={urlForImage(listing.listingHero)}
                 className={`${blur ? "opacity-50" : "opacity-100"}`}
               >
                 <p className="font-bold text-xl">{listing.listingName}</p>
-                {/* <p className="font-normal text-sm">$1299 / night</p> */}
-                {/* <span className="font-semibold text-sm mr-6">
-                  {developer.name}
-                </span> */}
                 <span className="font-semibold text-sm">
                   Price: {listing.price}M Baht
                 </span>
