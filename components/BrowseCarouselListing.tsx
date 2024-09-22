@@ -105,8 +105,8 @@ const BrowseCarousel: React.FC<BrowseCarouselProps> = ({
               onClick={() => {
                 handlePropertyClick(listing._id);
               }}
-              // className="relative inline-block macbook-air:w-[24.2rem] macbook-air:h-[16.60rem] md:w-[30.55rem] mb-4 md:mb-0 md:h-[20.78rem] md:mr-[1vw] group"
-              className="relative inline-block mb-4 md:mb-0 group"
+              className="relative inline-block macbook-air:w-[24.2rem] md:w-[30.55rem] mb-4 md:mb-0 md:mr-[1vw] group"
+              // className="relative inline-block mb-4 md:mb-0 group"
             >
               <DirectionAwareHover
                 imageUrl={urlForImage(listing.listingHero)}
@@ -130,7 +130,7 @@ const BrowseCarousel: React.FC<BrowseCarouselProps> = ({
                     />
                   </div>
                   <div className="w-20">
-                    <p className="mr-4 ml-3 absolute top-0 right-0 font-semibold text-xl text-[#193158]">
+                    <p className="mr-0 ml-3 absolute top-0 right-0 font-semibold text-xl text-[#193158]">
                       {listing.price} MB
                     </p>
                   </div>
