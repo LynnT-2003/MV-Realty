@@ -118,8 +118,8 @@ const BrowseCarouselProperty: React.FC<BrowseCarouselProps> = ({
                     />
                   </div>
                   <div className="w-20">
-                    <p className="mr-3 ml-3 absolute top-0 right-0 font-semibold text-xl text-[#193158]">
-                      {property.minPrice} MB
+                    <p className="mr-4 ml-3 absolute top-0 right-0 font-semibold text-xl text-[#193158]">
+                      {property.minPrice} MB - {property.maxPrice} MB
                     </p>
                   </div>
                 </div>
