@@ -384,7 +384,7 @@ export const MapDemo = ({ lat, lng }) => {
               return (
                 <React.Fragment key={index}>
                   <Grid item xs={6}>
-                    <div className="flex items-center justify-start h-32 p-0">
+                    <div className="flex items-center justify-start p-0">
                       <img
                         src={lineIcons[line]}
                         className="w-10 h-10"
@@ -397,10 +397,10 @@ export const MapDemo = ({ lat, lng }) => {
                     </div>
                   </Grid>
                   <Grid item xs={6}>
-                    <div className="flex items-center justify-start h-32 p-0">
+                    <div className="flex items-center justify-start p-0">
                       <img
                         src="/icons/floor.png"
-                        className="w-6 h-6 md:block hidden"
+                        className="w-6 h-6"
                         alt="MRT Icon"
                       />
                       <p className="poppins-text-small-bts md:poppins-text-avg-bold ml-3.5">
@@ -461,7 +461,7 @@ export const MapDemo = ({ lat, lng }) => {
         </>
       ) : (
         <>
-          <div className="text-xl font-semibold pt-4">
+          <div className="text-xl font-semibold pt-4 ">
             Nearby Transportation
           </div>
         </>
@@ -469,7 +469,7 @@ export const MapDemo = ({ lat, lng }) => {
 
       <>
         {nearbyBtsGreenLineStationsState.length > 0 && (
-          <div className="py-0">
+          <div className="py-0 h-full">
             {renderNearestStations(
               "Sukhumvit Green Line",
               "green",
