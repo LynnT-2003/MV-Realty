@@ -400,7 +400,7 @@ export const MapDemo = ({ lat, lng }) => {
                     <div className="flex items-center justify-start h-32 p-0">
                       <img
                         src="/icons/floor.png"
-                        className="w-6 h-6"
+                        className="w-6 h-6 md:block hidden"
                         alt="MRT Icon"
                       />
                       <p className="poppins-text-small-bts md:poppins-text-avg-bold ml-3.5">
