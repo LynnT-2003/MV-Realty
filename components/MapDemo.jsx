@@ -364,13 +364,10 @@ export const MapDemo = ({ lat, lng }) => {
       green: "/bts-icons/green.png",
       silom: "/bts-icons/silom.png",
     };
-    console.log("Stations to render:", stations); // Check the stations array
 
     return (
       <div className="pl-4 pt-4">
-        <p className="pl-4 poppins-text-title-small md:property-details-title-text">
-          {/* {lineName} */}
-        </p>
+        <p className="pl-4 poppins-text-title-small md:property-details-title-text"></p>
         {stations && stations.length > 0 && (
           <Grid
             container
@@ -379,39 +376,35 @@ export const MapDemo = ({ lat, lng }) => {
             spacing={2}
             className="flex items-center"
           >
-            {stations.map((bts, index) => {
-              console.log("Rendering station:", bts); // Debug individual station
-              return (
-                <React.Fragment key={index}>
-                  <Grid item xs={6}>
-                    <div className="flex items-center justify-start p-0">
-                      <img
-                        src={lineIcons[line]}
-                        className="w-10 h-10"
-                        alt={line}
-                      />
-                      <p className="ml-5">{bts.id}</p>
-                      <p className="poppins-text-small-bts md:poppins-text-avg-bold ml-3.5">
-                        {bts.name ? bts.name : "Unknown Station"}{" "}
-                      </p>
-                    </div>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <div className="flex items-center justify-start p-0">
-                      <img
-                        src="/icons/floor.png"
-                        className="w-6 h-6"
-                        alt="MRT Icon"
-                      />
-                      <p className="poppins-text-small-bts md:poppins-text-avg-bold ml-3.5">
-                        {bts.duration ? bts.duration : "N/A"}{" "}
-                        {/* Fallback value */}
-                      </p>
-                    </div>
-                  </Grid>
-                </React.Fragment>
-              );
-            })}
+            {stations.map((bts, index) => (
+              <React.Fragment key={index}>
+                <Grid item xs={6}>
+                  <div className="flex items-center justify-start p-0">
+                    <img
+                      src={lineIcons[line]}
+                      className="w-10 h-10"
+                      alt={line}
+                    />
+                    <p className="ml-5">{bts.id}</p>
+                    <p className="poppins-text-small-bts md:poppins-text-avg-bold ml-3.5">
+                      {bts.name || "Unknown Station"}
+                    </p>
+                  </div>
+                </Grid>
+                <Grid item xs={6}>
+                  <div className="flex items-center justify-start p-0">
+                    <img
+                      src="/icons/floor.png"
+                      className="w-6 h-6"
+                      alt="MRT Icon"
+                    />
+                    <p className="poppins-text-small-bts md:poppins-text-avg-bold ml-3.5">
+                      {bts.duration || "N/A"}
+                    </p>
+                  </div>
+                </Grid>
+              </React.Fragment>
+            ))}
           </Grid>
         )}
       </div>
