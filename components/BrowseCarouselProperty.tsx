@@ -107,15 +107,10 @@ const BrowseCarouselProperty: React.FC<BrowseCarouselProps> = ({
               </DirectionAwareHover>
               <div className="mt-4 pt-2 pr-2 bg-white rounded-lg mb-8">
                 <div className="relative flex">
-                  <div className="w-80 inline-flex items-center overflow-hidden pr-3">
+                  <div className="w-60 inline-flex items-center overflow-hidden pr-3">
                     <span className="truncate text-lg font-light overflow-hidden whitespace-nowrap">
                       {property.title}
                     </span>
-                    <img
-                      src={urlForImage(developer.profileIcon)}
-                      className="w-8 h-8 ml-1 flex-shrink-0"
-                      loading="lazy"
-                    />
                   </div>
                   <div className="w-20">
                     <p className="mr-0 ml-3 absolute top-0 right-0 font-semibold text-xl text-[#193158]">

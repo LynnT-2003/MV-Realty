@@ -15,6 +15,37 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+// Function to create the 2D array
+const createPropertiesWithListings = (
+  listings: Listing[],
+  properties: Property[]
+): Array<[Property, Listing[]]> => {
+  // Step 1: Create a map of property _id -> listings
+  const propertyListingsMap: { [propertyId: string]: Listing[] } = {};
+
+  listings.forEach((listing) => {
+    const propertyRef = listing.property._ref;
+
+    // Initialize array if this property is encountered for the first time
+    if (!propertyListingsMap[propertyRef]) {
+      propertyListingsMap[propertyRef] = [];
+    }
+
+    // Push the listing to the corresponding property
+    propertyListingsMap[propertyRef].push(listing);
+  });
+
+  // Step 2: Build the 2D array, but only include properties that have listings
+  const propertiesWithListings: Array<[Property, Listing[]]> = properties
+    .map((property) => {
+      const propertyListings = propertyListingsMap[property._id] || [];
+      return [property, propertyListings] as [Property, Listing[]];
+    })
+    .filter(([_, propertyListings]) => propertyListings.length > 0); // Filter out properties with no listings
+
+  return propertiesWithListings;
+};
+
 interface SearchResultsSectionProps {
   filteredListings: Listing[];
   filteredProperties: Property[];
@@ -76,6 +107,11 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
       updatedListings = updatedListings.filter(
         (listing) => listing?.bedroom === bedroomFilter
       );
+      const propertiesWithListings = createPropertiesWithListings(
+        updatedListings,
+        updatedProperties
+      );
+      updatedProperties = propertiesWithListings.map(([property]) => property);
     }
 
     // Filter by location
@@ -98,6 +134,12 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
             ?.toLowerCase()
             .includes(locationFilter.toLowerCase())
       );
+
+      // const propertiesWithListings = createPropertiesWithListings(
+      //   updatedListings,
+      //   updatedProperties
+      // );
+      // updatedProperties = propertiesWithListings.map(([property]) => property);
     }
 
     // Filter by max price

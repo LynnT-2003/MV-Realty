@@ -24,6 +24,8 @@ import {
 
 import SearchResultsSection from "./SearchResultsSection";
 import SearchResultsPage from "@/app/SearchResultsPage/page";
+import { fetchListingsByPropertyId } from "@/services/ListingServices";
+import property from "@/sanity/schemas/property";
 
 const filters = [
   "Bedrooms",
@@ -41,6 +43,37 @@ const options: Record<Filter, any[]> = {
   "Max Price": [10, 20, 30, 40, 50, 999],
   Location: ["Siam", "Asoke", "Ratchathewi", "Phrom Phong"],
   "Buy/Rent": ["Buy", "Rent"],
+};
+
+// Function to create the 2D array
+const createPropertiesWithListings = (
+  listings: Listing[],
+  properties: Property[]
+): Array<[Property, Listing[]]> => {
+  // Step 1: Create a map of property _id -> listings
+  const propertyListingsMap: { [propertyId: string]: Listing[] } = {};
+
+  listings.forEach((listing) => {
+    const propertyRef = listing.property._ref;
+
+    // Initialize array if this property is encountered for the first time
+    if (!propertyListingsMap[propertyRef]) {
+      propertyListingsMap[propertyRef] = [];
+    }
+
+    // Push the listing to the corresponding property
+    propertyListingsMap[propertyRef].push(listing);
+  });
+
+  // Step 2: Build the 2D array, but only include properties that have listings
+  const propertiesWithListings: Array<[Property, Listing[]]> = properties
+    .map((property) => {
+      const propertyListings = propertyListingsMap[property._id] || [];
+      return [property, propertyListings] as [Property, Listing[]];
+    })
+    .filter(([_, propertyListings]) => propertyListings.length > 0); // Filter out properties with no listings
+
+  return propertiesWithListings;
 };
 
 interface BrowseCarouselProps {
@@ -286,6 +319,19 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
       console.log("Cleaned Value:", cleanedValue);
     }
 
+    listings.forEach((listing) => {
+      const nameMatch = listing.listingName
+        ?.toLowerCase()
+        .includes(cleanedValue);
+      const descriptionMatch = listing.description
+        ?.toLowerCase()
+        .includes(cleanedValue);
+
+      console.log(listing.listingName);
+      console.log(`Name Match: ${nameMatch}`);
+      console.log(`Description Match: ${descriptionMatch}`);
+    });
+
     // Filter listings and properties based on the cleanedValue
     const filteredListings = listings.filter(
       (listing) =>
@@ -295,12 +341,21 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
         listing.listingName?.toLowerCase().includes(cleanedValue.toLowerCase())
     );
 
-    const filteredProperties = properties.filter(
-      (property) =>
-        property.description
-          .toLowerCase()
-          .includes(cleanedValue.toLowerCase()) ||
-        property.title.toLowerCase().includes(cleanedValue.toLowerCase())
+    // const filteredProperties = properties.filter(
+    //   (property) =>
+    //     property.description
+    //       .toLowerCase()
+    //       .includes(cleanedValue.toLowerCase()) ||
+    //     property.title.toLowerCase().includes(cleanedValue.toLowerCase())
+    // );
+
+    const propertiesWithListings = createPropertiesWithListings(
+      filteredListings,
+      properties
+    );
+
+    const filteredProperties = propertiesWithListings.map(
+      ([property]) => property
     );
 
     if (cleanedValue.length === 0) {
@@ -340,11 +395,17 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
         listing.bedroom === Number(cleanedValue)
     );
 
-    const filteredProperties: Property[] = [];
+    const propertiesWithListings = createPropertiesWithListings(
+      filteredListings,
+      properties
+    );
 
-    if (cleanedValue.length === 0) {
-      return { filteredListings: [], filteredProperties: [] };
-    }
+    const filteredProperties: Property[] = propertiesWithListings.map(
+      ([property]) => property
+    );
+
+    console.log("Filtered Properties:", filteredProperties);
+    console.log("Filtered Listings:", filteredListings);
 
     return { filteredListings, filteredProperties };
   };
@@ -420,6 +481,8 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
 
     // 1. Filter by bedroom if detected
     if (isBedroomSearch) {
+      console.log("INITIATING FILTER BY PROPERTY BEDROOM IN PERFORM-SEARCH");
+      console.log();
       const bedroomResult = filterByListingsBedroom(
         value,
         listings,
@@ -435,9 +498,10 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
 
     // 2. Filter by bathroom if detected
     if (isBathroomSearch) {
+      console.log("INITIATING FILTER BY PROPERTY BATHROOM IN PERFORM-SEARCH");
       const bathroomResult = filterByListingsBathroom(
         value,
-        listings,
+        filteredListings,
         properties
       );
       filteredListings = filteredListings.filter((listing) =>
@@ -465,7 +529,12 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
 
     // 4. Filter by address if detected
     if (isAddressSearch) {
-      const addressResult = filterByAddressInfo(value, listings, properties);
+      console.log("INITIATING FILTER BY ADDRESS IN PERFORM-SEARCH");
+      const addressResult = filterByAddressInfo(
+        value,
+        filteredListings,
+        properties
+      );
       filteredListings = filteredListings.filter((listing) =>
         addressResult.filteredListings.includes(listing)
       );
@@ -481,7 +550,11 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
       !isBathroomSearch &&
       value !== ""
     ) {
-      const defaultResult = filterDefaultNameTitle(value, listings, properties);
+      const defaultResult = filterDefaultNameTitle(
+        value,
+        filteredListings,
+        properties
+      );
       filteredListings = filteredListings.filter((listing) =>
         defaultResult.filteredListings.includes(listing)
       );

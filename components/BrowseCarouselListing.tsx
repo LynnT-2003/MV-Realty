@@ -123,11 +123,6 @@ const BrowseCarousel: React.FC<BrowseCarouselProps> = ({
                     <span className="truncate text-lg font-light overflow-hidden whitespace-nowrap">
                       {listing.listingName}
                     </span>
-                    <img
-                      src={urlForImage(developer.profileIcon)}
-                      className="w-8 h-8 ml-1 flex-shrink-0"
-                      loading="lazy"
-                    />
                   </div>
                   <div className="w-20">
                     <p className="mr-0 ml-3 absolute top-0 right-0 font-semibold text-xl text-[#193158]">
