@@ -395,7 +395,7 @@ export const MapDemo = ({ lat, lng }) => {
                   <div className="flex items-center justify-start p-0">
                     <img
                       src="/icons/floor.png"
-                      className="w-6 h-6"
+                      className="w-6 h-6 md:block hidden"
                       alt="MRT Icon"
                     />
                     <p className="poppins-text-small-bts md:poppins-text-avg-bold ml-3.5">
@@ -462,7 +462,7 @@ export const MapDemo = ({ lat, lng }) => {
 
       <>
         {nearbyBtsGreenLineStationsState.length > 0 && (
-          <div className="py-0 h-full">
+          <div className="py-0 h-full px-4 md:px-0">
             {renderNearestStations(
               "Sukhumvit Green Line",
               "green",
