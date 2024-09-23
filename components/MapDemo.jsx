@@ -319,16 +319,36 @@ export const MapDemo = ({ lat, lng }) => {
                       (station) => place.name.includes(station.name)
                     );
 
+                    // if (matchedStationGreen) {
+                    //   stationInfo.name = matchedStationGreen.name;
+                    //   stationInfo.id = matchedStationGreen.id;
+                    //   nearbyBtsGreenLineStations.push(stationInfo);
+                    //   console.log(
+                    //     "nearbyBtsGreenLineStationsHERE !",
+                    //     nearbyBtsGreenLineStations
+                    //   );
+                    //   setnearbyBtsGreenLineStationsState(
+                    //     nearbyBtsGreenLineStations
+                    //   );
+                    // }
+
                     if (matchedStationGreen) {
-                      stationInfo.name = matchedStationGreen.name;
-                      stationInfo.id = matchedStationGreen.id;
-                      nearbyBtsGreenLineStations.push(stationInfo);
+                      const newStation = {
+                        name: matchedStationGreen.name,
+                        id: matchedStationGreen.id,
+                        distance: distance,
+                        duration: duration,
+                      };
+
+                      // Directly set the new state by adding the new station to the array
+                      setnearbyBtsGreenLineStationsState((prevStations) => [
+                        ...prevStations,
+                        newStation,
+                      ]);
+
                       console.log(
                         "nearbyBtsGreenLineStationsHERE !",
-                        nearbyBtsGreenLineStations
-                      );
-                      setnearbyBtsGreenLineStationsState(
-                        nearbyBtsGreenLineStations
+                        newStation
                       );
                     }
 
@@ -463,15 +483,33 @@ export const MapDemo = ({ lat, lng }) => {
       <>
         {nearbyBtsGreenLineStationsState.length > 0 && (
           <div className="py-0 h-full px-4 md:px-0">
-            {renderNearestStations(
-              "Sukhumvit Green Line",
-              "green",
-              nearbyBtsGreenLineStationsState
-            )}
+            <div className="pl-4 pt-4">
+              <p className="pl-4 poppins-text-title-small md:property-details-title-text"></p>
+              {nearbyBtsGreenLineStationsState &&
+                nearbyBtsGreenLineStationsState.length > 0 && (
+                  <div className="flex flex-col">
+                    {nearbyBtsGreenLineStationsState.map((station, index) => (
+                      <div key={index}>
+                        <div className="flex flex-row items-center">
+                          <img
+                            src={"/bts-icons/green.png"}
+                            className="w-10 h-10"
+                            alt={"greenline_logo"}
+                          />
+                          <h1>{station.id}</h1>
+                          <h1>{station.name}</h1>
+                          <h1>{station.distance}</h1>
+                          <h1>{station.duration}</h1>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+            </div>
           </div>
         )}
 
-        {nearbyBtsSilomLineStationsState.length > 0 && (
+        {/* {nearbyBtsSilomLineStationsState.length > 0 && (
           <div>
             {renderNearestStations(
               "Silom Line",
@@ -479,7 +517,7 @@ export const MapDemo = ({ lat, lng }) => {
               nearbyBtsSilomLineStationsState
             )}
           </div>
-        )}
+        )} */}
       </>
     </div>
   );
