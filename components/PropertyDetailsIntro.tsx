@@ -58,6 +58,7 @@ const PropertyDetailsIntro: React.FC<PropertyDetailsIntroProps> = ({
         <Grid
           item
           md={5}
+          className="mt-10 md:mt-0"
         >
           <Grid
             container
@@ -66,11 +67,11 @@ const PropertyDetailsIntro: React.FC<PropertyDetailsIntroProps> = ({
             //   spacing={{ xs: 0, md: 2 }}
             spacing={2}
           >
-            <div className="flex w-full ml-3.5 mb-8 mt-8">
+            <div className="flex w-full ml-3.5 mb-8 mt-16 md:mt-8">
                 <img src="/icons/PriceTag.svg" className="w-10 h-10"/>
                 <p className="ml-3.5 pt-1 text-[#193158] text-2xl font-semibold">Price Starts from {propertyDetails.minPrice}MB</p>
             </div>
-            <Grid item xs={6}>
+            <Grid item xs={6} className="">
               <div className="flex">
                 <img src="/icons/Calendar.svg" />
                 <p className="ml-3.5 pt-1 text-[#193158] text-sm font-semibold">Completed on {propertyDetails.completedOn}</p>
@@ -83,16 +84,16 @@ const PropertyDetailsIntro: React.FC<PropertyDetailsIntroProps> = ({
               </div>
             </Grid>
           </Grid>
-          <div className="flex justify-between gap-4 mt-20">
-            <button className="py-2 bg-[#193158] text-white font-semibold rounded-lg w-1/2 text-xs">
+            <div className="flex justify-between gap-4 mt-10 md:mt-15">
+            <button className="py-3 bg-[#193158] text-white font-semibold rounded-lg w-1/2 text-xs">
               SHARE THIS PROPERTY
             </button>
-            <button className="py-2 bg-[#193158] text-white font-semibold rounded-lg w-1/2 text-xs">
+            <button className="py-3 bg-[#193158] text-white font-semibold rounded-lg w-1/2 text-xs">
               CONTACT US
             </button>
           </div>
           <div className="mt-4">
-            <button className="py-2 bg-[#193158] text-white font-semibold rounded-lg w-full text-xs">
+            <button className="py-3 bg-[#193158] text-white font-semibold rounded-lg w-full text-xs">
               LISTINGS FROM THIS PROPERTY
             </button>
             <p className="mt-4 text-[#193158] font-bold text-center text-lg">

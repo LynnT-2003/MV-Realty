@@ -1,11 +1,11 @@
 import { urlForImage } from "@/sanity/lib/image";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Image } from "sanity";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { DirectionAwareHover } from "./ui/direction-aware-hover";
 import { Developer, Property } from "@/types";
 import { useRouter } from "next/navigation";
-
+import BrowsePropertyCarouselLoadingSkeleton from "./BrowsePropertyCarouselLoadingSkeleton";
 // Define the prop types
 interface BrowseCarouselProps {
   properties: Property[];
@@ -22,6 +22,14 @@ const BrowseCarouselProperty: React.FC<BrowseCarouselProps> = ({
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
+  const [loading, setLoading] = useState(true); // Loading state
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setLoading(false); // Simulated loading
+    }, 1000); // Adjust to the real loading time
+    return () => clearTimeout(timeout);
+  }, [properties, developers]);
 
   const handlePropertyClick = (slug: String) => {
     // console.log("Clicked on Property: ", { property });
@@ -66,6 +74,10 @@ const BrowseCarouselProperty: React.FC<BrowseCarouselProps> = ({
     }
   };
 
+  if (loading) {
+    return <BrowsePropertyCarouselLoadingSkeleton />; // Render loading skeleton
+  }
+
   return (
     <div className="w-full flex items-center justify-center pb-12">
       <div></div>
@@ -103,7 +115,6 @@ const BrowseCarouselProperty: React.FC<BrowseCarouselProps> = ({
                 imageUrl={urlForImage(property.propertyHero)}
               >
                 <p className="font-bold text-xl">{property.title}</p>
-                <p className="font-normal text-sm">$1299 / night</p>
               </DirectionAwareHover>
               <div className="mt-4 pt-2 pr-2 bg-white rounded-lg mb-8">
                 <div className="relative flex">

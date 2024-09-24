@@ -1,11 +1,12 @@
 import { urlForImage } from "@/sanity/lib/image";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Image } from "sanity";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { DirectionAwareHover } from "./ui/direction-aware-hover";
 import {DirectionAwareHoverCollections} from "./ui/direction-aware-hover-collections";
 import { Collections } from "@/types";
 import { useRouter } from "next/navigation";
+import BrowseCollectionCarouselLoadingSkeleton from "./BrowseCollectionCarouselLoadingSkeleton";
 
 // Define the prop types
 interface BrowseCarouselProps {
@@ -21,6 +22,14 @@ const BrowseCarouselCollection: React.FC<BrowseCarouselProps> = ({
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
+  const [loading, setLoading] = useState(true); // Loading state
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setLoading(false); // Simulated loading
+    }, 1000); // Adjust to the real loading time
+    return () => clearTimeout(timeout);
+  }, [collections]);
 
   const handleCollectionClick = (slug: String) => {
     router.push(`/Collections/${slug}`); // Here
@@ -64,6 +73,9 @@ const BrowseCarouselCollection: React.FC<BrowseCarouselProps> = ({
     }
   };
 
+  if (loading) {
+    return <BrowseCollectionCarouselLoadingSkeleton />; // Render loading skeleton
+  }
   return (
     <div className="w-full flex items-center justify-center pb-12">
       <div></div>
