@@ -482,7 +482,7 @@ export const MapDemo = ({ lat, lng }) => {
 
       <>
         {nearbyBtsGreenLineStationsState.length > 0 && (
-          <div className="py-0 h-full px-4 md:px-0">
+          <div className="py-0 bg-blue-500 h-full px-4 md:px-0">
             <div className="pl-4 pt-4">
               <p className="pl-4 poppins-text-title-small md:property-details-title-text"></p>
               {nearbyBtsGreenLineStationsState &&
@@ -490,16 +490,21 @@ export const MapDemo = ({ lat, lng }) => {
                   <div className="flex flex-col">
                     {nearbyBtsGreenLineStationsState.map((station, index) => (
                       <div key={index}>
-                        <div className="flex flex-row items-center">
-                          <img
-                            src={"/bts-icons/green.png"}
-                            className="w-10 h-10"
-                            alt={"greenline_logo"}
-                          />
-                          <h1>{station.id}</h1>
-                          <h1>{station.name}</h1>
-                          <h1>{station.distance}</h1>
-                          <h1>{station.duration}</h1>
+                        <div className="flex flex-row items-center justify-between md:w-1/2 my-2">
+                          <div className="flex flex-row items-center">
+                            <img
+                              src={"/bts-icons/green.png"}
+                              className="w-10 h-10"
+                              alt={"greenline_logo"}
+                            />
+                            <h1 className="ml-5">{station.id}</h1>
+                            <h1 className="ml-5">{station.name}</h1>
+                          </div>
+                          <div className="flex flex-row items-center">
+                            {" "}
+                            <h1 className="px-2">{station.distance}</h1>
+                            <h1 className="px-2">{station.duration}</h1>
+                          </div>
                         </div>
                       </div>
                     ))}
