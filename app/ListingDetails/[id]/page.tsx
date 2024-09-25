@@ -128,8 +128,6 @@ const ListingDetailPage = ({ params }: { params: { id: string } }) => {
 
   return (
     <div>
-      {/* <PropertyDetailsImageBento propertyDetails={property} />
-      <PropertyDetailsIntro propertyDetails={property} /> */}
       <ListingDetailsImageBento
         listingDetails={listing}
         propertyDetails={property}

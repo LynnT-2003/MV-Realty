@@ -25,17 +25,17 @@ const ListingDetailsIntro: React.FC<ListingDetailsIntroProps> = ({
   }, [listingDetails._id]);
 
   return (
-    <div className="w-full flex justify-center pb-12 md:pb-20">
+    <div className="w-full flex justify-center pb-16 md:pb-20">
       <div className="md:max-w-[1150px] w-[85vw]">
         <Grid container columnSpacing={10}>
           <Grid item md={7}>
-            <p className="poppins-text-title-small md:property-details-title-text">
+            <p className="poppins-text-title-small md:property-details-title-text md:mb-0 mb-6">
               {listingDetails.listingName}
             </p>
-            <p className="poppins-text-small md:poppins-text-avg mt-4">
+            <p className="poppins-text-small md:poppins-text-avg mt-4 md:mb-0 mb-8">
               {listingDetails.description}
             </p>
-            <div className="flex flex-wrap gap-2 mt-5">
+            <div className="flex flex-wrap gap-2 mt-5 md:mb-0 mb-16">
               {tags.map((tag, index) => (
                 <button
                   key={index}
@@ -47,10 +47,7 @@ const ListingDetailsIntro: React.FC<ListingDetailsIntroProps> = ({
               ))}
             </div>
           </Grid>
-          <Grid
-            item
-            md={5}
-          >
+          <Grid item md={5}>
             <Grid
               container
               rowSpacing={{ xs: 4, md: 3 }}
@@ -79,7 +76,7 @@ const ListingDetailsIntro: React.FC<ListingDetailsIntroProps> = ({
               <Grid item xs={6}>
                 <div className="flex">
                   <img src="/icons/meter.png" />
-                  <p className="ml-3.5">{listingDetails.size} square meter</p>
+                  <p className="ml-3.5">{listingDetails.size} sqm</p>
                 </div>
               </Grid>
               <Grid item xs={6}>
@@ -93,23 +90,23 @@ const ListingDetailsIntro: React.FC<ListingDetailsIntroProps> = ({
               <Grid item xs={6}>
                 <div className="flex">
                   <img src="/icons/price.png" />
-                  <p className="ml-3.5">{listingDetails.price} Million Baht</p>
+                  <p className="ml-3.5">{listingDetails.price}M Baht</p>
                 </div>
               </Grid>
             </Grid>
-            <div className="flex justify-between gap-4 mt-20">
-              <button className="py-2 bg-[#193158] text-white font-semibold rounded-lg w-1/2 text-xs">
-                SHARE THIS LISTING
+            <div className="flex justify-between gap-4 mt-16">
+              <button className="py-4 md:py-2 hover:bg-slate-700 bg-[#193158] text-white  rounded-lg w-1/2 text-sm">
+                SHARE LISTING
               </button>
-              <button className="py-2 bg-[#193158] text-white font-semibold rounded-lg w-1/2 text-xs">
+              <button className="py-4 md:py-2 hover:bg-slate-700 bg-[#193158] text-white  rounded-lg w-1/2 text-sm">
                 CONTACT US
               </button>
             </div>
             <div className="mt-4">
-              <button className="py-2 bg-[#193158] text-white font-semibold rounded-lg w-full text-xs">
-                MORE FROM THIS PROPERTY
+              <button className="py-4 md:py-2 hover:bg-slate-700 bg-[#193158] text-white  rounded-lg w-full text-sm">
+                MORE FROM PROPERTY
               </button>
-              <p className="mt-4 text-[#193158] font-bold text-center text-lg">
+              <p className="mt-4 text-[#193158] font-semibold text-center text-md">
                 Unit ID: {listingDetails._id}
               </p>
             </div>
