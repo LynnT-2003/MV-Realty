@@ -164,7 +164,7 @@ const HomePage: React.FC = () => {
     <div onClick={handleClickOutsideSearchSection}>
       <div className="flex justify-center">
         <HomeSearchSection
-          listings={listings}
+          unitTypes={unitTypes}
           properties={properties}
           onSearchSectionClick={handleSearchSectionClick}
           searchActionClicked={searchSectionClicked}

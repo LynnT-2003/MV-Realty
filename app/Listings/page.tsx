@@ -1,7 +1,7 @@
 "use client";
 import React, { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import { Listing } from "@/types";
+import { Listing, UnitType } from "@/types";
 import ListingCardCollection from "@/components/ListingCardCollection";
 
 const ListingsContent = () => {
@@ -11,12 +11,19 @@ const ListingsContent = () => {
   // Get the listings from the search parameters
   // The listings are stored in the search parameters as a JSON string
   // We need to parse the JSON string into an array of listings
-  const listings = JSON.parse(
-    // Get the listings from the search parameters
-    // The listings are stored in the search parameters as a JSON string
-    // We need to decode the JSON string first
-    decodeURIComponent(searchParams.get("listings") ?? "")
+
+  // const listings = JSON.parse(
+  //   // Get the listings from the search parameters
+  //   // The listings are stored in the search parameters as a JSON string
+  //   // We need to decode the JSON string first
+  //   decodeURIComponent(searchParams.get("listings") ?? "")
+  // );
+
+  console.log(searchParams.get("unitTypes"));
+  const unitTypes = JSON.parse(
+    decodeURIComponent(searchParams.get("unitTypes") ?? "")
   );
+  console.log("Unit Types: ", unitTypes);
 
   // Return the JSX for the listings page
   return (
@@ -38,7 +45,9 @@ const ListingsContent = () => {
       */}
       <ListingCardCollection
         // Pass the listings as a prop to the component
-        listings={listings}
+
+        // listings={listings}
+        unitTypes={unitTypes}
         // Pass an empty array of properties as a prop to the component
         // This is because we are not displaying any properties on this page
         properties={[]}

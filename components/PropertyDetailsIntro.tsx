@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
-import { Developer, Property, Tag, Listing } from "@/types";
+import { Developer, Property, Tag, Listing, UnitType } from "@/types";
 import { Button } from "./ui/button";
 import { fetchTagsFromProperty } from "@/services/TagsServices";
 import developer from "@/sanity/schemas/developer";
@@ -8,19 +8,17 @@ import { useRouter } from "next/navigation";
 
 interface PropertyDetailsIntroProps {
   propertyDetails: Property;
-  listings: Listing[];
+  // listings: Listing[];
+  unitTypes: UnitType[];
   developer: Developer;
 }
 
 const PropertyDetailsIntro: React.FC<PropertyDetailsIntroProps> = ({
-  // The property details that we're rendering
   propertyDetails,
 
-  // The developer of the property
   developer,
 
-  // The listings for this property
-  listings,
+  unitTypes,
 }) => {
   // Get the router so we can navigate
   const router = useRouter();
@@ -119,14 +117,13 @@ const PropertyDetailsIntro: React.FC<PropertyDetailsIntroProps> = ({
               <button
                 className="py-3 lg:py-2 hover:bg-slate-700 bg-[#193158] text-white font-semibold rounded-lg w-full text-xs"
                 onClick={() => {
-                  const listingsParam = encodeURIComponent(
-                    JSON.stringify(listings)
+                  const unitTypesParam = encodeURIComponent(
+                    JSON.stringify(unitTypes)
                   );
-
-                  router.push(`/Listings?listings=${listingsParam}`);
+                  router.push(`/Listings?unitTypes=${unitTypesParam}`);
                 }}
               >
-                LISTINGS FROM THIS PROPERTY
+                UNITS FROM THIS PROPERTY
               </button>
 
               <p className="mt-4 text-[#193158] font-bold text-center text-lg">

@@ -9,6 +9,7 @@ import {
   FacilityType,
   Listing,
   Property,
+  UnitType,
 } from "../../../types";
 import { fetchPropertyBySlug } from "@/services/PropertyServices";
 import { fetchDeveloperById } from "@/services/DeveloperServices";
@@ -21,6 +22,7 @@ import { PopupButton } from "react-calendly";
 import LoadingPage from "./loading";
 import InfiniteMovingCardsDemo from "@/components/infinite-cards-demo";
 import { fetchListingsByPropertyId } from "@/services/ListingServices";
+import { fetchUnitTypesByPropertyId } from "@/services/UnitTypeServices";
 
 const downloadFile = (url: string) => {
   if (!url) return;
@@ -65,6 +67,7 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
   // Initialize the state variables
   const [property, setProperty] = React.useState<Property | null>(null);
   const [listings, setListings] = React.useState<Listing[]>([]);
+  const [unitTypes, setUnitTypes] = React.useState<UnitType[]>([]);
   const [developer, setDeveloper] = React.useState<Developer | null>(null);
   const [facilityType, setFacilityType] = React.useState<FacilityType[]>([]);
   const [loading, setLoading] = React.useState(true);
@@ -87,7 +90,12 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
           // Fetch the listings associated with the property
           // and set the listings state to the fetched data
           fetchListingsByPropertyId(propertyData._id).then(setListings);
-          console.log("Fetched all Listings by Property ID", listings);
+          fetchUnitTypesByPropertyId(propertyData._id).then(
+            (fetchedUnitTypes) => {
+              console.log("Fetched Unit Types:", fetchedUnitTypes);
+              setUnitTypes(fetchedUnitTypes);
+            }
+          );
         }
       });
 
@@ -129,7 +137,8 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
       <PropertyDetailsIntro
         propertyDetails={property}
         developer={developer}
-        listings={listings}
+        // listings={listings}
+        unitTypes={unitTypes}
       />
 
       {/* Show the facilities accordion component */}
