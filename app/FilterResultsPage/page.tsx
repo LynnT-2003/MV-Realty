@@ -2,7 +2,7 @@
 
 import BrowseCarousel from "@/components/BrowseCarouselListing";
 import ListingCardCollection from "@/components/ListingCardCollection";
-import { Property, Listing, Developer } from "@/types";
+import { Property, Listing, Developer, UnitType } from "@/types";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 
@@ -25,6 +25,7 @@ const FilterResultsPage: React.FC = () => {
   // State variables to store the properties, listings, and developers data
   const [properties, setProperties] = useState<Property[]>([]);
   const [listings, setListings] = useState<Listing[]>([]);
+  const [unitTypes, setUnitTypes] = useState<UnitType[]>([]);
   const [developers, setDevelopers] = useState<Developer[]>([]);
 
   // A function to retrieve data from local storage
@@ -46,47 +47,49 @@ const FilterResultsPage: React.FC = () => {
     const fetchData = async () => {
       try {
         // Fetch data in parallel, using cached data if available
-        const [propertiesData, listingsData, developersData] =
+        const [propertiesData, listingsData, developersData, unitTypesData] =
           await Promise.all([
             fetchDataWithCache("properties"),
             fetchDataWithCache("listings"),
             fetchDataWithCache("developers"),
+            fetchDataWithCache("unitTypes"),
           ]);
 
         // Filter the listings based on the query parameters
-        const filteredBedroom = listingsData.filter((listing: Listing) => {
+        const filteredBedroom = unitTypesData.filter((unit: UnitType) => {
           // If the bedrooms parameter is provided, filter listings that have the same
           // number of bedrooms as the parameter
-          return bedrooms ? listing.bedroom === Number(bedrooms) : true;
+          return bedrooms ? unit.bedroom === Number(bedrooms) : true;
         });
 
-        const filteredMinPrice = filteredBedroom.filter((listing: Listing) => {
+        const filteredMinPrice = filteredBedroom.filter((unit: UnitType) => {
           // If the minprice parameter is provided and greater than 0, filter listings
           // that have a price greater than or equal to the parameter
           return minprice && Number(minprice) > 0
-            ? listing.price >= Number(minprice)
+            ? unit.startingPrice >= Number(minprice)
             : true;
         });
 
-        const filteredMaxPrice = filteredMinPrice.filter((listing: Listing) => {
+        const filteredMaxPrice = filteredMinPrice.filter((unit: UnitType) => {
           // If the maxprice parameter is provided and greater than 0, filter listings
           // that have a price less than or equal to the parameter
           return maxprice && Number(maxprice) > 0
-            ? listing.price <= Number(maxprice)
+            ? unit.startingPrice <= Number(maxprice)
             : true;
         });
 
-        const filteredLocation = filteredMaxPrice.filter((listing: Listing) => {
+        const filteredLocation = filteredMaxPrice.filter((unit: UnitType) => {
           // If the location parameter is provided, filter listings that have the same
           // location as the parameter
-          return location ? listing.listingName.includes(location) : true;
+          return location ? unit.unitTypeName.includes(location) : true;
         });
 
-        const FilteredListings = filteredLocation;
+        const filteredUnitTypes = filteredLocation;
 
         // Update the state variables with the filtered data
         setProperties(propertiesData);
-        setListings(FilteredListings);
+        // setListings(FilteredListings);
+        setUnitTypes(filteredUnitTypes);
         setDevelopers(developersData);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -113,7 +116,8 @@ const FilterResultsPage: React.FC = () => {
   return (
     <div className="pt-12">
       <ListingCardCollection
-        listings={listings}
+        // listings={listings}
+        unitTypes={unitTypes}
         properties={properties}
         // developers={developers}
         showFilter={true}

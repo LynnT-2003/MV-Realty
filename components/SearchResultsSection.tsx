@@ -1,5 +1,5 @@
 import React from "react";
-import { Listing, Property } from "@/types";
+import { Listing, Property, UnitType } from "@/types";
 import { useRouter } from "next/navigation";
 import { urlForImage } from "@/sanity/lib/image";
 import { useState, useEffect } from "react";
@@ -16,38 +16,38 @@ import {
 } from "@/components/ui/select";
 
 // Function to create the 2D array
-const createPropertiesWithListings = (
-  listings: Listing[],
+const createPropertiesWithUnitTypes = (
+  unitTypes: UnitType[],
   properties: Property[]
-): Array<[Property, Listing[]]> => {
+): Array<[Property, UnitType[]]> => {
   // Step 1: Create a map of property _id -> listings
-  const propertyListingsMap: { [propertyId: string]: Listing[] } = {};
+  const propertyUnitTypesMap: { [propertyId: string]: UnitType[] } = {};
 
-  listings.forEach((listing) => {
-    const propertyRef = listing.property._ref;
+  unitTypes.forEach((unit) => {
+    const propertyRef = unit.property._ref;
 
     // Initialize array if this property is encountered for the first time
-    if (!propertyListingsMap[propertyRef]) {
-      propertyListingsMap[propertyRef] = [];
+    if (!propertyUnitTypesMap[propertyRef]) {
+      propertyUnitTypesMap[propertyRef] = [];
     }
 
     // Push the listing to the corresponding property
-    propertyListingsMap[propertyRef].push(listing);
+    propertyUnitTypesMap[propertyRef].push(unit);
   });
 
   // Step 2: Build the 2D array, but only include properties that have listings
-  const propertiesWithListings: Array<[Property, Listing[]]> = properties
+  const propertiesWithUnitTypes: Array<[Property, UnitType[]]> = properties
     .map((property) => {
-      const propertyListings = propertyListingsMap[property._id] || [];
-      return [property, propertyListings] as [Property, Listing[]];
+      const propertyUnitTypes = propertyUnitTypesMap[property._id] || [];
+      return [property, propertyUnitTypes] as [Property, UnitType[]];
     })
     .filter(([_, propertyListings]) => propertyListings.length > 0); // Filter out properties with no listings
 
-  return propertiesWithListings;
+  return propertiesWithUnitTypes;
 };
 
 interface SearchResultsSectionProps {
-  filteredListings: Listing[];
+  filteredUnitTypes: UnitType[];
   filteredProperties: Property[];
   isActive: boolean; // Prop to manage the active state
 }
@@ -65,7 +65,7 @@ interface SearchResultsSectionProps {
  */
 
 const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
-  filteredListings,
+  filteredUnitTypes,
   filteredProperties,
   isActive,
 }) => {
@@ -76,16 +76,19 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
   const [maxPriceFilter, setMaxPriceFilter] = useState<number | null>(null);
   const [locationFilter, setLocationFilter] = useState<string | null>(null);
 
-  const [filteredListingsState, setFilteredListingsState] =
-    useState<Listing[]>(filteredListings);
+  // const [filteredListingsState, setFilteredListingsState] =
+  //   useState<Listing[]>(filteredListings);
+
+  const [filteredUnitTypesState, setFilteredUnitTypesState] =
+    useState<UnitType[]>(filteredUnitTypes);
 
   const [filteredPropertiesState, setFilteredPropertiesState] =
     useState<Property[]>(filteredProperties);
 
   console.log(isActive);
 
-  const handleListingClick = (slug: string) => {
-    router.push(`/ListingDetails/${slug}`);
+  const handleUnitTypeClick = (id: string) => {
+    router.push(`/UnitTypeDetails/${id}`);
   };
 
   const handlePropertyClick = (slug: string) => {
@@ -99,16 +102,16 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
 
   // Effect to filter listings when any filter changes
   useEffect(() => {
-    let updatedListings = [...filteredListings];
+    let updatedUnitTypes = [...filteredUnitTypes];
     let updatedProperties = [...filteredProperties];
 
     // Filter by bedroom
     if (bedroomFilter) {
-      updatedListings = updatedListings.filter(
-        (listing) => listing?.bedroom === bedroomFilter
+      updatedUnitTypes = updatedUnitTypes.filter(
+        (unit) => unit?.bedroom === bedroomFilter
       );
-      const propertiesWithListings = createPropertiesWithListings(
-        updatedListings,
+      const propertiesWithListings = createPropertiesWithUnitTypes(
+        updatedUnitTypes,
         updatedProperties
       );
       updatedProperties = propertiesWithListings.map(([property]) => property);
@@ -116,12 +119,12 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
 
     // Filter by location
     if (locationFilter) {
-      updatedListings = updatedListings.filter(
-        (listing) =>
-          listing?.description
+      updatedUnitTypes = updatedUnitTypes.filter(
+        (unit) =>
+          unit?.description
             ?.toLowerCase()
             .includes(locationFilter.toLowerCase()) ||
-          listing?.listingName
+          unit?.unitTypeName
             ?.toLowerCase()
             .includes(locationFilter.toLowerCase())
       );
@@ -144,54 +147,59 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
 
     // Filter by max price
     if (maxPriceFilter) {
-      updatedListings = updatedListings.filter(
-        (listing) => Number(listing?.price) <= Number(maxPriceFilter)
+      updatedUnitTypes = updatedUnitTypes.filter(
+        (unit) => Number(unit?.startingPrice) <= Number(maxPriceFilter)
       );
     }
 
     // Filter by min price
     if (minPriceFilter) {
-      updatedListings = updatedListings.filter(
-        (listing) => Number(listing?.price) >= Number(minPriceFilter)
+      updatedUnitTypes = updatedUnitTypes.filter(
+        (unit) => Number(unit?.startingPrice) >= Number(minPriceFilter)
       );
     }
 
     // Filter by price range
     if (maxPriceFilter && minPriceFilter) {
-      updatedListings = updatedListings.filter(
-        (listing) =>
-          listing?.price >= minPriceFilter && listing?.price <= maxPriceFilter
+      updatedUnitTypes = updatedUnitTypes.filter(
+        (unit) =>
+          unit?.startingPrice >= minPriceFilter &&
+          unit?.startingPrice <= maxPriceFilter
       );
     }
 
-    setFilteredListingsState(updatedListings); // Update filtered listings
+    setFilteredUnitTypesState(updatedUnitTypes); // Update filtered listings
     setFilteredPropertiesState(updatedProperties);
 
     // Store the filtered data in localStorage
     localStorage.setItem(
       "filteredListingsState",
-      JSON.stringify(updatedListings)
+      JSON.stringify(updatedUnitTypes)
     );
     localStorage.setItem(
       "filteredPropertiesState",
       JSON.stringify(updatedProperties)
+    );
+    localStorage.setItem(
+      "filteredUnitTypesState",
+      JSON.stringify(updatedUnitTypes)
     );
   }, [
     bedroomFilter,
     locationFilter,
     minPriceFilter,
     maxPriceFilter,
-    filteredListings,
+    filteredUnitTypes,
   ]);
   useEffect(() => {
-    console.log("Filtering listings...");
+    console.log("Filtering Units...");
     console.log("Max Price Filter:", maxPriceFilter);
-    filteredListings.forEach((listing) => {
-      console.log("Listing Price:", listing.price);
+    filteredUnitTypes.forEach((unit) => {
+      console.log("Unit Price:", unit.startingPrice);
     });
 
     // ... Rest of the filtering logic
-  }, [maxPriceFilter, filteredListings]);
+  }, [maxPriceFilter, filteredUnitTypes]);
 
   // Inline style for opacity
   const sectionStyle = {
@@ -202,7 +210,7 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
     <div style={sectionStyle} className="search-section">
       <div className="hidden ipad-screen:hidden lg:block mt-2 lg:w-screen xl:w-[1250px] w-[1250px] h-screen relative mx-auto max-h-[0px]">
         <div className="rounded-3xl shadow-lg h-[500px] overflow-scroll py-8 glass ">
-          {filteredListings.length === 0 && filteredProperties.length === 0 ? (
+          {filteredUnitTypes.length === 0 && filteredProperties.length === 0 ? (
             <div className="bg-red-500 w-[300px] h-[200px] mx-auto my-16">
               {/* Red block for testing when there are no listings or properties */}
               <span className="text-white text-center block py-16">
@@ -216,23 +224,23 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
                 <h2 className="text-center font-semibold text-gray-600 mb-8">
                   Listings
                 </h2>
-                {filteredListingsState.map((listing) => (
+                {filteredUnitTypesState.map((unit) => (
                   <div
-                    key={listing._id}
+                    key={unit._id}
                     className="flex items-center space-x-8 py-3 bg-transparent rounded-2xl hover:bg-gray-200 hover:cursor-pointer pl-8 text-gray-600 hover:text-black mb-4"
-                    onClick={() => handleListingClick(listing._id)}
+                    onClick={() => handleUnitTypeClick(unit._id)}
                   >
                     <img
-                      src={urlForImage(listing.listingHero)}
+                      src={urlForImage(unit.unitHero)}
                       width={140}
                       className="rounded-lg"
                     />
-                    <span key={listing._id}>
+                    <span key={unit._id}>
                       <h1>
-                        <b>{listing.listingName}</b>
+                        <b>{unit.unitTypeName}</b>
                       </h1>
                       <h1 className="pt-2">
-                        Price: <i>{listing.price}M THB</i>
+                        Price: <i>{unit.startingPrice}M THB</i>
                       </h1>
                     </span>
                   </div>
@@ -391,17 +399,17 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
       </div>
       <div className="lg:hidden mt-2 w-screen h-screen relative max-w-xl mx-auto max-h-[0px]">
         <ul className="rounded-3xl shadow-lg max-h-[160px] overflow-scroll">
-          {filteredListings.map((listing) => (
+          {filteredUnitTypes.map((unit) => (
             <div
-              key={listing._id}
+              key={unit._id}
               className="bg-gray-100 hover:bg-gray-300 hover:cursor-pointer pl-8 py-2 text-gray-600 hover:text-black"
-              onClick={() => handleListingClick(listing._id)}
+              onClick={() => handleUnitTypeClick(unit._id)}
             >
-              <span key={listing._id}>
+              <span key={unit._id}>
                 <span className="text-gray-500 text-xs items-center pr-3">
                   <i>Listing:</i>
                 </span>
-                {listing.listingName}
+                {unit.unitTypeName}
               </span>
             </div>
           ))}

@@ -11,6 +11,30 @@ import {
 } from "./constants/btsStations";
 import { set } from "sanity";
 
+const haversine = (lat1, lon1, lat2, lon2) => {
+  // Convert degrees to radians
+  const toRadians = (degree) => (degree * Math.PI) / 180;
+
+  lat1 = toRadians(lat1);
+  lon1 = toRadians(lon1);
+  lat2 = toRadians(lat2);
+  lon2 = toRadians(lon2);
+
+  // Haversine formula
+  const dlat = lat2 - lat1;
+  const dlon = lon2 - lon1;
+
+  const a =
+    Math.sin(dlat / 2) ** 2 +
+    Math.cos(lat1) * Math.cos(lat2) * Math.sin(dlon / 2) ** 2;
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+  const R = 6371; // Radius of Earth in kilometers
+  const distance = R * c;
+
+  return distance; // Distance in kilometers
+};
+
 /**
  * A component that renders a map with the nearest BTS stations.
  *
@@ -33,6 +57,15 @@ export const MapDemo = ({ lat, lng }) => {
   // Ref to the map element
   const mapRef = React.useRef(null);
 
+  // Combine all stations into a single array
+  const allStations = [
+    ...btsStationsGreenLine,
+    ...btsStationsSilomLine,
+    ...mrtStationsYellowLine,
+    ...mrtStationsPinkLine,
+    ...airportLink,
+  ];
+
   // State to store the nearest BTS stations
   const [nearestBTS, setNearestBTS] = useState([]);
   const [nearbybtsStationsGreenLineState, setnearbybtsStationsGreenLineState] =
@@ -53,7 +86,7 @@ export const MapDemo = ({ lat, lng }) => {
       const loader = new Loader({
         apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
         version: "weekly",
-        libraries: ["places", "directions"], // Load the places and directions libraries
+        libraries: ["directions"],
       });
 
       await loader.load();
@@ -107,6 +140,21 @@ export const MapDemo = ({ lat, lng }) => {
         icon: customMarkerIcon,
       });
 
+      // Calculate distances from the current position to all stations
+      const nearbyStations = allStations.filter((station) => {
+        const distance = haversine(lat, lng, station.lat, station.lng);
+        console.log("Distance:", station.name, distance);
+        return distance <= 1; // Only include stations within 1000 meters
+      });
+
+      const uniqueBtsStations = [
+        ...new Set(allStations.map((station) => station.id)),
+      ].map((id) => {
+        return allStations.find((station) => station.id === id);
+      });
+      setNearestBTS(nearbyStations);
+      console.log("Nearest BTS:", nearbyStations, nearestBTS);
+
       // Create an InfoWindow with "You are here" text
       const infoWindow = new google.maps.InfoWindow({
         content: `<div style="text-align:center;text-sm;">You are here!</div>`,
@@ -115,67 +163,46 @@ export const MapDemo = ({ lat, lng }) => {
       // Automatically open the InfoWindow when the map is loaded
       infoWindow.open(map, marker);
 
-      // Search for BTS stations within 1000 meters radius
-      const service = new google.maps.places.PlacesService(map);
-      const request = {
-        location: position,
-        radius: 1000, // Search within 1000 meters radius
-        type: "subway_station", // Search for transit stations
-      };
+      nearbyStations.forEach((place) => {
+        const directionsRenderer = new google.maps.DirectionsRenderer({
+          map: map,
+          suppressMarkers: true, // Prevent automatic markers, as we'll add custom ones
+          preserveViewport: true,
+        });
 
-      service.nearbySearch(request, (results, status) => {
-        if (status === google.maps.places.PlacesServiceStatus.OK) {
+        if (
+          btsStationsGreenLine.some((station) =>
+            place.id.includes(station.id)
+          ) ||
+          btsStationsSilomLine.some((station) =>
+            place.id.includes(station.id)
+          ) ||
+          mrtStationsYellowLine.some((station) =>
+            place.id.includes(station.id)
+          ) ||
+          mrtStationsPinkLine.some((station) =>
+            place.id.includes(station.id)
+          ) ||
+          airportLink.some((station) => place.id.includes(station.id))
+        ) {
           const directionsService = new google.maps.DirectionsService();
+          const calculateWalkingDistance = () => {
+            const directionsRequest = {
+              origin: position,
+              destination: { lat: place.lat, lng: place.lng },
+              travelMode: google.maps.TravelMode.WALKING,
+            };
 
-          results.forEach((place) => {
-            const directionsRenderer = new google.maps.DirectionsRenderer({
-              map: map,
-              suppressMarkers: true, // Prevent automatic markers, as we'll add custom ones
-              preserveViewport: true,
-            });
+            directionsService.route(directionsRequest, (result, status) => {
+              if (status === google.maps.DirectionsStatus.OK) {
+                const distance = result.routes[0].legs[0].distance.text;
+                const duration = result.routes[0].legs[0].duration.text;
 
-            if (
-              (btsStationsGreenLine.some((station) =>
-                place.name.includes(station.name)
-              ) ||
-                btsStationsSilomLine.some((station) =>
-                  place.name.includes(station.name)
-                ) ||
-                mrtStationsYellowLine.some((station) =>
-                  place.name.includes(station.name)
-                ) ||
-                mrtStationsPinkLine.some((station) =>
-                  place.name.includes(station.name)
-                ) ||
-                airportLink.some((station) =>
-                  place.name.includes(station.name)
-                )) &&
-              !place.name.includes("Exit")
-            ) {
-              // const marker = new google.maps.Marker({
-              //   map: map,
-              //   position: place.geometry.location,
-              //   title: place.name,
-              // });
+                // Draw the route on the map
+                directionsRenderer.setDirections(result);
 
-              // Calculate walking distance and draw the route
-              const calculateWalkingDistance = () => {
-                const directionsRequest = {
-                  origin: position,
-                  destination: place.geometry.location,
-                  travelMode: google.maps.TravelMode.WALKING,
-                };
-
-                directionsService.route(directionsRequest, (result, status) => {
-                  if (status === google.maps.DirectionsStatus.OK) {
-                    const distance = result.routes[0].legs[0].distance.text;
-                    const duration = result.routes[0].legs[0].duration.text;
-
-                    // Draw the route on the map
-                    directionsRenderer.setDirections(result);
-
-                    // Create a custom InfoWindow
-                    const infoWindowContent = `
+                // Create a custom InfoWindow
+                const infoWindowContent = `
                       <div>
                         <strong>${place.name}</strong><br>
                         Distance: ${distance}<br>
@@ -183,157 +210,159 @@ export const MapDemo = ({ lat, lng }) => {
                       </div>
                     `;
 
-                    // Create a new InfoWindow instance
-                    const infoWindow = new google.maps.InfoWindow({
-                      content: infoWindowContent,
-                      disableAutoPan: true,
-                    });
+                // Create a new InfoWindow instance
+                const infoWindow = new google.maps.InfoWindow({
+                  content: infoWindowContent,
+                  disableAutoPan: true,
+                });
 
-                    // Flag to track whether the InfoWindow is open
-                    let infoWindowOpen = false;
+                // Flag to track whether the InfoWindow is open
+                let infoWindowOpen = false;
 
-                    // Marker click event listener
-                    marker.addListener("click", () => {
-                      if (!infoWindowOpen) {
-                        infoWindow.open(map, marker); // Open the InfoWindow
-                        infoWindowOpen = true;
-                      } else {
-                        infoWindow.close(); // Close the InfoWindow
-                        infoWindowOpen = false;
-                      }
-                    });
-
-                    marker.addListener("mouseover", () => {
-                      infoWindow.open(map, marker);
-                    });
-
-                    marker.addListener("mouseout", () => {
-                      infoWindow.close();
-                    });
-
-                    // Categorize and push station info to the appropriate array
-                    const stationInfo = {
-                      name: String,
-                      id: String,
-                      distance,
-                      duration,
-                    };
-
-                    const matchedStationGreen = btsStationsGreenLine.find(
-                      (station) => place.name.includes(station.name)
-                    );
-
-                    const matchedStationSilom = btsStationsSilomLine.find(
-                      (station) => place.name.includes(station.name)
-                    );
-
-                    const matchedStationYellow = mrtStationsYellowLine.find(
-                      (station) => place.name.includes(station.name)
-                    );
-
-                    const matchedStationPink = mrtStationsPinkLine.find(
-                      (station) => place.name.includes(station.name)
-                    );
-
-                    const matchedAirportLink = airportLink.find((station) =>
-                      place.name.includes(station.name)
-                    );
-
-                    if (matchedStationGreen) {
-                      const newStation = {
-                        name: matchedStationGreen.name,
-                        id: matchedStationGreen.id,
-                        distance: distance,
-                        duration: duration,
-                      };
-
-                      setnearbybtsStationsGreenLineState((prevStations) => [
-                        ...prevStations,
-                        newStation,
-                      ]);
-
-                      console.log(
-                        "nearbybtsStationsGreenLineHERE !",
-                        newStation
-                      );
-                    }
-
-                    if (matchedStationSilom) {
-                      const newStation = {
-                        name: matchedStationSilom.name,
-                        id: matchedStationSilom.id,
-                        distance: distance,
-                        duration: duration,
-                      };
-
-                      setnearbyBtsSilomLineStationsState((prevStations) => [
-                        ...prevStations,
-                        newStation,
-                      ]);
-
-                      console.log(
-                        "nearbyBtsSilomLineStationsHERE !",
-                        newStation
-                      );
-                    }
-
-                    if (matchedStationYellow) {
-                      const newStation = {
-                        name: matchedStationYellow.name,
-                        id: matchedStationYellow.id,
-                        distance: distance,
-                        duration: duration,
-                      };
-
-                      setNearbyMrtYellowLineStationsState((prevStations) => [
-                        ...prevStations,
-                        newStation,
-                      ]);
-                      console.log(
-                        "nearbyMrtYellowLineStationsHERE !",
-                        newStation
-                      );
-                    }
-
-                    if (matchedStationPink) {
-                      const newStation = {
-                        name: matchedStationPink.name,
-                        id: matchedStationPink.id,
-                        distance: distance,
-                        duration: duration,
-                      };
-
-                      setNearbyMrtPinkLineStationsState((prevStations) => [
-                        ...prevStations,
-                        newStation,
-                      ]);
-                      console.log(
-                        "nearbyMrtPinkLineStationsHERE !",
-                        newStation
-                      );
-                    }
-
-                    if (matchedAirportLink) {
-                      const newStation = {
-                        name: matchedAirportLink.name,
-                        id: matchedAirportLink.id,
-                        distance: distance,
-                        duration: duration,
-                      };
-
-                      setNearbyAirportLinkState((prevStations) => [
-                        ...prevStations,
-                        newStation,
-                      ]);
-                      console.log("nearbyAirportLinksHERE !", newStation);
-                    }
+                // Marker click event listener
+                marker.addListener("click", () => {
+                  if (!infoWindowOpen) {
+                    infoWindow.open(map, marker); // Open the InfoWindow
+                    infoWindowOpen = true;
+                  } else {
+                    infoWindow.close(); // Close the InfoWindow
+                    infoWindowOpen = false;
                   }
                 });
-              };
 
-              calculateWalkingDistance();
-            }
-          });
+                marker.addListener("mouseover", () => {
+                  infoWindow.open(map, marker);
+                });
+
+                marker.addListener("mouseout", () => {
+                  infoWindow.close();
+                });
+
+                const matchedStationGreen = btsStationsGreenLine.find(
+                  (station) => place.name.includes(station.name)
+                );
+
+                const matchedStationSilom = btsStationsSilomLine.find(
+                  (station) => place.name.includes(station.name)
+                );
+
+                const matchedStationYellow = mrtStationsYellowLine.find(
+                  (station) => place.name.includes(station.name)
+                );
+
+                const matchedStationPink = mrtStationsPinkLine.find((station) =>
+                  place.name.includes(station.name)
+                );
+
+                const matchedAirportLink = airportLink.find((station) =>
+                  place.name.includes(station.name)
+                );
+
+                if (matchedStationGreen) {
+                  const newStation = {
+                    name: matchedStationGreen.name,
+                    id: matchedStationGreen.id,
+                    distance: distance,
+                    duration: duration,
+                  };
+
+                  setnearbybtsStationsGreenLineState((prevStations) => {
+                    if (
+                      !prevStations.find(
+                        (station) => station.id === newStation.id
+                      )
+                    ) {
+                      return [...prevStations, newStation];
+                    }
+                    return prevStations;
+                  });
+                  console.log("Nearby Green Line:", newStation);
+                }
+
+                if (matchedStationSilom) {
+                  const newStation = {
+                    name: matchedStationSilom.name,
+                    id: matchedStationSilom.id,
+                    distance: distance,
+                    duration: duration,
+                  };
+
+                  setnearbyBtsSilomLineStationsState((prevStations) => {
+                    if (
+                      !prevStations.find(
+                        (station) => station.id === newStation.id
+                      )
+                    ) {
+                      return [...prevStations, newStation];
+                    }
+                    return prevStations;
+                  });
+                }
+
+                if (matchedStationYellow) {
+                  const newStation = {
+                    name: matchedStationYellow.name,
+                    id: matchedStationYellow.id,
+                    distance: distance,
+                    duration: duration,
+                  };
+
+                  setNearbyMrtYellowLineStationsState((prevStations) => {
+                    if (
+                      !prevStations.find(
+                        (station) => station.id === newStation.id
+                      )
+                    ) {
+                      return [...prevStations, newStation];
+                    }
+                    return prevStations;
+                  });
+                }
+
+                if (matchedStationPink) {
+                  const newStation = {
+                    name: matchedStationPink.name,
+                    id: matchedStationPink.id,
+                    distance: distance,
+                    duration: duration,
+                  };
+
+                  setNearbyMrtPinkLineStationsState((prevStations) => {
+                    if (
+                      !prevStations.find(
+                        (station) => station.id === newStation.id
+                      )
+                    ) {
+                      return [...prevStations, newStation];
+                    }
+                    return prevStations;
+                  });
+                }
+
+                if (matchedAirportLink) {
+                  const newStation = {
+                    name: matchedAirportLink.name,
+                    id: matchedAirportLink.id,
+                    distance: distance,
+                    duration: duration,
+                  };
+
+                  setNearbyAirportLinkState((prevStations) => {
+                    if (
+                      !prevStations.find(
+                        (station) => station.id === newStation.id
+                      )
+                    ) {
+                      return [...prevStations, newStation];
+                    }
+                    return prevStations;
+                  });
+                }
+              }
+            });
+          };
+
+          calculateWalkingDistance();
         }
       });
     };

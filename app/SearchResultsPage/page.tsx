@@ -1,8 +1,10 @@
 "use client";
 import "./page.css";
 import React, { useEffect, useState } from "react";
-import { Property, Listing } from "@/types";
+import { Property, Listing, UnitType } from "@/types";
 import ListingCardCollection from "@/components/ListingCardCollection";
+import unitType from "@/sanity/schemas/unitType";
+import { set } from "sanity";
 
 /**
  * SearchResultsPage component renders a list of listings and properties
@@ -19,7 +21,8 @@ const SearchResultsPage: React.FC = () => {
    * State variables for listings and properties.
    * These are used to store the filtered results of the user's search query.
    */
-  const [listings, setListings] = useState<Listing[]>([]);
+  // const [listings, setListings] = useState<Listing[]>([]);
+  const [unitTypes, setUnitTypes] = useState<UnitType[]>([]);
   const [properties, setProperties] = useState<Property[]>([]);
 
   /**
@@ -33,16 +36,21 @@ const SearchResultsPage: React.FC = () => {
      */
     const storedListings = localStorage.getItem("filteredListingsState");
     const storedProperties = localStorage.getItem("filteredPropertiesState");
+    const storedUnitTypes = localStorage.getItem("filteredUnitTypesState");
 
     /**
      * If the filtered results exist in localStorage, then parse them and set the state variables.
      */
-    if (storedListings) {
-      setListings(JSON.parse(storedListings));
-    }
+    // if (storedListings) {
+    //   setListings(JSON.parse(storedListings));
+    // }
 
     if (storedProperties) {
       setProperties(JSON.parse(storedProperties));
+    }
+
+    if (storedUnitTypes) {
+      setUnitTypes(JSON.parse(storedUnitTypes));
     }
   }, []);
 
@@ -54,7 +62,8 @@ const SearchResultsPage: React.FC = () => {
   return (
     <div className=" pt-12">
       <ListingCardCollection
-        listings={listings}
+        // listings={listings}
+        unitTypes={unitTypes}
         properties={properties}
         showFilter={true}
       />

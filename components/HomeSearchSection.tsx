@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import { PlaceholdersAndVanishInput } from "./ui/placeholders-and-vanish-input";
-import { Listing, Property } from "@/types";
+import { UnitType, Property } from "@/types";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Check, ChevronsUpDown } from "lucide-react";
@@ -32,7 +32,7 @@ const filters = [
   "Min Price",
   "Max Price",
   "Location",
-  "Buy/Rent",
+  // "Buy/Rent",
 ] as const;
 
 type Filter = (typeof filters)[number];
@@ -42,42 +42,44 @@ const options: Record<Filter, any[]> = {
   "Min Price": [0, 10, 20, 30, 40],
   "Max Price": [10, 20, 30, 40, 50, 999],
   Location: ["Siam", "Asoke", "Ratchathewi", "Phrom Phong"],
-  "Buy/Rent": ["Buy", "Rent"],
+  // "Buy/Rent": ["Buy", "Rent"],
 };
 
 // Function to create the 2D array
-const createPropertiesWithListings = (
-  listings: Listing[],
+const createPropertieswithUnitTypes = (
+  unitTypes: UnitType[],
   properties: Property[]
-): Array<[Property, Listing[]]> => {
+): Array<[Property, UnitType[]]> => {
   // Step 1: Create a map of property _id -> listings
-  const propertyListingsMap: { [propertyId: string]: Listing[] } = {};
+  const propertyUnitTypesMap: { [propertyId: string]: UnitType[] } = {};
 
-  listings.forEach((listing) => {
-    const propertyRef = listing.property._ref;
+  unitTypes.forEach((unit) => {
+    const propertyRef = unit.property._ref;
+    console.log("Unit's property id", unit.property._ref);
 
     // Initialize array if this property is encountered for the first time
-    if (!propertyListingsMap[propertyRef]) {
-      propertyListingsMap[propertyRef] = [];
+    if (!propertyUnitTypesMap[propertyRef]) {
+      propertyUnitTypesMap[propertyRef] = [];
     }
 
     // Push the listing to the corresponding property
-    propertyListingsMap[propertyRef].push(listing);
+    propertyUnitTypesMap[propertyRef].push(unit);
   });
 
   // Step 2: Build the 2D array, but only include properties that have listings
-  const propertiesWithListings: Array<[Property, Listing[]]> = properties
+  const propertiesWithUnitTypes: Array<[Property, UnitType[]]> = properties
     .map((property) => {
-      const propertyListings = propertyListingsMap[property._id] || [];
-      return [property, propertyListings] as [Property, Listing[]];
+      const propertyUnitTypes = propertyUnitTypesMap[property._id] || [];
+      return [property, propertyUnitTypes] as [Property, UnitType[]];
     })
     .filter(([_, propertyListings]) => propertyListings.length > 0); // Filter out properties with no listings
 
-  return propertiesWithListings;
+  return propertiesWithUnitTypes;
 };
 
-interface BrowseCarouselProps {
-  listings: Listing[];
+interface HomeSearchSectionProps {
+  // listings: Listing[];
+  unitTypes: UnitType[];
   properties: Property[];
   onSearchSectionClick: () => void;
   searchActionClicked: boolean;
@@ -101,8 +103,8 @@ interface BrowseCarouselProps {
  * @returns {JSX.Element} - The rendered HomeSearchSection component
  */
 
-const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
-  listings,
+const HomeSearchSection: React.FC<HomeSearchSectionProps> = ({
+  unitTypes,
   properties,
   onSearchSectionClick,
   searchActionClicked,
@@ -120,7 +122,7 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
       if (searchSectionClickedInternal) searchSectionClickedInternal(event);
     };
 
-  const [filteredListings, setFilteredListings] = useState<Listing[]>([]);
+  const [filteredUnitTypes, setFilteredUnitTypes] = useState<UnitType[]>([]);
   const [filteredProperties, setFilteredProperties] = useState<Property[]>([]);
 
   const [openFilter, setOpenFilter] = useState<Filter | null>(null);
@@ -144,7 +146,7 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
     "Min Price": 0,
     "Max Price": 0,
     Location: "",
-    "Buy/Rent": "",
+    // "Buy/Rent": "",
   });
 
   const handleSelect = (filter: Filter, value: string) => {
@@ -163,7 +165,7 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
       minprice: selectedValues["Min Price"] ?? "",
       maxprice: selectedValues["Max Price"] ?? "",
       location: selectedValues.Location ?? "",
-      buyRent: selectedValues["Buy/Rent"] ?? "",
+      // buyRent: selectedValues["Buy/Rent"] ?? "",
     }).toString();
 
     // Navigate to FilterResultsPage with query parameters
@@ -239,12 +241,12 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
   // Define default filter function (Get and Match listing + property names)
   const filterDefaultNameTitle = (
     value: string,
-    listings: Listing[],
+    unitTypes: UnitType[],
     properties: Property[]
-  ): { filteredListings: Listing[]; filteredProperties: Property[] } => {
+  ): { filteredUnitTypes: UnitType[]; filteredProperties: Property[] } => {
     // Filter listings by matching the cleaned value with their names
-    const filteredListings = listings.filter((listing) =>
-      [listing.listingName].some((listingField) =>
+    const filteredUnitTypes = unitTypes.filter((unit) =>
+      [unit.unitTypeName].some((listingField) =>
         listingField.toLowerCase().includes(value.toLowerCase())
       )
     );
@@ -256,50 +258,15 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
       )
     );
 
-    return { filteredListings, filteredProperties };
+    return { filteredUnitTypes, filteredProperties };
   };
 
-  // Define filter function for listing and property names
-  // const filterByListingPropertyNames = (
-  //   value: string,
-  //   listings: Listing[],
-  //   properties: Property[]
-  // ): { filteredListings: Listing[]; filteredProperties: Property[] } => {
-  //   console.log("INITIATING FILTER BY LISTING AND PROPERTY NAMES");
-
-  //   let cleanedValue = value;
-
-  //   // Loop through each keyword to find its position in the value
-  //   for (const keyword of listingPropertyKeywords) {
-  //     const keywordIndex = cleanedValue.toLowerCase().indexOf(keyword);
-  //     if (keywordIndex !== -1) {
-  //       // Remove everything before and including the keyword
-  //       cleanedValue = cleanedValue.slice(keywordIndex + keyword.length).trim();
-  //       break; // Exit the loop once a keyword is found and cleaned
-  //     }
-  //   }
-
-  //   if (cleanedValue.length === 0) {
-  //     return { filteredListings: [], filteredProperties: [] };
-  //   }
-
-  //   const filteredListings = listings.filter((listing) =>
-  //     listing.listingName.toLowerCase().includes(cleanedValue.toLowerCase())
-  //   );
-
-  //   const filteredProperties = properties.filter((property) =>
-  //     property.title.toLowerCase().includes(cleanedValue.toLowerCase())
-  //   );
-
-  //   return { filteredListings, filteredProperties };
-  // };
-
-  // Define filter function for address-related queries
   const filterByAddressInfo = (
     value: string,
-    listings: Listing[],
+    // listings: Listing[],
+    unitType: UnitType[],
     properties: Property[]
-  ): { filteredListings: Listing[]; filteredProperties: Property[] } => {
+  ): { filteredUnitTypes: UnitType[]; filteredProperties: Property[] } => {
     console.log("INITIATING FILTER BY ADDRESS INFO");
 
     let cleanedValue = value;
@@ -319,26 +286,22 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
       console.log("Cleaned Value:", cleanedValue);
     }
 
-    listings.forEach((listing) => {
-      const nameMatch = listing.listingName
-        ?.toLowerCase()
-        .includes(cleanedValue);
-      const descriptionMatch = listing.description
+    unitTypes.forEach((unit) => {
+      const nameMatch = unit.unitTypeName?.toLowerCase().includes(cleanedValue);
+      const descriptionMatch = unit.description
         ?.toLowerCase()
         .includes(cleanedValue);
 
-      console.log(listing.listingName);
-      console.log(`Name Match: ${nameMatch}`);
+      console.log(unit.unitTypeName);
+      // console.log(`Name Match: ${nameMatch}`);
       console.log(`Description Match: ${descriptionMatch}`);
     });
 
     // Filter listings and properties based on the cleanedValue
-    const filteredListings = listings.filter(
-      (listing) =>
-        listing.description
-          ?.toLowerCase()
-          .includes(cleanedValue.toLowerCase()) ||
-        listing.listingName?.toLowerCase().includes(cleanedValue.toLowerCase())
+    const filteredUnitTypes = unitTypes.filter(
+      (unit) =>
+        unit.description?.toLowerCase().includes(cleanedValue.toLowerCase()) ||
+        unit.unitTypeName?.toLowerCase().includes(cleanedValue.toLowerCase())
     );
 
     // const filteredProperties = properties.filter(
@@ -349,8 +312,8 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
     //     property.title.toLowerCase().includes(cleanedValue.toLowerCase())
     // );
 
-    const propertiesWithListings = createPropertiesWithListings(
-      filteredListings,
+    const propertiesWithListings = createPropertieswithUnitTypes(
+      filteredUnitTypes,
       properties
     );
 
@@ -359,18 +322,19 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
     );
 
     if (cleanedValue.length === 0) {
-      return { filteredListings: [], filteredProperties: [] };
+      return { filteredUnitTypes: [], filteredProperties: [] };
     }
 
-    return { filteredListings, filteredProperties };
+    return { filteredUnitTypes, filteredProperties };
   };
 
   // Define filter function for property bedroom
-  const filterByListingsBedroom = (
+  const filterByUnitsBedroom = (
     value: string,
-    listings: Listing[],
+    // listings: Listing[],
+    unitType: UnitType[],
     properties: Property[]
-  ): { filteredListings: Listing[]; filteredProperties: Property[] } => {
+  ): { filteredUnitTypes: UnitType[]; filteredProperties: Property[] } => {
     console.log("INITIATING FILTER BY PROPERTY BEDROOM");
 
     let cleanedValue = value;
@@ -389,14 +353,14 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
       console.log(cleanedValue);
     }
 
-    const filteredListings = listings.filter(
-      (listing) =>
+    const filteredUnitTypes = unitTypes.filter(
+      (unit) =>
         // listing.description?.toLowerCase().includes(cleanedValue.toLowerCase())
-        listing.bedroom === Number(cleanedValue)
+        unit.bedroom === Number(cleanedValue)
     );
 
-    const propertiesWithListings = createPropertiesWithListings(
-      filteredListings,
+    const propertiesWithListings = createPropertieswithUnitTypes(
+      filteredUnitTypes,
       properties
     );
 
@@ -405,17 +369,18 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
     );
 
     console.log("Filtered Properties:", filteredProperties);
-    console.log("Filtered Listings:", filteredListings);
+    console.log("Filtered Listings:", filteredUnitTypes);
 
-    return { filteredListings, filteredProperties };
+    return { filteredUnitTypes, filteredProperties };
   };
 
   // Define filter function for property bathroom
-  const filterByListingsBathroom = (
+  const filterByUnitsBathroom = (
     value: string,
-    listings: Listing[],
+    // listings: Listing[],
+    unitType: UnitType[],
     properties: Property[]
-  ): { filteredListings: Listing[]; filteredProperties: Property[] } => {
+  ): { filteredUnitTypes: UnitType[]; filteredProperties: Property[] } => {
     console.log("INITIATING FILTER BY PROPERTY BATHROOM");
 
     let cleanedValue = value;
@@ -434,19 +399,19 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
       console.log(cleanedValue);
     }
 
-    const filteredListings = listings.filter(
-      (listing) =>
+    const filteredUnitTypes = unitTypes.filter(
+      (unit) =>
         // listing.description?.toLowerCase().includes(cleanedValue.toLowerCase())
-        listing.bathroom === Number(cleanedValue)
+        unit.bathroom === Number(cleanedValue)
     );
 
     const filteredProperties: Property[] = [];
 
     if (cleanedValue.length === 0) {
-      return { filteredListings: [], filteredProperties: [] };
+      return { filteredUnitTypes: [], filteredProperties: [] };
     }
 
-    return { filteredListings, filteredProperties };
+    return { filteredUnitTypes, filteredProperties };
   };
 
   // Define filter function for property facing side
@@ -456,9 +421,10 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
   // Perform search based on value and filters
   const performSearch = (
     value: string,
-    listings: Listing[],
+    // listings: Listing[],
+    unitTypes: UnitType[],
     properties: Property[]
-  ): { filteredListings: Listing[]; filteredProperties: Property[] } => {
+  ): { filteredUnitTypes: UnitType[]; filteredProperties: Property[] } => {
     // Determine which filters are active based on the value
     // const isListingSearch = containsKeywords(value, listingPropertyKeywords);
     const isAddressSearch = containsKeywords(value, addressInfoKeywords);
@@ -474,7 +440,7 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
     );
 
     // Initialize filtered results
-    let filteredListings: Listing[] = [...listings];
+    let filteredUnitTypes: UnitType[] = [...unitTypes];
     let filteredProperties: Property[] = [...properties];
 
     // Apply filters sequentially
@@ -483,13 +449,9 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
     if (isBedroomSearch) {
       console.log("INITIATING FILTER BY PROPERTY BEDROOM IN PERFORM-SEARCH");
       console.log();
-      const bedroomResult = filterByListingsBedroom(
-        value,
-        listings,
-        properties
-      );
-      filteredListings = filteredListings.filter((listing) =>
-        bedroomResult.filteredListings.includes(listing)
+      const bedroomResult = filterByUnitsBedroom(value, unitTypes, properties);
+      filteredUnitTypes = filteredUnitTypes.filter((listing) =>
+        bedroomResult.filteredUnitTypes.includes(listing)
       );
       filteredProperties = filteredProperties.filter((property) =>
         bedroomResult.filteredProperties.includes(property)
@@ -499,13 +461,13 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
     // 2. Filter by bathroom if detected
     if (isBathroomSearch) {
       console.log("INITIATING FILTER BY PROPERTY BATHROOM IN PERFORM-SEARCH");
-      const bathroomResult = filterByListingsBathroom(
+      const bathroomResult = filterByUnitsBathroom(
         value,
-        filteredListings,
+        filteredUnitTypes,
         properties
       );
-      filteredListings = filteredListings.filter((listing) =>
-        bathroomResult.filteredListings.includes(listing)
+      filteredUnitTypes = filteredUnitTypes.filter((listing) =>
+        bathroomResult.filteredUnitTypes.includes(listing)
       );
       filteredProperties = filteredProperties.filter((property) =>
         bathroomResult.filteredProperties.includes(property)
@@ -519,8 +481,8 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
     //     listings,
     //     properties
     //   );
-    //   filteredListings = filteredListings.filter((listing) =>
-    //     listingResult.filteredListings.includes(listing)
+    //   filteredUnitTypes = filteredUnitTypes.filter((listing) =>
+    //     listingResult.filteredUnitTypes.includes(listing)
     //   );
     //   filteredProperties = filteredProperties.filter((property) =>
     //     listingResult.filteredProperties.includes(property)
@@ -532,11 +494,11 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
       console.log("INITIATING FILTER BY ADDRESS IN PERFORM-SEARCH");
       const addressResult = filterByAddressInfo(
         value,
-        filteredListings,
+        filteredUnitTypes,
         properties
       );
-      filteredListings = filteredListings.filter((listing) =>
-        addressResult.filteredListings.includes(listing)
+      filteredUnitTypes = filteredUnitTypes.filter((listing) =>
+        addressResult.filteredUnitTypes.includes(listing)
       );
       filteredProperties = filteredProperties.filter((property) =>
         addressResult.filteredProperties.includes(property)
@@ -552,11 +514,11 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
     ) {
       const defaultResult = filterDefaultNameTitle(
         value,
-        filteredListings,
+        filteredUnitTypes,
         properties
       );
-      filteredListings = filteredListings.filter((listing) =>
-        defaultResult.filteredListings.includes(listing)
+      filteredUnitTypes = filteredUnitTypes.filter((listing) =>
+        defaultResult.filteredUnitTypes.includes(listing)
       );
       filteredProperties = filteredProperties.filter((property) =>
         defaultResult.filteredProperties.includes(property)
@@ -565,12 +527,12 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
 
     // // Handle "only properties" or "only listings" filters
     // if (isSearchOnlyProperties) {
-    //   filteredListings = []; // Clear listings, only properties should remain
+    //   filteredUnitTypes = []; // Clear listings, only properties should remain
     // } else if (isSearchOnlyListings) {
     //   filteredProperties = []; // Clear properties, only listings should remain
     // }
 
-    return { filteredListings, filteredProperties };
+    return { filteredUnitTypes, filteredProperties };
   };
 
   // Handle input change and perform search
@@ -580,19 +542,19 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
     console.log(value); // Log the input value
 
     // Perform the search and get filtered results
-    const { filteredListings, filteredProperties } = performSearch(
+    const { filteredUnitTypes, filteredProperties } = performSearch(
       value,
-      listings,
+      unitTypes,
       properties
     );
 
     // Update state with filtered results
-    setFilteredListings(filteredListings);
+    setFilteredUnitTypes(filteredUnitTypes);
     setFilteredProperties(filteredProperties);
 
     console.log(
-      "Filtered Listings: ",
-      filteredListings.map((listing) => listing.listingName)
+      "Filtered Units: ",
+      filteredUnitTypes.map((unit) => unit.unitTypeName)
     );
 
     console.log(
@@ -642,7 +604,7 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
       <div className="z-10 w-screen">
         {searchActionClicked && (
           <SearchResultsSection
-            filteredListings={filteredListings}
+            filteredUnitTypes={filteredUnitTypes}
             filteredProperties={filteredProperties}
             isActive={isSearchActive}
           />
