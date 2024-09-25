@@ -27,8 +27,8 @@ function LoadingPage() {
       <div className="w-full flex justify-center pb-12 md:pb-20">
         <div className="md:max-w-[1150px] w-[85vw]">
           <Grid container columnSpacing={10}>
-            <Grid item md={7}>
-              <Skeleton className="h-[40px] w-[80%] mb-4" />
+          <Grid item xs={12} md={7}>
+          <Skeleton className="h-[40px] w-[80%] mb-4" />
               <Skeleton className="h-[80px] w-[100%] mb-4" />
               <div className="flex flex-wrap gap-2 mt-5">
                 <Skeleton className="h-[30px] w-[70px] rounded-full" />
@@ -37,7 +37,7 @@ function LoadingPage() {
               </div>
             </Grid>
 
-            <Grid item md={5}>
+            <Grid item xs={12} md={5} className="mt-10 md:mt-0">
               <Grid
                 container
                 rowSpacing={{ xs: 4, md: 3 }}
@@ -63,7 +63,7 @@ function LoadingPage() {
                   <Skeleton className="h-[24px] w-[80%]" />
                 </Grid>
               </Grid>
-              <div className="flex justify-between gap-4 mt-20">
+              <div className="flex justify-between gap-4 mt-10 md:mt-20">
                 <Skeleton className="h-[40px] w-[45%]" />
                 <Skeleton className="h-[40px] w-[45%]" />
               </div>

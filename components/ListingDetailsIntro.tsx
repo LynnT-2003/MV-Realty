@@ -47,7 +47,11 @@ const ListingDetailsIntro: React.FC<ListingDetailsIntroProps> = ({
               ))}
             </div>
           </Grid>
-          <Grid item md={5}>
+          <Grid
+            item
+            md={5}
+            className="mt-10 md:mt-0"
+          >
             <Grid
               container
               rowSpacing={{ xs: 4, md: 3 }}
@@ -57,31 +61,31 @@ const ListingDetailsIntro: React.FC<ListingDetailsIntroProps> = ({
             >
               <Grid item xs={6}>
                 <div className="flex">
-                  <img src="/icons/bedroom.png" />
+                  <img src="/icons/bed.svg" />
                   <p className="ml-3.5">{listingDetails.bedroom} Bedroom</p>
                 </div>
               </Grid>
               <Grid item xs={6}>
                 <div className="flex">
-                  <img src="/icons/shower.png" />
+                  <img src="/icons/shower.svg" />
                   <p className="ml-3.5">{listingDetails.bathroom} Bathroom</p>
                 </div>
               </Grid>
               <Grid item xs={6}>
                 <div className="flex">
-                  <img src="/icons/floor.png" />
+                  <img src="/icons/floor.svg" />
                   <p className="ml-3.5">{listingDetails.floor}th Floor</p>
                 </div>
               </Grid>
               <Grid item xs={6}>
                 <div className="flex">
-                  <img src="/icons/meter.png" />
-                  <p className="ml-3.5">{listingDetails.size} sqm</p>
+                  <img src="/icons/sqmt.svg" />
+                  <p className="ml-3.5">{listingDetails.size} square meter</p>
                 </div>
               </Grid>
               <Grid item xs={6}>
                 <div className="flex">
-                  <img src="/icons/compass.png" />
+                  <img src="/icons/compass.svg" />
                   <p className="ml-3.5">
                     Facing {listingDetails.facingDirection}
                   </p>
@@ -94,17 +98,17 @@ const ListingDetailsIntro: React.FC<ListingDetailsIntroProps> = ({
                 </div>
               </Grid>
             </Grid>
-            <div className="flex justify-between gap-4 mt-16">
-              <button className="py-4 lg:py-2 hover:bg-slate-700 bg-[#193158] text-white  rounded-lg w-1/2 text-xs">
-                SHARE LISTING
+            <div className="flex justify-between gap-4 mt-10 md:mt-15">
+              <button className="py-3 lg:py-2 hover:bg-slate-700 bg-[#193158] text-white font-semibold rounded-lg w-1/2 text-xs">
+                SHARE THIS LISTING
               </button>
-              <button className="py-4 lg:py-2 hover:bg-slate-700 bg-[#193158] text-white  rounded-lg w-1/2 text-xs">
+              <button className="py-3 lg:py-2 hover:bg-slate-700 bg-[#193158] text-white font-semibold rounded-lg w-1/2 text-xs">
                 CONTACT US
               </button>
             </div>
             <div className="mt-4">
-              <button className="py-4 lg:py-2 hover:bg-slate-700 bg-[#193158] text-white  rounded-lg w-full text-xs">
-                MORE FROM PROPERTY
+              <button className="py-3 lg:py-2 hover:bg-slate-700 bg-[#193158] text-white font-semibold rounded-lg w-full text-xs">
+                MORE FROM THIS PROPERTY
               </button>
               <p className="mt-4 text-[#193158] font-semibold text-center text-md">
                 Unit ID: {listingDetails._id}

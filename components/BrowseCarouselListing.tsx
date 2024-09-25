@@ -1,11 +1,11 @@
 import { urlForImage } from "@/sanity/lib/image";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Image } from "sanity";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { DirectionAwareHover } from "./ui/direction-aware-hover";
 import { Property, Listing, Developer } from "@/types";
 import { useRouter } from "next/navigation";
-
+import BrowseListingCarouselLoadingSkeleton from "./BrowseListingCarouselLoadingSkeleton";
 // Define the prop types
 interface BrowseCarouselProps {
   listings: Listing[];
@@ -21,12 +21,19 @@ const BrowseCarousel: React.FC<BrowseCarouselProps> = ({
   blur,
 }) => {
   const router = useRouter();
-
   const carouselRef = useRef<HTMLDivElement>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
+  const [loading, setLoading] = useState(true); // Loading state
 
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setLoading(false); // Simulated loading
+    }, 1000); // Adjust to the real loading time
+    return () => clearTimeout(timeout);
+  }, [listings, properties, developers]);
+  
   const handlePropertyClick = (slug: String) => {
     // console.log("Clicked on Property: ", { property });
     router.push(`/ListingDetails/${slug}`);
@@ -69,6 +76,10 @@ const BrowseCarousel: React.FC<BrowseCarouselProps> = ({
       carouselRef.current.scrollBy({ left: 488, behavior: "smooth" });
     }
   };
+
+  if (loading) {
+    return <BrowseListingCarouselLoadingSkeleton />; // Render loading skeleton
+  }
 
   return (
     <div className="w-full flex items-center justify-center pb-4">
@@ -144,19 +155,19 @@ const BrowseCarousel: React.FC<BrowseCarouselProps> = ({
                 </div> */}
                 <div className="flex pt-4">
                   <span className="pr-6 flex">
-                    <img src="/icons/bedroom.png" className="pr-2" />
+                    <img src="/icons/bed.svg" className="pr-2" />
                     {listing.bedroom}
                   </span>
                   <span className="pr-6 flex">
-                    <img src="/icons/meter.png" className="pr-2" />
+                    <img src="/icons/sqmt.svg" className="pr-2" />
                     {listing.size}
                   </span>
                   <span className="pr-6 flex">
-                    <img src="/icons/shower.png" className="pr-2" />
+                    <img src="/icons/shower.svg" className="pr-2" />
                     {listing.bathroom}
                   </span>
                   <span className="pr-6 flex">
-                    <img src="/icons/floor.png" className="pr-2" />
+                    <img src="/icons/floor.svg" className="pr-2" />
                     {listing.floor}
                   </span>
                 </div>

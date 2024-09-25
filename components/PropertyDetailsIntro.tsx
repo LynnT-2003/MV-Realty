@@ -74,7 +74,7 @@ const PropertyDetailsIntro: React.FC<PropertyDetailsIntroProps> = ({
               ))}
             </div>
           </Grid>
-          <Grid item md={5}>
+          <Grid item md={5} className="mt-10 md:mt-0">
             <Grid
               container
               rowSpacing={{ xs: 4, md: 3 }}
@@ -107,17 +107,17 @@ const PropertyDetailsIntro: React.FC<PropertyDetailsIntroProps> = ({
             </Grid>
 
             <div className="flex justify-between gap-4 mt-20">
-              <button className="py-2 bg-[#193158] text-white font-semibold rounded-lg w-1/2 text-xs">
+              <button className="py-3 lg:py-2 hover:bg-slate-700 bg-[#193158] text-white font-semibold rounded-lg w-1/2 text-xs">
                 SHARE THIS PROPERTY
               </button>
-              <button className="py-2 bg-[#193158] text-white font-semibold rounded-lg w-1/2 text-xs">
+              <button className="py-3 lg:py-2 hover:bg-slate-700 bg-[#193158] text-white font-semibold rounded-lg w-1/2 text-xs">
                 CONTACT US
               </button>
             </div>
 
             <div className="mt-4">
               <button
-                className="py-2 bg-[#193158] text-white font-semibold rounded-lg w-full text-xs"
+                className="py-3 lg:py-2 hover:bg-slate-700 bg-[#193158] text-white font-semibold rounded-lg w-full text-xs"
                 onClick={() => {
                   const listingsParam = encodeURIComponent(
                     JSON.stringify(listings)
