@@ -100,9 +100,9 @@ export const btsStationsSilomLine = [
   { id: "S7", name: "Krung Thon Buri", lat: 13.720877, lng: 100.502841 },
   { id: "S8", name: "Wongwian Yai", lat: 13.721149, lng: 100.495259 },
   { id: "S9", name: "Pho Nimit", lat: 13.719221, lng: 100.485945 },
-  { id: "S1", name: "Talat Phlu", lat: 13.714215, lng: 100.476677 },
-  { id: "S10", name: "Wutthakat", lat: 13.71297, lng: 100.468913 },
-  { id: "S11", name: "Bang Wa", lat: 13.720699, lng: 100.457795 },
+  { id: "S10", name: "Talat Phlu", lat: 13.714215, lng: 100.476677 },
+  { id: "S11", name: "Wutthakat", lat: 13.71297, lng: 100.468913 },
+  { id: "S12", name: "Bang Wa", lat: 13.720699, lng: 100.457795 },
 ];
 
 export const mrtStationsYellowLine = [
