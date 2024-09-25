@@ -17,7 +17,7 @@ const PropertyDetailsImageBento: React.FC<PropertyDetailsImageBentoProps> = ({
           <Grid item xs={6}>
             <div>
               <img
-                src={urlForImage(propertyDetails.photos[0])}
+                src={urlForImage(propertyDetails.propertyHero)}
                 alt="Logo"
                 className="w-full h-full rounded-lg"
               />
@@ -33,7 +33,7 @@ const PropertyDetailsImageBento: React.FC<PropertyDetailsImageBentoProps> = ({
                 <Grid item xs={6}>
                   <div>
                     <img
-                      src={urlForImage(propertyDetails.photos[1])}
+                      src={urlForImage(propertyDetails.photos[0])}
                       alt="Logo"
                       className="rounded-lg"
                     />
@@ -42,7 +42,7 @@ const PropertyDetailsImageBento: React.FC<PropertyDetailsImageBentoProps> = ({
                 <Grid item xs={6}>
                   <div className="">
                     <img
-                      src={urlForImage(propertyDetails.photos[2])}
+                      src={urlForImage(propertyDetails.photos[1])}
                       alt="Logo"
                     />
                   </div>
@@ -50,7 +50,7 @@ const PropertyDetailsImageBento: React.FC<PropertyDetailsImageBentoProps> = ({
                 <Grid item xs={6}>
                   <div className="pt-0.5 md:pt-2">
                     <img
-                      src={urlForImage(propertyDetails.photos[3])}
+                      src={urlForImage(propertyDetails.photos[2])}
                       alt="Logo"
                       className="rounded-lg"
                     />
@@ -59,7 +59,7 @@ const PropertyDetailsImageBento: React.FC<PropertyDetailsImageBentoProps> = ({
                 <Grid item xs={6}>
                   <div className="pt-0.5 md:pt-2">
                     <img
-                      src={urlForImage(propertyDetails.photos[4])}
+                      src={urlForImage(propertyDetails.photos[3])}
                       alt="Logo"
                       className="rounded-lg"
                     />

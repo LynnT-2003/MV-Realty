@@ -21,6 +21,7 @@ import { PopupButton } from "react-calendly";
 import LoadingPage from "./loading";
 import InfiniteMovingCardsDemo from "@/components/infinite-cards-demo";
 import { fetchListingsByPropertyId } from "@/services/ListingServices";
+import FaqSection from "@/components/FaqSection";
 
 const downloadFile = (url: string) => {
   if (!url) return;
@@ -131,6 +132,8 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
         developer={developer}
         listings={listings}
       />
+
+      <FaqSection propertyDetails={property}/>
 
       {/* Show the facilities accordion component */}
       <FacilitiesAccordion

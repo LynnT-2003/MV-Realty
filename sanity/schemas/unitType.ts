@@ -60,6 +60,7 @@ export default defineType({
         list: [
           { title: 'Ready to move in', value: 'ready-to-move-in' },
           { title: 'Finishing in 2026', value: 'finishing-2026' },
+          { title: 'Not Ready to move in', value: 'not-ready-to-move-in' },
         ],
       },
     }),
