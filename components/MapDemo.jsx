@@ -348,9 +348,6 @@ export const MapDemo = ({ lat, lng }) => {
         display: "flex",
         flexDirection: "column",
         width: "100%",
-        height: "auto",
-        minHeight: "500px",
-        paddingBottom: "400px",
       }}
     >
       <div
@@ -384,52 +381,19 @@ export const MapDemo = ({ lat, lng }) => {
         </>
       ) : (
         <>
-          <div className="text-xl font-semibold pt-4 ">
+          <div className="text-xl font-semibold py-6 lg:pt-4 ">
             Nearby Transportation
           </div>
         </>
       )}
 
       <>
-        {nearbybtsStationsGreenLineState.length > 0 && (
-          <div className="py-0 bg-blue-500 h-full px-4 md:px-0">
-            <div className="pl-4 pt-4">
-              <p className="pl-4 poppins-text-title-small md:property-details-title-text"></p>
-              {nearbybtsStationsGreenLineState &&
-                nearbybtsStationsGreenLineState.length > 0 && (
-                  <div className="flex flex-col">
-                    {nearbybtsStationsGreenLineState.map((station, index) => (
-                      <div key={index}>
-                        <div className="flex flex-row items-center justify-between md:w-1/2 my-2">
-                          <div className="flex flex-row items-center">
-                            <img
-                              src={"/bts-icons/green.png"}
-                              className="w-10 h-10"
-                              alt={"greenline_logo"}
-                            />
-                            <h1 className="ml-5">{station.id}</h1>
-                            <h1 className="ml-5">{station.name}</h1>
-                          </div>
-                          <div className="flex flex-row items-center">
-                            {" "}
-                            <h1 className="px-2">{station.distance}</h1>
-                            <h1 className="px-2">{station.duration}</h1>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-            </div>
-          </div>
-        )}
-
-        {nearbyBtsSilomLineStationsState &&
-          nearbyBtsSilomLineStationsState.length > 0 && (
+        {nearbybtsStationsGreenLineState &&
+          nearbybtsStationsGreenLineState.length > 0 && (
             <div className="flex flex-col">
-              {nearbyBtsSilomLineStationsState.map((station, index) => (
+              {nearbybtsStationsGreenLineState.map((station, index) => (
                 <div key={index}>
-                  <div className="flex flex-row items-center justify-between md:w-1/2 my-2">
+                  <div className="flex flex-row items-center justify-between md:w-1/2 my-2 px-2 ">
                     <div className="flex flex-row items-center">
                       <img
                         src={"/bts-icons/green.png"}
@@ -441,8 +405,34 @@ export const MapDemo = ({ lat, lng }) => {
                     </div>
                     <div className="flex flex-row items-center">
                       {" "}
-                      <h1 className="px-2">{station.distance}</h1>
-                      <h1 className="px-2">{station.duration}</h1>
+                      <h1 className="lg:px-4 px-2">{station.distance}</h1>
+                      <h1 className="lg:px-4 px-2">{station.duration}</h1>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+        {nearbyBtsSilomLineStationsState &&
+          nearbyBtsSilomLineStationsState.length > 0 && (
+            <div className="flex flex-col">
+              {nearbyBtsSilomLineStationsState.map((station, index) => (
+                <div key={index}>
+                  <div className="flex flex-row items-center justify-between md:w-1/2 my-2 px-2">
+                    <div className="flex flex-row items-center">
+                      <img
+                        src={"/bts-icons/silom.png"}
+                        className="w-10 h-10"
+                        alt={"silomLine_logo"}
+                      />
+                      <h1 className="ml-5">{station.id}</h1>
+                      <h1 className="ml-5">{station.name}</h1>
+                    </div>
+                    <div className="flex flex-row items-center">
+                      {" "}
+                      <h1 className="lg:px-4 px-2">{station.distance}</h1>
+                      <h1 className="lg:px-4 px-2">{station.duration}</h1>
                     </div>
                   </div>
                 </div>
@@ -455,7 +445,7 @@ export const MapDemo = ({ lat, lng }) => {
             <div className="flex flex-col">
               {nearbyMrtYellowLineStationsState.map((station, index) => (
                 <div key={index}>
-                  <div className="flex flex-row items-center justify-between md:w-1/2 my-2">
+                  <div className="flex flex-row items-center justify-between md:w-1/2 my-2 px-2">
                     <div className="flex flex-row items-center">
                       <img
                         src={"/bts-icons/green.png"}
@@ -467,8 +457,8 @@ export const MapDemo = ({ lat, lng }) => {
                     </div>
                     <div className="flex flex-row items-center">
                       {" "}
-                      <h1 className="px-2">{station.distance}</h1>
-                      <h1 className="px-2">{station.duration}</h1>
+                      <h1 className="lg:px-4 px-2">{station.distance}</h1>
+                      <h1 className="lg:px-4 px-2">{station.duration}</h1>
                     </div>
                   </div>
                 </div>
@@ -481,7 +471,7 @@ export const MapDemo = ({ lat, lng }) => {
             <div className="flex flex-col">
               {nearbyMrtPinkLineStationsState.map((station, index) => (
                 <div key={index}>
-                  <div className="flex flex-row items-center justify-between md:w-1/2 my-2">
+                  <div className="flex flex-row items-center justify-between md:w-1/2 my-2 px-2">
                     <div className="flex flex-row items-center">
                       <img
                         src={"/bts-icons/green.png"}
@@ -493,8 +483,8 @@ export const MapDemo = ({ lat, lng }) => {
                     </div>
                     <div className="flex flex-row items-center">
                       {" "}
-                      <h1 className="px-2">{station.distance}</h1>
-                      <h1 className="px-2">{station.duration}</h1>
+                      <h1 className="lg:px-4 px-2">{station.distance}</h1>
+                      <h1 className="lg:px-4 px-2">{station.duration} </h1>
                     </div>
                   </div>
                 </div>
@@ -506,7 +496,7 @@ export const MapDemo = ({ lat, lng }) => {
           <div className="flex flex-col">
             {nearbyAirportLinkState.map((station, index) => (
               <div key={index}>
-                <div className="flex flex-row items-center justify-between md:w-1/2 my-2">
+                <div className="flex flex-row items-center justify-between md:w-1/2 my-2 px-2">
                   <div className="flex flex-row items-center">
                     <img
                       src={"/bts-icons/green.png"}

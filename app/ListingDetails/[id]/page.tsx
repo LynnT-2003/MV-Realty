@@ -149,29 +149,32 @@ const ListingDetailPage = ({ params }: { params: { id: string } }) => {
         </div>
       </div>
 
-      <div className="w-full flex justify-center pb-24 md:pb-20">
-        <div className="md:max-w-[1100px] w-[100vw] md:max-h-[805px] h-[80vw]">
+      <div className="w-full flex justify-center pb-24 md:pb-12 px-4 lg:px-0">
+        <div className="md:max-w-[1100px] w-[100vw] ">
           <MapDemo
             lat={property?.geoLocation.lat}
             lng={property?.geoLocation.lng}
           />
         </div>
       </div>
-      <div className="w-full flex justify-center gap-16 mb-24 pb-24 px-56 md:pb-20">
-        <PopupButton
-          className="w-1/2 py-3 bg-[#193158] hover:bg-[#132441] text-white text-sm font-bold rounded-lg shadow-md"
-          url="https://calendly.com/tanat-navin/30min"
-          rootElement={document.getElementById("root") || document.body}
-          text="Schedule a viewing"
-        />
-        <button
-          onClick={() => {
-            if (pdf_file_url) downloadFile(pdf_file_url);
-          }}
-          className="w-1/2 py-3 bg-[#193158] hover:bg-[#132441] text-white text-sm font-bold rounded-lg shadow-md"
-        >
-          Download Brochure
-        </button>
+
+      <div className="w-full flex justify-center pb-12 md:pb-6 px-4 lg:px-0">
+        <div className="md:max-w-[1100px] w-[100vw] flex gap-4 lg:gap-16">
+          <PopupButton
+            className="w-1/2 py-3 bg-[#193158] hover:bg-[#132441] text-white text-sm font-bold rounded-lg shadow-md"
+            url="https://calendly.com/tanat-navin/30min"
+            rootElement={document.getElementById("root") || document.body}
+            text="Schedule a viewing"
+          />
+          <button
+            onClick={() => {
+              if (pdf_file_url) downloadFile(pdf_file_url);
+            }}
+            className="w-1/2 py-3 bg-[#193158] hover:bg-[#132441] text-white text-sm font-bold rounded-lg shadow-md"
+          >
+            Download Brochure
+          </button>
+        </div>
       </div>
     </div>
   );
