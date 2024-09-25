@@ -171,20 +171,19 @@ export const MapDemo = ({ lat, lng }) => {
         });
 
         if (
-          (btsStationsGreenLine.some((station) =>
+          btsStationsGreenLine.some((station) =>
             place.id.includes(station.id)
           ) ||
-            btsStationsSilomLine.some((station) =>
-              place.id.includes(station.id)
-            ) ||
-            mrtStationsYellowLine.some((station) =>
-              place.id.includes(station.id)
-            ) ||
-            mrtStationsPinkLine.some((station) =>
-              place.id.includes(station.id)
-            ) ||
-            airportLink.some((station) => place.id.includes(station.id))) &&
-          !place.name.includes("Exit")
+          btsStationsSilomLine.some((station) =>
+            place.id.includes(station.id)
+          ) ||
+          mrtStationsYellowLine.some((station) =>
+            place.id.includes(station.id)
+          ) ||
+          mrtStationsPinkLine.some((station) =>
+            place.id.includes(station.id)
+          ) ||
+          airportLink.some((station) => place.id.includes(station.id))
         ) {
           const directionsService = new google.maps.DirectionsService();
           const calculateWalkingDistance = () => {
@@ -239,14 +238,6 @@ export const MapDemo = ({ lat, lng }) => {
                   infoWindow.close();
                 });
 
-                // Categorize and push station info to the appropriate array
-                const stationInfo = {
-                  name: String,
-                  id: String,
-                  distance,
-                  duration,
-                };
-
                 const matchedStationGreen = btsStationsGreenLine.find(
                   (station) => place.name.includes(station.name)
                 );
@@ -275,10 +266,17 @@ export const MapDemo = ({ lat, lng }) => {
                     duration: duration,
                   };
 
-                  setnearbybtsStationsGreenLineState((prevStations) => [
-                    ...prevStations,
-                    newStation,
-                  ]);
+                  setnearbybtsStationsGreenLineState((prevStations) => {
+                    if (
+                      !prevStations.find(
+                        (station) => station.id === newStation.id
+                      )
+                    ) {
+                      return [...prevStations, newStation];
+                    }
+                    return prevStations;
+                  });
+                  console.log("Nearby Green Line:", newStation);
                 }
 
                 if (matchedStationSilom) {
@@ -289,10 +287,16 @@ export const MapDemo = ({ lat, lng }) => {
                     duration: duration,
                   };
 
-                  setnearbyBtsSilomLineStationsState((prevStations) => [
-                    ...prevStations,
-                    newStation,
-                  ]);
+                  setnearbyBtsSilomLineStationsState((prevStations) => {
+                    if (
+                      !prevStations.find(
+                        (station) => station.id === newStation.id
+                      )
+                    ) {
+                      return [...prevStations, newStation];
+                    }
+                    return prevStations;
+                  });
                 }
 
                 if (matchedStationYellow) {
@@ -303,10 +307,16 @@ export const MapDemo = ({ lat, lng }) => {
                     duration: duration,
                   };
 
-                  setNearbyMrtYellowLineStationsState((prevStations) => [
-                    ...prevStations,
-                    newStation,
-                  ]);
+                  setNearbyMrtYellowLineStationsState((prevStations) => {
+                    if (
+                      !prevStations.find(
+                        (station) => station.id === newStation.id
+                      )
+                    ) {
+                      return [...prevStations, newStation];
+                    }
+                    return prevStations;
+                  });
                 }
 
                 if (matchedStationPink) {
@@ -317,10 +327,16 @@ export const MapDemo = ({ lat, lng }) => {
                     duration: duration,
                   };
 
-                  setNearbyMrtPinkLineStationsState((prevStations) => [
-                    ...prevStations,
-                    newStation,
-                  ]);
+                  setNearbyMrtPinkLineStationsState((prevStations) => {
+                    if (
+                      !prevStations.find(
+                        (station) => station.id === newStation.id
+                      )
+                    ) {
+                      return [...prevStations, newStation];
+                    }
+                    return prevStations;
+                  });
                 }
 
                 if (matchedAirportLink) {
@@ -331,10 +347,16 @@ export const MapDemo = ({ lat, lng }) => {
                     duration: duration,
                   };
 
-                  setNearbyAirportLinkState((prevStations) => [
-                    ...prevStations,
-                    newStation,
-                  ]);
+                  setNearbyAirportLinkState((prevStations) => {
+                    if (
+                      !prevStations.find(
+                        (station) => station.id === newStation.id
+                      )
+                    ) {
+                      return [...prevStations, newStation];
+                    }
+                    return prevStations;
+                  });
                 }
               }
             });
