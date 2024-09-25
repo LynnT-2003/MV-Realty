@@ -79,8 +79,8 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
 }) => {
   const router = useRouter();
 
-  const [maxPrice, setMaxPrice] = useState(99);
-  const [maxInitPrice, setMaxInitPrice] = useState(99);
+  const [maxPrice, setMaxPrice] = useState(999);
+  const [maxInitPrice, setMaxInitPrice] = useState(999);
 
   useEffect(() => {
     if (unitTypes.length > 0) {
@@ -272,7 +272,7 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
 
                 {/* Max price slider */}
                 <div>
-                  {maxPrice < 99 && (
+                  {maxPrice < 999 && (
                     <h1 className="my-2">Max Price: {maxPrice} Million THB</h1>
                   )}
                   <Slider
@@ -401,10 +401,10 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
                 <span className="mt-12 text-sm text-slate-700 font-light poppins-text">
                   Max Price:
                 </span>
-                {maxPrice < 99 && (
+                {maxPrice < 999 && (
                   <h1 className="my-2">{maxPrice} Million THB</h1>
                 )}
-                {maxPrice >= 99 && (
+                {maxPrice >= 999 && (
                   <span className="my-2 ml-2 text-sm text-slate-700 font-light poppins-text">
                     Not set
                   </span>
@@ -543,7 +543,7 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
 
                 {/* Max price slider */}
                 <div>
-                  {maxPrice < 99 && (
+                  {maxPrice < 999 && (
                     <h1 className="my-2">Max Price: {maxPrice} Million THB</h1>
                   )}
                   <Slider
