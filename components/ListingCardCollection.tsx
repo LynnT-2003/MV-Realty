@@ -332,10 +332,10 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
         <div className="flex w-screen lg:w-[1320px]">
           {/* First column (blank, taking 1/3 width) */}
           <div className="mx-5 position:fixed ipad-screen:block rounded-3xl ipad-screen:w-[300px] w-[0px] hidden">
-            <div className="px-7 pt-10 pb-16 mt-[42px] rounded-lg bg-blue-100 ">
-              <h1 className="poppins-text ml-1 font-lg">Filter Listings:</h1>
+            <div className="px-10 pt-10 pb-16 mt-[42px] rounded-lg bg-blue-100 ">
+              <h1 className="ml-1 text-xl">Filter Listings:</h1>
               {filters.map((filter) => (
-                <div key={filter} className="md:px-0 my-10">
+                <div key={filter} className="md:px-0 my-8">
                   <Popover
                     open={openFilter === filter}
                     onOpenChange={(isOpen) =>
@@ -344,7 +344,7 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
                   >
                     <PopoverTrigger
                       asChild
-                      className="hover:bg-slate-300 py-6 border-0"
+                      className="hover:bg-slate-300 py-3 border-0"
                     >
                       <Button
                         variant="outline"
@@ -352,7 +352,7 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
                         aria-expanded={openFilter === filter}
                         className="flex justify-between text-right pr-4 w-full"
                       >
-                        <span className="flex-1 text-left text-lg text-slate-700 font-thin poppins-text">
+                        <span className="flex-1 text-left text-sm text-slate-700 font-thin poppins-text">
                           {filter === "Bedrooms"
                             ? `${selectedValues[filter]} Bedroom`
                             : `
@@ -393,18 +393,24 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
                   </Popover>
                 </div>
               ))}
-              <div className="">
-                <span className="mt-12">Max Price:</span>
+              <div className="mt-4">
+                <span className="mt-12 text-sm text-slate-700 font-light poppins-text">
+                  Max Price:
+                </span>
                 {maxPrice < 99 && (
                   <h1 className="my-2">{maxPrice} Million THB</h1>
                 )}
-                {maxPrice >= 99 && <span className="my-2 ml-2">Not set</span>}
+                {maxPrice >= 99 && (
+                  <span className="my-2 ml-2 text-sm text-slate-700 font-light poppins-text">
+                    Not set
+                  </span>
+                )}
                 <Slider
                   defaultValue={[maxInitPrice]}
                   max={maxInitPrice}
                   step={2}
                   onValueChange={handleSliderChange}
-                  className="mt-2"
+                  className="mt-4"
                 />
               </div>
             </div>

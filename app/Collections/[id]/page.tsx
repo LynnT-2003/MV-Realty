@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { fetchCollectionsById } from "@/services/CollectionsServices";
 import { fetchPropertyById } from "@/services/PropertyServices";
+import { fetchListingsByPropertyId } from "@/services/ListingServices";
 import { Property, Listing } from "@/types";
 import ListingCardCollection from "@/components/ListingCardCollection";
 
@@ -20,15 +21,7 @@ const CollectionsPage = ({ params }: { params: { id: string } }) => {
    * Get the id from the route parameters
    */
   const { id } = params;
-
-  /**
-   * Initialize an empty array to store the listings
-   */
   const [listings, setListings] = useState<Listing[]>([]);
-
-  /**
-   * Initialize an empty array to store the properties of the collection
-   */
   const [collectionProperties, setCollectionProperties] = useState<Property[]>(
     []
   );
@@ -65,6 +58,17 @@ const CollectionsPage = ({ params }: { params: { id: string } }) => {
                 ...prevProperties,
                 propertyData,
               ]);
+
+              /**
+               * Fetch listings for each property by id and add to listings array
+               */
+              fetchListingsByPropertyId(propertyId._ref).then((listingData) => {
+                console.log("Fetched listing data", listingData);
+                setListings((prevListings) => [
+                  ...prevListings,
+                  ...listingData, // Assuming listingData is an array of listings
+                ]);
+              });
             });
           });
         }
@@ -77,15 +81,9 @@ const CollectionsPage = ({ params }: { params: { id: string } }) => {
     <div className="w-full flex justify-center pb-16">
       <div className="md:max-w-[1320px] w-[95vw]">
         <ListingCardCollection
-          /**
-           * Pass the listings and properties to the ListingCardCollection component
-           */
           listings={listings}
           properties={collectionProperties}
-          /**
-           * Hide the filter panel
-           */
-          showFilter={false}
+          showFilter={true}
         />
       </div>
     </div>
