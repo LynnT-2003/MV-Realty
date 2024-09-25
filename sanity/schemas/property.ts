@@ -21,6 +21,18 @@ export default defineType({
       },
     }),
     defineField({
+      name: "listing",
+      title: "Listing",
+      type: "array",
+      of: [{ type: 'reference', to: [{ type: 'listing' }] }],
+    }),
+    defineField({
+      name: "unitType",
+      title: "Unit Type",
+      type: "array",
+      of: [{ type: 'reference', to: [{ type: 'unitType' }] }],
+    }),
+    defineField({
       name: 'developer',
       title: 'Developer',
       type: 'reference',
