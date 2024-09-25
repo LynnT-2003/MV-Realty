@@ -25,17 +25,17 @@ const ListingDetailsIntro: React.FC<ListingDetailsIntroProps> = ({
   }, [listingDetails._id]);
 
   return (
-    <div className="w-full flex justify-center pb-12 md:pb-20">
+    <div className="w-full flex justify-center pb-16 md:pb-20">
       <div className="md:max-w-[1150px] w-[85vw]">
         <Grid container columnSpacing={10}>
           <Grid item md={7}>
-            <p className="poppins-text-title-small md:property-details-title-text">
+            <p className="poppins-text-title-small md:property-details-title-text lg:mb-0 mb-6">
               {listingDetails.listingName}
             </p>
-            <p className="poppins-text-small md:poppins-text-avg mt-4">
+            <p className="poppins-text-small md:poppins-text-avg mt-4 lg:mb-0 mb-8">
               {listingDetails.description}
             </p>
-            <div className="flex flex-wrap gap-2 mt-5">
+            <div className="flex flex-wrap gap-2 mt-5 lg:mb-0 mb-16">
               {tags.map((tag, index) => (
                 <button
                   key={index}
@@ -94,23 +94,23 @@ const ListingDetailsIntro: React.FC<ListingDetailsIntroProps> = ({
               <Grid item xs={6}>
                 <div className="flex">
                   <img src="/icons/price.png" />
-                  <p className="ml-3.5">{listingDetails.price} Million Baht</p>
+                  <p className="ml-3.5">{listingDetails.price}M Baht</p>
                 </div>
               </Grid>
             </Grid>
             <div className="flex justify-between gap-4 mt-10 md:mt-15">
-              <button className="py-3 bg-[#193158] text-white font-semibold rounded-lg w-1/2 text-xs">
+              <button className="py-3 lg:py-2 hover:bg-slate-700 bg-[#193158] text-white font-semibold rounded-lg w-1/2 text-xs">
                 SHARE THIS LISTING
               </button>
-              <button className="py-3 bg-[#193158] text-white font-semibold rounded-lg w-1/2 text-xs">
+              <button className="py-3 lg:py-2 hover:bg-slate-700 bg-[#193158] text-white font-semibold rounded-lg w-1/2 text-xs">
                 CONTACT US
               </button>
             </div>
             <div className="mt-4">
-              <button className="py-3 bg-[#193158] text-white font-semibold rounded-lg w-full text-xs">
+              <button className="py-3 lg:py-2 hover:bg-slate-700 bg-[#193158] text-white font-semibold rounded-lg w-full text-xs">
                 MORE FROM THIS PROPERTY
               </button>
-              <p className="mt-4 text-[#193158] font-bold text-center text-lg">
+              <p className="mt-4 text-[#193158] font-semibold text-center text-md">
                 Unit ID: {listingDetails._id}
               </p>
             </div>

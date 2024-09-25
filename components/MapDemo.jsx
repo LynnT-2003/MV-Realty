@@ -2,65 +2,54 @@
 import React, { useEffect, useState } from "react";
 import { Grid } from "@mui/material";
 import { Loader } from "@googlemaps/js-api-loader";
+import {
+  btsStationsGreenLine,
+  btsStationsSilomLine,
+  mrtStationsYellowLine,
+  mrtStationsPinkLine,
+  airportLink,
+} from "./constants/btsStations";
+import { set } from "sanity";
+
+/**
+ * A component that renders a map with the nearest BTS stations.
+ *
+ * Props:
+ * - lat: The latitude of the starting point.
+ * - lng: The longitude of the starting point.
+ *
+ * The component will render a map with the nearest BTS stations within 1000 meters.
+ * If no BTS stations are found within 1000 meters, it will render a message indicating
+ * that no stations were found.
+ *
+ * The map is rendered with custom styles to hide other details, and the nearest BTS
+ * stations are marked with a custom icon. The InfoWindow for each station will show
+ * the name of the station, the walking distance, and the walking duration.
+ *
+ * The component also renders a list of the nearest BTS stations by line.
+ */
 
 export const MapDemo = ({ lat, lng }) => {
+  // Ref to the map element
   const mapRef = React.useRef(null);
+
+  // State to store the nearest BTS stations
   const [nearestBTS, setNearestBTS] = useState([]);
-
-  const btsStationsSukhumvitLine = [
-    "Ratchathewi",
-    "Asok",
-    "Mo Chit",
-    "Siam",
-    "Phaya Thai",
-    "Chit Lom",
-    "Sala Daeng",
-    "Phrom Phong",
-    "Thong Lo",
-    "Ekkamai",
-    "Phra Khanong",
-    "On Nut",
-    "Bang Chak",
-    "Punnawithi",
-    "Udom Suk",
-    "Bang Na",
-    "Bearing",
-    "Samrong",
-    "Nana",
-    "Asok",
-    "Phloen Chit",
-    "Chit Lom",
-    "Siam",
-    "Ratchadamri",
-    "Sala Daeng",
-    "National Stadium",
-    "Ratchathewi",
-    "Phaya Thai",
-    "Victory Monument",
-    "Sanam Pao",
-    "Ari",
-    "Saphan Khwai",
-  ];
-
-  const btsStationsSilomLine = [
-    "National Stadium",
-    "Siam",
-    "Ratchadamri",
-    "Sala Daeng",
-    "Chong Nonsi",
-    "Saint Louis",
-    "Surasak",
-    "Saphan Taksin",
-    "Krung Thon Buri",
-    "Wongwian Yai",
-    "Pho Nimit",
-    "Talat Phlu",
-    "Wutthakat",
-    "Bang Wa",
-  ];
+  const [nearbybtsStationsGreenLineState, setnearbybtsStationsGreenLineState] =
+    useState([]);
+  const [nearbyBtsSilomLineStationsState, setnearbyBtsSilomLineStationsState] =
+    useState([]);
+  const [
+    nearbyMrtYellowLineStationsState,
+    setNearbyMrtYellowLineStationsState,
+  ] = useState([]);
+  const [nearbyMrtPinkLineStationsState, setNearbyMrtPinkLineStationsState] =
+    useState([]);
+  const [nearbyAirportLinkState, setNearbyAirportLinkState] = useState([]);
 
   useEffect(() => {
     const initMap = async () => {
+      // Load the Google Maps API
       const loader = new Loader({
         apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
         version: "weekly",
@@ -69,6 +58,7 @@ export const MapDemo = ({ lat, lng }) => {
 
       await loader.load();
 
+      // Create the map
       const google = window.google;
       const position = { lat, lng };
 
@@ -104,11 +94,13 @@ export const MapDemo = ({ lat, lng }) => {
 
       const map = new google.maps.Map(mapRef.current, mapOptions);
 
+      // Custom marker icon
       const customMarkerIcon = {
         url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
         scaledSize: new google.maps.Size(40, 40),
       };
 
+      // Add a marker for the current location
       const marker = new google.maps.Marker({
         map: map,
         position: position,
@@ -123,6 +115,7 @@ export const MapDemo = ({ lat, lng }) => {
       // Automatically open the InfoWindow when the map is loaded
       infoWindow.open(map, marker);
 
+      // Search for BTS stations within 1000 meters radius
       const service = new google.maps.places.PlacesService(map);
       const request = {
         location: position,
@@ -134,28 +127,36 @@ export const MapDemo = ({ lat, lng }) => {
         if (status === google.maps.places.PlacesServiceStatus.OK) {
           const directionsService = new google.maps.DirectionsService();
 
-          const btsList = []; // Temporary array to store BTS information
-
           results.forEach((place) => {
             const directionsRenderer = new google.maps.DirectionsRenderer({
               map: map,
               suppressMarkers: true, // Prevent automatic markers, as we'll add custom ones
               preserveViewport: true,
             });
+
             if (
-              (btsStationsSukhumvitLine.some((station) =>
-                place.name.includes(station)
+              (btsStationsGreenLine.some((station) =>
+                place.name.includes(station.name)
               ) ||
                 btsStationsSilomLine.some((station) =>
-                  place.name.includes(station)
+                  place.name.includes(station.name)
+                ) ||
+                mrtStationsYellowLine.some((station) =>
+                  place.name.includes(station.name)
+                ) ||
+                mrtStationsPinkLine.some((station) =>
+                  place.name.includes(station.name)
+                ) ||
+                airportLink.some((station) =>
+                  place.name.includes(station.name)
                 )) &&
               !place.name.includes("Exit")
             ) {
-              const marker = new google.maps.Marker({
-                map: map,
-                position: place.geometry.location,
-                title: place.name,
-              });
+              // const marker = new google.maps.Marker({
+              //   map: map,
+              //   position: place.geometry.location,
+              //   title: place.name,
+              // });
 
               // Calculate walking distance and draw the route
               const calculateWalkingDistance = () => {
@@ -210,18 +211,122 @@ export const MapDemo = ({ lat, lng }) => {
                       infoWindow.close();
                     });
 
-                    // Add BTS information to the list
-                    btsList.push({
-                      name: place.name,
+                    // Categorize and push station info to the appropriate array
+                    const stationInfo = {
+                      name: String,
+                      id: String,
                       distance,
                       duration,
-                      line: btsStationsSukhumvitLine.includes(place.name)
-                        ? "Sukhumvit Line"
-                        : "Silom Line", // Categorize by line
-                    });
+                    };
 
-                    // Update state with BTS list
-                    setNearestBTS([...btsList]);
+                    const matchedStationGreen = btsStationsGreenLine.find(
+                      (station) => place.name.includes(station.name)
+                    );
+
+                    const matchedStationSilom = btsStationsSilomLine.find(
+                      (station) => place.name.includes(station.name)
+                    );
+
+                    const matchedStationYellow = mrtStationsYellowLine.find(
+                      (station) => place.name.includes(station.name)
+                    );
+
+                    const matchedStationPink = mrtStationsPinkLine.find(
+                      (station) => place.name.includes(station.name)
+                    );
+
+                    const matchedAirportLink = airportLink.find((station) =>
+                      place.name.includes(station.name)
+                    );
+
+                    if (matchedStationGreen) {
+                      const newStation = {
+                        name: matchedStationGreen.name,
+                        id: matchedStationGreen.id,
+                        distance: distance,
+                        duration: duration,
+                      };
+
+                      setnearbybtsStationsGreenLineState((prevStations) => [
+                        ...prevStations,
+                        newStation,
+                      ]);
+
+                      console.log(
+                        "nearbybtsStationsGreenLineHERE !",
+                        newStation
+                      );
+                    }
+
+                    if (matchedStationSilom) {
+                      const newStation = {
+                        name: matchedStationSilom.name,
+                        id: matchedStationSilom.id,
+                        distance: distance,
+                        duration: duration,
+                      };
+
+                      setnearbyBtsSilomLineStationsState((prevStations) => [
+                        ...prevStations,
+                        newStation,
+                      ]);
+
+                      console.log(
+                        "nearbyBtsSilomLineStationsHERE !",
+                        newStation
+                      );
+                    }
+
+                    if (matchedStationYellow) {
+                      const newStation = {
+                        name: matchedStationYellow.name,
+                        id: matchedStationYellow.id,
+                        distance: distance,
+                        duration: duration,
+                      };
+
+                      setNearbyMrtYellowLineStationsState((prevStations) => [
+                        ...prevStations,
+                        newStation,
+                      ]);
+                      console.log(
+                        "nearbyMrtYellowLineStationsHERE !",
+                        newStation
+                      );
+                    }
+
+                    if (matchedStationPink) {
+                      const newStation = {
+                        name: matchedStationPink.name,
+                        id: matchedStationPink.id,
+                        distance: distance,
+                        duration: duration,
+                      };
+
+                      setNearbyMrtPinkLineStationsState((prevStations) => [
+                        ...prevStations,
+                        newStation,
+                      ]);
+                      console.log(
+                        "nearbyMrtPinkLineStationsHERE !",
+                        newStation
+                      );
+                    }
+
+                    if (matchedAirportLink) {
+                      const newStation = {
+                        name: matchedAirportLink.name,
+                        id: matchedAirportLink.id,
+                        distance: distance,
+                        duration: duration,
+                      };
+
+                      setNearbyAirportLinkState((prevStations) => [
+                        ...prevStations,
+                        newStation,
+                      ]);
+                      console.log("nearbyAirportLinksHERE !", newStation);
+                    }
                   }
                 });
               };
@@ -236,60 +341,13 @@ export const MapDemo = ({ lat, lng }) => {
     initMap();
   }, [lat, lng]);
 
-  const renderNearestStations = (lineName, stations) => {
-    return (
-      <div className="pl-4 pt-4">
-        <p className="pl-4 poppins-text-title-small md:property-details-title-text">
-          {lineName}
-        </p>
-        {stations.map((bts, index) => (
-          <Grid
-            container
-            rowSpacing={{ xs: 4, md: 3 }}
-            columnSpacing={{ xs: 1, md: 2 }}
-            spacing={2}
-            className="flex items-center"
-            key={index}
-          >
-            <Grid item xs={6}>
-              <div className="flex items-center justify-start h-32 p-4">
-                <img
-                  src="/icons/compass.png"
-                  className="w-8 h-8"
-                  alt="MRT Icon"
-                />
-                <p className="poppins-text-small-bts md:poppins-text-avg-bold ml-3.5">
-                  {bts.name}
-                </p>
-              </div>
-            </Grid>
-            <Grid item xs={6}>
-              <div className="flex items-center justify-start h-32 p-4">
-                <img
-                  src="/icons/floor.png"
-                  className="w-8 h-8"
-                  alt="MRT Icon"
-                />
-                <p className="poppins-text-small-bts md:poppins-text-avg-bold ml-3.5">
-                  {bts.duration}
-                </p>
-              </div>
-            </Grid>
-          </Grid>
-        ))}
-      </div>
-    );
-  };
-
+  // Render the map
   return (
     <div
       style={{
         display: "flex",
         flexDirection: "column",
         width: "100%",
-        height: "auto",
-        minHeight: "500px",
-        paddingBottom: "400px",
       }}
     >
       <div
@@ -298,6 +356,7 @@ export const MapDemo = ({ lat, lng }) => {
           maxWidth: "1150px",
           height: "0",
           paddingBottom: "60%", // Maintain aspect ratio
+
           position: "relative",
         }}
       >
@@ -313,30 +372,151 @@ export const MapDemo = ({ lat, lng }) => {
         ></div>
       </div>
 
-      {nearestBTS.length == 0 && (
+      {nearbybtsStationsGreenLineState.length == 0 &&
+      nearbyBtsSilomLineStationsState.length == 0 ? (
         <>
           <h1 className="text-red-300 pt-4 text-center">
             No nearby BTS station within 1000 metres.
           </h1>
         </>
-      )}
-
-      {/* Render nearest BTS stations by line */}
-      {nearestBTS.length > 0 && (
+      ) : (
         <>
-          {nearestBTS.some((bts) => bts.line === "Sukhumvit Line") &&
-            renderNearestStations(
-              "Sukhumvit Line",
-              nearestBTS.filter((bts) => bts.line === "Sukhumvit Line")
-            )}
-
-          {nearestBTS.some((bts) => bts.line === "Silom Line") &&
-            renderNearestStations(
-              "Silom Line",
-              nearestBTS.filter((bts) => bts.line === "Silom Line")
-            )}
+          <div className="text-xl font-semibold py-6 lg:pt-4 ">
+            Nearby Transportation
+          </div>
         </>
       )}
+
+      <>
+        {nearbybtsStationsGreenLineState &&
+          nearbybtsStationsGreenLineState.length > 0 && (
+            <div className="flex flex-col">
+              {nearbybtsStationsGreenLineState.map((station, index) => (
+                <div key={index}>
+                  <div className="flex flex-row items-center justify-between md:w-1/2 my-2 px-2 ">
+                    <div className="flex flex-row items-center">
+                      <img
+                        src={"/bts-icons/green.png"}
+                        className="w-10 h-10"
+                        alt={"greenline_logo"}
+                      />
+                      <h1 className="ml-5">{station.id}</h1>
+                      <h1 className="ml-5">{station.name}</h1>
+                    </div>
+                    <div className="flex flex-row items-center">
+                      {" "}
+                      <h1 className="lg:px-4 px-2">{station.distance}</h1>
+                      <h1 className="lg:px-4 px-2">{station.duration}</h1>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+        {nearbyBtsSilomLineStationsState &&
+          nearbyBtsSilomLineStationsState.length > 0 && (
+            <div className="flex flex-col">
+              {nearbyBtsSilomLineStationsState.map((station, index) => (
+                <div key={index}>
+                  <div className="flex flex-row items-center justify-between md:w-1/2 my-2 px-2">
+                    <div className="flex flex-row items-center">
+                      <img
+                        src={"/bts-icons/silom.png"}
+                        className="w-10 h-10"
+                        alt={"silomLine_logo"}
+                      />
+                      <h1 className="ml-5">{station.id}</h1>
+                      <h1 className="ml-5">{station.name}</h1>
+                    </div>
+                    <div className="flex flex-row items-center">
+                      {" "}
+                      <h1 className="lg:px-4 px-2">{station.distance}</h1>
+                      <h1 className="lg:px-4 px-2">{station.duration}</h1>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+        {nearbyMrtYellowLineStationsState &&
+          nearbyMrtYellowLineStationsState.length > 0 && (
+            <div className="flex flex-col">
+              {nearbyMrtYellowLineStationsState.map((station, index) => (
+                <div key={index}>
+                  <div className="flex flex-row items-center justify-between md:w-1/2 my-2 px-2">
+                    <div className="flex flex-row items-center">
+                      <img
+                        src={"/bts-icons/green.png"}
+                        className="w-10 h-10"
+                        alt={"greenline_logo"}
+                      />
+                      <h1 className="ml-5">{station.id}</h1>
+                      <h1 className="ml-5">{station.name}</h1>
+                    </div>
+                    <div className="flex flex-row items-center">
+                      {" "}
+                      <h1 className="lg:px-4 px-2">{station.distance}</h1>
+                      <h1 className="lg:px-4 px-2">{station.duration}</h1>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+        {nearbyMrtPinkLineStationsState &&
+          nearbyMrtPinkLineStationsState.length > 0 && (
+            <div className="flex flex-col">
+              {nearbyMrtPinkLineStationsState.map((station, index) => (
+                <div key={index}>
+                  <div className="flex flex-row items-center justify-between md:w-1/2 my-2 px-2">
+                    <div className="flex flex-row items-center">
+                      <img
+                        src={"/bts-icons/green.png"}
+                        className="w-10 h-10"
+                        alt={"greenline_logo"}
+                      />
+                      <h1 className="ml-5">{station.id}</h1>
+                      <h1 className="ml-5">{station.name}</h1>
+                    </div>
+                    <div className="flex flex-row items-center">
+                      {" "}
+                      <h1 className="lg:px-4 px-2">{station.distance}</h1>
+                      <h1 className="lg:px-4 px-2">{station.duration} </h1>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+        {nearbyAirportLinkState && nearbyAirportLinkState.length > 0 && (
+          <div className="flex flex-col">
+            {nearbyAirportLinkState.map((station, index) => (
+              <div key={index}>
+                <div className="flex flex-row items-center justify-between md:w-1/2 my-2 px-2">
+                  <div className="flex flex-row items-center">
+                    <img
+                      src={"/bts-icons/green.png"}
+                      className="w-10 h-10"
+                      alt={"greenline_logo"}
+                    />
+                    <h1 className="ml-5">{station.id}</h1>
+                    <h1 className="ml-5">{station.name}</h1>
+                  </div>
+                  <div className="flex flex-row items-center">
+                    {" "}
+                    <h1 className="px-2">{station.distance}</h1>
+                    <h1 className="px-2">{station.duration}</h1>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </>
     </div>
   );
 };

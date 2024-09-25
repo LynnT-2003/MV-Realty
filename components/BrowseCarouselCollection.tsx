@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Image } from "sanity";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { DirectionAwareHover } from "./ui/direction-aware-hover";
-import {DirectionAwareHoverCollections} from "./ui/direction-aware-hover-collections";
+import { DirectionAwareHoverCollections } from "./ui/direction-aware-hover-collections";
 import { Collections } from "@/types";
 import { useRouter } from "next/navigation";
 import BrowseCollectionCarouselLoadingSkeleton from "./BrowseCollectionCarouselLoadingSkeleton";
@@ -12,6 +12,12 @@ import BrowseCollectionCarouselLoadingSkeleton from "./BrowseCollectionCarouselL
 interface BrowseCarouselProps {
   collections: Collections[];
 }
+
+/**
+ * A carousel component for browsing collections
+ * @param collections A list of collection objects
+ * @returns A carousel component that renders a list of collections
+ */
 
 const BrowseCarouselCollection: React.FC<BrowseCarouselProps> = ({
   collections,
@@ -31,8 +37,8 @@ const BrowseCarouselCollection: React.FC<BrowseCarouselProps> = ({
     return () => clearTimeout(timeout);
   }, [collections]);
 
-  const handleCollectionClick = (slug: String) => {
-    router.push(`/Collections/${slug}`); // Here
+  const handleCollectionClick = (id: String) => {
+    router.push(`/Collections/${id}`); // Here
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -90,7 +96,7 @@ const BrowseCarouselCollection: React.FC<BrowseCarouselProps> = ({
       <div
         id="slider"
         ref={carouselRef}
-        className="md:w-[1200px] w-screen mx-4 md:mx-0 overflow-hidden md:overflow-x-scroll scroll whitespace-nowrap scroll-smooth flex flex-col md:flex-row"
+        className="md:w-[1210px] w-screen mx-4 md:mx-0 overflow-hidden md:overflow-x-scroll scroll whitespace-nowrap scroll-smooth flex flex-col md:flex-row"
         onMouseDown={handleMouseDown}
         onMouseMove={handleMouseMove}
         onMouseUp={handleMouseUp}
@@ -102,7 +108,8 @@ const BrowseCarouselCollection: React.FC<BrowseCarouselProps> = ({
             onClick={() => {
               handleCollectionClick(collection._id);
             }}
-            className="relative inline-block macbook-air:w-[25rem] macbook-air:h-[14rem] md:w-[30.55rem] mb-4 md:mb-0 md:h-[20.78rem] md:mr-[1vw] group"
+            // className="relative inline-block macbook-air:w-[25rem] h-full md:w-[30.55rem] mb-4 md:mb-0 md:mr-[1vw] group"
+            className="relative inline-block mb-4 md:mb-0 group"
           >
             <DirectionAwareHoverCollections
               imageUrl={urlForImage(collection.thumbnail)}

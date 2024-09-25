@@ -66,7 +66,7 @@ export const DirectionAwareHover = ({
       onMouseEnter={handleMouseEnter}
       ref={ref}
       className={cn(
-        "macbook-air:w-[24.2rem] macbook-air:h-[16.60rem] w-full h-[60vw] md:w-[30.55rem] md:h-[20.78rem] mr-[1vw] rounded-lg overflow-hidden group/card relative",
+        "hover:cursor-pointer macbook-air:w-[24.2rem] macbook-air:h-[16.60rem] w-full h-[60vw] md:w-[30.55rem] md:h-[20.78rem] mr-[1vw] rounded-lg overflow-hidden group/card relative",
         className
       )}
     >
@@ -89,7 +89,7 @@ export const DirectionAwareHover = ({
             <Image
               alt="image"
               className={cn(
-                "h-full w-full object-cover scale-[1.15]",
+                "h-full w-full object-cover scale-[1.15] ",
                 imageClassName
               )}
               width="1000"

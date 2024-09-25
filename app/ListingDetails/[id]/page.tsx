@@ -25,7 +25,6 @@ import { fetchAllFacilityTypes } from "@/services/FacilityServices";
 import { urlForFile } from "@/sanity/lib/image";
 import LoadingPage from "./loading";
 
-
 const downloadFile = (url: string) => {
   if (!url) return "No Url";
 
@@ -42,13 +41,31 @@ const downloadFile = (url: string) => {
     });
 };
 
+/**
+ * A page that displays a single listing and its associated property.
+ * Given a listing id, fetches the listing and its associated property.
+ * Fetches all facility types and displays them in a accordion.
+ * Displays the location of the property on a map.
+ * Allows the user to schedule a viewing or download the property brochure.
+ *
+ * @param {Object} params - The id of the listing to fetch.
+ * @param {string} params.id - The id of the listing to fetch.
+ */
+
 const ListingDetailPage = ({ params }: { params: { id: string } }) => {
   const router = useRouter();
   const { id } = params;
 
+  // Create a state variable to hold the retrieved listing
   const [listing, setListing] = React.useState<Listing | null>(null);
+
+  // Create a state variable to hold the retrieved property
   const [property, setProperty] = React.useState<Property | null>(null);
+
+  // Create a state variable to hold the retrieved facility types
   const [facilityType, setFacilityType] = React.useState<FacilityType[]>([]);
+
+  // Create a state variable to control the loading state
   const [loading, setLoading] = React.useState(true);
 
   //   const [developer, setDeveloper] = React.useState<Developer | null>(null);
@@ -64,47 +81,53 @@ const ListingDetailPage = ({ params }: { params: { id: string } }) => {
   //     }
   //   }, [slug]);
 
+  // When the component mounts, fetch the listing and the associated property
+  // and facility types
   React.useEffect(() => {
     if (id) {
+      // Fetch the listing
       fetchListingById(id).then((listingData) => {
         console.log("Received ID: ", id);
         setListing(listingData);
-        // if (listingData?.property) {
-        // }
 
-        // Fetch and log the associated property
+        // Fetch the associated property
         const propertyId = listingData.property._ref;
         fetchPropertyById(propertyId).then((propertyData) => {
           setProperty(propertyData);
         });
       });
 
+      // Fetch all facility types
       fetchAllFacilityTypes().then((facilityTypeData) => {
         console.log("Fetched all Facility Types", facilityTypeData);
         setFacilityType(facilityTypeData);
       });
 
+      // Set a timer to stop loading after some time
       const timer = setTimeout(() => {
         setLoading(false); // Stop loading after some time or when data is ready
       }, 1000);
-  
+
+      // When the effect is cleaned up, clear the timer
       return () => clearTimeout(timer);
     }
   }, [id]);
 
+  // If the loading is in progress or the data is not ready, return the loading page
   if (!listing || !property || loading) {
     return <LoadingPage />;
   }
 
-  console.log(property)
+  // Log the property data
+  console.log(property);
+
+  // Generate the URL for the PDF file
   const pdf_file_url = property.brochure
-  ? urlForFile(property.brochure) // Generate the correct URL for the PDF
-  : null;
-  
+    ? urlForFile(property.brochure) // Generate the correct URL for the PDF
+    : null;
+
   return (
     <div>
-      {/* <PropertyDetailsImageBento propertyDetails={property} />
-      <PropertyDetailsIntro propertyDetails={property} /> */}
       <ListingDetailsImageBento
         listingDetails={listing}
         propertyDetails={property}
@@ -126,30 +149,32 @@ const ListingDetailPage = ({ params }: { params: { id: string } }) => {
         </div>
       </div>
 
-      <div className="w-full flex justify-center pb-24 md:pb-20">
-        <div className="md:max-w-[1100px] w-[100vw] md:max-h-[805px] h-[80vw]">
+      <div className="w-full flex justify-center pb-24 md:pb-12 px-4 lg:px-0">
+        <div className="md:max-w-[1100px] w-[100vw] ">
           <MapDemo
             lat={property?.geoLocation.lat}
             lng={property?.geoLocation.lng}
           />
         </div>
       </div>
-      <div className="w-full flex justify-center gap-16 mb-24 pb-24 px-56 md:pb-20">
-        <PopupButton
-          className="w-1/2 py-3 bg-[#193158] hover:bg-[#132441] text-white text-sm font-bold rounded-lg shadow-md"
-          url="https://calendly.com/tanat-navin/30min"
-          rootElement={document.getElementById("root") || document.body}
-          text="Schedule a viewing"
-        />
-        <button
-          onClick={() => {
-            if (pdf_file_url) downloadFile(pdf_file_url);
-          }}
-          className="w-1/2 py-3 bg-[#193158] hover:bg-[#132441] text-white text-sm font-bold rounded-lg shadow-md"
-        >
-          Download Brochure
-        </button>
-        
+
+      <div className="w-full flex justify-center pb-12 md:pb-6 px-4 lg:px-0">
+        <div className="md:max-w-[1100px] w-[100vw] flex gap-4 lg:gap-16">
+          <PopupButton
+            className="w-1/2 py-3 bg-[#193158] hover:bg-[#132441] text-white text-sm font-bold rounded-lg shadow-md"
+            url="https://calendly.com/tanat-navin/30min"
+            rootElement={document.getElementById("root") || document.body}
+            text="Schedule a viewing"
+          />
+          <button
+            onClick={() => {
+              if (pdf_file_url) downloadFile(pdf_file_url);
+            }}
+            className="w-1/2 py-3 bg-[#193158] hover:bg-[#132441] text-white text-sm font-bold rounded-lg shadow-md"
+          >
+            Download Brochure
+          </button>
+        </div>
       </div>
     </div>
   );
