@@ -1,11 +1,13 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Property, Listing, Developer, Collections } from "@/types";
+import { Property, Listing, Developer, Collections, UnitType } from "@/types";
 import { fetchAllProperties } from "@/services/PropertyServices";
 import BrowseCarouselProperty from "@/components/BrowseCarouselProperty";
 import BrowseCarouselCollection from "@/components/BrowseCarouselCollection";
+import BrowseCarouselUnitType from "@/components/BrowseCarouselUnitType";
 import { fetchAllListings } from "@/services/ListingServices";
+import { fetchAllUnitTypes } from "@/services/UnitTypeServices";
 import BrowseCarouselListing from "@/components/BrowseCarouselListing";
 import { fetchAllDevelopers } from "@/services/DeveloperServices";
 import { fetchAllCollections } from "@/services/CollectionsServices";
@@ -29,6 +31,7 @@ const HomePage: React.FC = () => {
   const [listings, setListings] = useState<Listing[]>([]);
   const [developers, setDevelopers] = useState<Developer[]>([]);
   const [collections, setCollections] = useState<Collections[]>([]);
+  const [unitTypes, setUnitTypes] = useState<UnitType[]>([]);
 
   const [openFilter, setOpenFilter] = useState<Filter | null>(null);
 
@@ -73,19 +76,26 @@ const HomePage: React.FC = () => {
     const fetchData = async () => {
       try {
         // Fetch data in parallel, using cached data if available
-        const [propertiesData, listingsData, developersData, collectionsData] =
-          await Promise.all([
-            fetchDataWithCache("properties", fetchAllProperties),
-            fetchDataWithCache("listings", fetchAllListings),
-            fetchDataWithCache("developers", fetchAllDevelopers),
-            fetchDataWithCache("collections", fetchAllCollections),
-          ]);
+        const [
+          propertiesData,
+          listingsData,
+          developersData,
+          collectionsData,
+          unitTypesData,
+        ] = await Promise.all([
+          fetchDataWithCache("properties", fetchAllProperties),
+          fetchDataWithCache("listings", fetchAllListings),
+          fetchDataWithCache("developers", fetchAllDevelopers),
+          fetchDataWithCache("collections", fetchAllCollections),
+          fetchDataWithCache("unitTypes", fetchAllUnitTypes),
+        ]);
 
         // Update state with fetched data
         setProperties(propertiesData);
         setListings(listingsData);
         setDevelopers(developersData);
         setCollections(collectionsData);
+        setUnitTypes(unitTypesData);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -172,6 +182,20 @@ const HomePage: React.FC = () => {
       </div>
       <BrowseCarouselListing
         listings={listings}
+        properties={properties}
+        developers={developers}
+        blur={searchSectionClicked}
+      />
+
+      <div className="w-full flex items-center justify-center">
+        <div className="xl:w-[1200px] overflow-x-scroll scroll whitespace-nowrap scroll-smooth">
+          <p className="poppins-text pt-[42px] pb-[27px] font-semibold">
+            Featured Unit Types
+          </p>
+        </div>
+      </div>
+      <BrowseCarouselUnitType
+        unitTypes={unitTypes}
         properties={properties}
         developers={developers}
         blur={searchSectionClicked}
