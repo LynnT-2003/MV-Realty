@@ -86,7 +86,7 @@ export const MapDemo = ({ lat, lng }) => {
       const loader = new Loader({
         apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
         version: "weekly",
-        libraries: ["places", "directions"], // Load the places and directions libraries
+        libraries: ["directions"],
       });
 
       await loader.load();
@@ -147,6 +147,11 @@ export const MapDemo = ({ lat, lng }) => {
         return distance <= 1; // Only include stations within 1000 meters
       });
 
+      const uniqueBtsStations = [
+        ...new Set(allStations.map((station) => station.id)),
+      ].map((id) => {
+        return allStations.find((station) => station.id === id);
+      });
       setNearestBTS(nearbyStations);
       console.log("Nearest BTS:", nearbyStations, nearestBTS);
 
@@ -167,18 +172,18 @@ export const MapDemo = ({ lat, lng }) => {
 
         if (
           (btsStationsGreenLine.some((station) =>
-            place.name.includes(station.name)
+            place.id.includes(station.id)
           ) ||
             btsStationsSilomLine.some((station) =>
-              place.name.includes(station.name)
+              place.id.includes(station.id)
             ) ||
             mrtStationsYellowLine.some((station) =>
-              place.name.includes(station.name)
+              place.id.includes(station.id)
             ) ||
             mrtStationsPinkLine.some((station) =>
-              place.name.includes(station.name)
+              place.id.includes(station.id)
             ) ||
-            airportLink.some((station) => place.name.includes(station.name))) &&
+            airportLink.some((station) => place.id.includes(station.id))) &&
           !place.name.includes("Exit")
         ) {
           const directionsService = new google.maps.DirectionsService();
