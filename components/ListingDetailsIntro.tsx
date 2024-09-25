@@ -93,7 +93,7 @@ const ListingDetailsIntro: React.FC<ListingDetailsIntroProps> = ({
               </Grid>
               <Grid item xs={6}>
                 <div className="flex">
-                  <img src="/icons/price.png" />
+                  <img src="/icons/price.svg" />
                   <p className="ml-3.5">{listingDetails.price}M Baht</p>
                 </div>
               </Grid>

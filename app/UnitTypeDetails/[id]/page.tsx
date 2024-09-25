@@ -18,6 +18,7 @@ import { fetchAllFacilityTypes } from "@/services/FacilityServices";
 import { urlForFile } from "@/sanity/lib/image";
 import UnitTypeDetailsImageBento from "@/components/UnitTypeDetailsImageBento";
 import UnitTypeDetailIntro from "@/components/UnitTypeDetailsIntro";
+import LoadingPage from "./loading";
 
 const downloadFile = (url: string) => {
   if (!url) return "No Url";
@@ -92,7 +93,7 @@ const UnitTypeDetailPage = ({ params }: { params: { id: string } }) => {
 
   // If the loading is in progress or the data is not ready, return the loading page
   if (!unitType || !property || loading) {
-    return <div>Tanat please loading UI</div>;
+    return <LoadingPage />;
   }
 
   // Log the property data
@@ -111,7 +112,8 @@ const UnitTypeDetailPage = ({ params }: { params: { id: string } }) => {
       />
       <UnitTypeDetailIntro unitTypeDetails={unitType} />
 
-      <FaqSection />
+      <FaqSection propertyDetails={property}
+      />
 
       <FacilitiesAccordion
         propertyDetails={property}

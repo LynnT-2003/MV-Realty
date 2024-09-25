@@ -47,7 +47,7 @@ const UnitTypeDetailIntro: React.FC<UnitTypeDetailsIntroProps> = ({
               ))}
             </div>
           </Grid>
-          <Grid item md={5} className="mt-10 md:mt-0">
+          <Grid item md={5} className="md:mt-0">
             <Grid
               container
               rowSpacing={{ xs: 4, md: 3 }}
@@ -68,30 +68,16 @@ const UnitTypeDetailIntro: React.FC<UnitTypeDetailsIntroProps> = ({
                 </div>
               </Grid>
               <Grid item xs={6}>
-                {/* <div className="flex">
-                  <img src="/icons/floor.svg" />
-                  <p className="ml-3.5">{unitTypeDetails.floor}th Floor</p>
-                </div> */}
-              </Grid>
-              <Grid item xs={6}>
                 <div className="flex">
                   <img src="/icons/sqmt.svg" />
                   <p className="ml-3.5">{unitTypeDetails.size} square meter</p>
                 </div>
               </Grid>
               <Grid item xs={6}>
-                {/* <div className="flex">
-                  <img src="/icons/compass.svg" />
-                  <p className="ml-3.5">
-                    Facing {unitTypeDetails.facingDirection}
-                  </p>
-                </div> */}
-              </Grid>
-              <Grid item xs={6}>
                 <div className="flex">
-                  <img src="/icons/price.png" />
+                  <img src="/icons/Furniture.svg" />
                   <p className="ml-3.5">
-                    {unitTypeDetails.startingPrice}M Baht
+                    {unitTypeDetails.furniture}
                   </p>
                 </div>
               </Grid>

@@ -477,9 +477,9 @@ export const MapDemo = ({ lat, lng }) => {
                   <div className="flex flex-row items-center justify-between md:w-1/2 my-2 px-2">
                     <div className="flex flex-row items-center">
                       <img
-                        src={"/bts-icons/green.png"}
+                        src={"/bts-icons/yellow.png"}
                         className="w-10 h-10"
-                        alt={"greenline_logo"}
+                        alt={"yellowLine_logo"}
                       />
                       <h1 className="ml-5">{station.id}</h1>
                       <h1 className="ml-5">{station.name}</h1>
@@ -503,9 +503,9 @@ export const MapDemo = ({ lat, lng }) => {
                   <div className="flex flex-row items-center justify-between md:w-1/2 my-2 px-2">
                     <div className="flex flex-row items-center">
                       <img
-                        src={"/bts-icons/green.png"}
+                        src={"/bts-icons/pink.png"}
                         className="w-10 h-10"
-                        alt={"greenline_logo"}
+                        alt={"pinkLogo"}
                       />
                       <h1 className="ml-5">{station.id}</h1>
                       <h1 className="ml-5">{station.name}</h1>
@@ -528,9 +528,9 @@ export const MapDemo = ({ lat, lng }) => {
                 <div className="flex flex-row items-center justify-between md:w-1/2 my-2 px-2">
                   <div className="flex flex-row items-center">
                     <img
-                      src={"/bts-icons/green.png"}
+                      src={"/bts-icons/ARLbangkok.png"}
                       className="w-10 h-10"
-                      alt={"greenline_logo"}
+                      alt={"ARL"}
                     />
                     <h1 className="ml-5">{station.id}</h1>
                     <h1 className="ml-5">{station.name}</h1>
