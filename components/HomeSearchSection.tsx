@@ -617,7 +617,7 @@ const HomeSearchSection: React.FC<BrowseCarouselProps> = ({
       <h2
         className={`mt-20 mb-10 sm:mb-16 text-xl text-center lg:text-5xl ipad-screen:text-4xl text-xl dark:text-white text-black ${searchActionClicked ? "opacity-50" : "opacity-100"}`}
       >
-        Ask US Anything at Mahar-Vertex
+        Ask US Anything at Maha-Vertex
       </h2>
 
       <div
