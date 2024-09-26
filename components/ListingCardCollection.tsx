@@ -336,7 +336,7 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
         <div className="flex w-screen lg:w-[1320px]">
           {/* First column (blank, taking 1/3 width) */}
           <div className="mx-5 position:fixed ipad-screen:block rounded-3xl ipad-screen:w-[300px] w-[0px] hidden">
-            <div className="px-10 pt-10 pb-16 mt-[42px] rounded-lg bg-blue-100 ">
+            <div className="px-10 pt-10 pb-16 mt-[42px] rounded-lg bg-[#e3effd]">
               <h1 className="ml-1 text-xl">Filter Listings:</h1>
               {filters.map((filter) => (
                 <div key={filter} className="md:px-0 my-8">
