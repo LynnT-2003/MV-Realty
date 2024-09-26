@@ -574,24 +574,97 @@ const HomeSearchSection: React.FC<HomeSearchSectionProps> = ({
 
   return (
     <div
-      className={`flex flex-col items-center ipad-screen:h-[445px] h-[300px] md:w-[1320px] w-screen bg-blue-200 `}
+      className={`bg-red-200 flex flex-col items-center h-[40vh] md:h-[45vh] lg:h-[45vh] xl-[75vh] md:w-[1320px] w-screen`}
     >
-      <h2
+      {/* <h2
         className={`mt-20 mb-10 sm:mb-16 text-xl text-center lg:text-5xl ipad-screen:text-4xl text-xl dark:text-white text-black ${searchActionClicked ? "opacity-50" : "opacity-100"}`}
       >
         Ask US Anything at Maha-Vertex
-      </h2>
-
-      <div
-        className="md:w-[600px] w-[85vw] search-section search-section-internal"
-        onClick={onSearchSectionClick}
-        onFocus={handleInputFocus}
-      >
-        <PlaceholdersAndVanishInput
-          placeholders={placeholders}
-          onChange={handleChange}
-          onSubmit={onSubmit}
+      </h2> */}
+      <div className="relative bg-red-500 h-full w-full">
+        <img
+          src="/Banner_Hero.jpg"
+          className="z-0 w-full h-full object-cover"
+          alt="Banner Image"
         />
+
+        <div
+          className="search-section search-section-internal z-10 absolute top-[85%] md:top-[85%] left-1/2 transform -translate-x-1/2 -translate-y-1/2" // Added background for visibility
+          onClick={onSearchSectionClick}
+          onFocus={handleInputFocus}
+        >
+          <PlaceholdersAndVanishInput
+            placeholders={placeholders}
+            onChange={handleChange}
+            onSubmit={onSubmit}
+          />
+
+          <div className="max-sm:hidden inline-flex justify-center items-center shadow-lg space-x-1 py-3 rounded">
+            {filters.map((filter) => (
+              <div key={filter} className="md:px-0">
+                <Popover
+                  open={openFilter === filter}
+                  onOpenChange={(isOpen) =>
+                    setOpenFilter(isOpen ? filter : null)
+                  }
+                >
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      aria-expanded={openFilter === filter}
+                      className="flex justify-between text-right pr-4 w-full"
+                    >
+                      <span className="flex-1 text-left">
+                        {selectedValues[filter] || filter}
+                      </span>
+                      <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50 lg:ml-10 ipad-screen:ml-2" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[200px] p-0">
+                    <Command>
+                      <CommandInput placeholder={`Search ${filter}...`} />
+                      <CommandList>
+                        <CommandEmpty>No {filter} found.</CommandEmpty>
+                        <CommandGroup>
+                          {options[filter].map((option) => (
+                            <CommandItem
+                              key={option}
+                              value={option}
+                              onSelect={() => handleSelect(filter, option)}
+                            >
+                              <Check
+                                className={cn(
+                                  "mr-2 h-4 w-4",
+                                  selectedValues[filter] === option
+                                    ? "opacity-100"
+                                    : "opacity-0"
+                                )}
+                              />
+                              {filter === "Bedrooms"
+                                ? `${option}-Bedroom`
+                                : filter === "Min Price" ||
+                                    filter === "Max Price"
+                                  ? `${option}M Baht`
+                                  : option}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+              </div>
+            ))}
+            <Button
+              onClick={() => {
+                handleFilter();
+              }}
+            >
+              Submit
+            </Button>
+          </div>
+        </div>
       </div>
 
       {/* Loading Spinner */}
@@ -612,10 +685,10 @@ const HomeSearchSection: React.FC<HomeSearchSectionProps> = ({
       </div>
 
       {/* Filter Component */}
-      <div
+      {/* <div
         className={`flex justify-center items-center w-max-[75%] w-[500px] mt-12  ${searchActionClicked ? "opacity-50 inset-0" : "opacity-100"}`}
       >
-        <div className="bg-red-100 max-sm:hidden inline-flex justify-center items-center shadow-lg space-x-1 py-3 px-3 bg-white rounded">
+        <div className="bg-red-500 max-sm:hidden inline-flex justify-center items-center shadow-lg space-x-1 py-3 px-3 rounded">
           {filters.map((filter) => (
             <div key={filter} className="md:px-0">
               <Popover
@@ -677,7 +750,7 @@ const HomeSearchSection: React.FC<HomeSearchSectionProps> = ({
             Submit
           </Button>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };
