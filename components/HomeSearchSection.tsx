@@ -574,7 +574,7 @@ const HomeSearchSection: React.FC<HomeSearchSectionProps> = ({
 
   return (
     <div
-      className={`bg-red-200 flex flex-col items-center h-[40vh] md:h-[45vh] lg:h-[45vh] xl-[75vh] md:w-[1320px] w-screen`}
+      className={`bg-red-200 flex flex-col items-center h-[40vh] md:h-[45vh] macbook-air:h-[70vh] xl-[75vh] 2xl-[50vh] md:w-[1320px] w-screen`}
     >
       {/* <h2
         className={`mt-20 mb-10 sm:mb-16 text-xl text-center lg:text-5xl ipad-screen:text-4xl text-xl dark:text-white text-black ${searchActionClicked ? "opacity-50" : "opacity-100"}`}
