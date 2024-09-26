@@ -10,7 +10,7 @@ import {
 } from "@/lib/firebase";
 import { onAuthStateChanged } from "firebase/auth";
 
-const navLists = ["Buy", "Rent"];
+// const navLists = ["Buy", "Rent"];
 
 const Navbar = () => {
   const router = useRouter();
@@ -102,7 +102,7 @@ const Navbar = () => {
               />
             </div>
 
-            {navLists.map((nav, i) => (
+            {/* {navLists.map((nav, i) => (
               <div
                 key={nav}
                 className="md:px-5 pl-4 text-sm cursor-pointer text-gray hover:font-light hover:text-base hover:text-slate-500 transition-all"
@@ -110,7 +110,7 @@ const Navbar = () => {
               >
                 {nav}
               </div>
-            ))}
+            ))} */}
           </div>
         </nav>
         <div className="flex gap-0 justify-center items-center">
@@ -128,7 +128,7 @@ const Navbar = () => {
           ) : (
             <div className="flex items-center"></div>
           )}
-          {user ? (
+          {/* {user ? (
             <Button
               className="ml-3 p-2 bg-background text-black hover:bg-slate-100 max-sm:hidden"
               onClick={handleSignOut}
@@ -137,7 +137,7 @@ const Navbar = () => {
             </Button>
           ) : (
             <Button onClick={handleSignIn}>Sign In</Button>
-          )}
+          )} */}
         </div>
       </header>
     </div>
