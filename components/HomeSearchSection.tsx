@@ -667,11 +667,12 @@ const HomeSearchSection: React.FC<HomeSearchSectionProps> = ({
               </div>
             ))}
             <Button
+              variant={"destructive"}
               onClick={() => {
                 handleFilter();
               }}
             >
-              Submit
+              Search -&gt;
             </Button>
           </div>
         </div>
