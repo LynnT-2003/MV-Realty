@@ -574,7 +574,7 @@ const HomeSearchSection: React.FC<HomeSearchSectionProps> = ({
 
   return (
     <div
-      className={`bg-red-200 flex flex-col items-center h-[40vh] md:h-[65vh] macbook-air:h-[70vh] xl-[75vh] 2xl-[75vh] md:w-[1320px] w-screen`}
+      className={`flex flex-col items-center h-[40vh] md:h-[65vh] macbook-air:h-[70vh] xl-[75vh] 2xl-[75vh] md:w-[1320px] w-screen`}
     >
       {/* <h2
         className={`mt-20 mb-10 sm:mb-16 text-xl text-center lg:text-5xl ipad-screen:text-4xl text-xl dark:text-white text-black ${searchActionClicked ? "opacity-50" : "opacity-100"}`}
@@ -599,7 +599,17 @@ const HomeSearchSection: React.FC<HomeSearchSectionProps> = ({
             onSubmit={onSubmit}
           />
 
-          <div className="max-sm:hidden inline-flex justify-center items-center shadow-lg space-x-1 py-3 rounded">
+          <div className="z-10 w-screen">
+            {searchActionClicked && (
+              <SearchResultsSection
+                filteredUnitTypes={filteredUnitTypes}
+                filteredProperties={filteredProperties}
+                isActive={isSearchActive}
+              />
+            )}
+          </div>
+
+          <div className="max-sm:hidden inline-flex justify-center items-center shadow-lg space-x-1 py-3 rounded w-full">
             {filters.map((filter) => (
               <div key={filter} className="md:px-0">
                 <Popover
@@ -673,16 +683,6 @@ const HomeSearchSection: React.FC<HomeSearchSectionProps> = ({
           <ClipLoader color="#ffffff" loading={loading} size={50} />
         </div>
       )}
-
-      <div className="z-10 w-screen">
-        {searchActionClicked && (
-          <SearchResultsSection
-            filteredUnitTypes={filteredUnitTypes}
-            filteredProperties={filteredProperties}
-            isActive={isSearchActive}
-          />
-        )}
-      </div>
 
       {/* Filter Component */}
       {/* <div
