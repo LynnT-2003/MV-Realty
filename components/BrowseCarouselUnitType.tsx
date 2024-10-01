@@ -125,10 +125,7 @@ const BrowseCarouselUnitType: React.FC<BrowseCarouselProps> = ({
                 imageUrl={urlForImage(unit.unitHero)}
                 className={`${blur ? "opacity-50" : "opacity-100"}`}
               >
-                <p className="font-bold text-xl">{unit.unitTypeName}</p>
-                <span className="font-semibold text-sm">
-                  Price: {unit.startingPrice}M Baht
-                </span>
+                <></>
               </DirectionAwareHover>
               <div className="mt-4 pt-2 pr-2 bg-white rounded-lg mb-8">
                 <div className="relative flex">

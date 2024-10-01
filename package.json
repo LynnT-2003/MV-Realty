@@ -24,6 +24,7 @@
     "@sanity/vision": "3.46.1",
     "@shadcn/ui": "^0.0.4",
     "@tabler/icons-react": "^3.7.0",
+    "awesome-image-viewer": "^1.0.60",
     "axios": "^1.7.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",

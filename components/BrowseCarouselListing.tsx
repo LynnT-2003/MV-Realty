@@ -33,7 +33,7 @@ const BrowseCarousel: React.FC<BrowseCarouselProps> = ({
     }, 1000); // Adjust to the real loading time
     return () => clearTimeout(timeout);
   }, [listings, properties, developers]);
-  
+
   const handlePropertyClick = (slug: String) => {
     // console.log("Clicked on Property: ", { property });
     router.push(`/ListingDetails/${slug}`);
@@ -123,10 +123,7 @@ const BrowseCarousel: React.FC<BrowseCarouselProps> = ({
                 imageUrl={urlForImage(listing.listingHero)}
                 className={`${blur ? "opacity-50" : "opacity-100"}`}
               >
-                <p className="font-bold text-xl">{listing.listingName}</p>
-                <span className="font-semibold text-sm">
-                  Price: {listing.price}M Baht
-                </span>
+                <></>
               </DirectionAwareHover>
               <div className="mt-4 pt-2 pr-2 bg-white rounded-lg mb-8">
                 <div className="relative flex">

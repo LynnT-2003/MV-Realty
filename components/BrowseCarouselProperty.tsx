@@ -114,7 +114,7 @@ const BrowseCarouselProperty: React.FC<BrowseCarouselProps> = ({
               <DirectionAwareHover
                 imageUrl={urlForImage(property.propertyHero)}
               >
-                <p className="font-bold text-xl">{property.title}</p>
+                <></>
               </DirectionAwareHover>
               <div className="mt-4 pt-2 pr-2 bg-white rounded-lg mb-8">
                 <div className="relative flex">
