@@ -32,7 +32,7 @@ const UnitTypeDetailIntro: React.FC<UnitTypeDetailsIntroProps> = ({
             <p className="poppins-text-title-small md:property-details-title-text lg:mb-0 mb-6">
               {unitTypeDetails.unitTypeName}
             </p>
-            <p className="poppins-text-small md:poppins-text-avg mt-4 lg:mb-0 mb-8">
+            <p className="poppins-text-small md:poppins-text-avg mt-6 lg:mb-0 mb-8">
               {unitTypeDetails.description}
             </p>
             <div className="flex flex-wrap gap-2 mt-5 lg:mb-0 mb-16">
@@ -55,6 +55,12 @@ const UnitTypeDetailIntro: React.FC<UnitTypeDetailsIntroProps> = ({
               //   spacing={{ xs: 0, md: 2 }}
               spacing={2}
             >
+              <div className="flex w-full ml-3.5 mb-8 mt-8">
+                <img src="/icons/PriceTag.svg" className="w-10 h-10" />
+                <p className="ml-3.5 pt-1 text-[#193158] text-2xl font-semibold">
+                  Price Starts from {unitTypeDetails.startingPrice}MB
+                </p>
+              </div>
               <Grid item xs={6}>
                 <div className="flex">
                   <img src="/icons/bed.svg" />
@@ -76,9 +82,7 @@ const UnitTypeDetailIntro: React.FC<UnitTypeDetailsIntroProps> = ({
               <Grid item xs={6}>
                 <div className="flex">
                   <img src="/icons/Furniture.svg" />
-                  <p className="ml-3.5">
-                    {unitTypeDetails.furniture}
-                  </p>
+                  <p className="ml-3.5">{unitTypeDetails.furniture}</p>
                 </div>
               </Grid>
             </Grid>

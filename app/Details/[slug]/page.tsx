@@ -150,7 +150,7 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
       >
         <div className="xl:w-[1200px]">
           <p className="poppins-text pt-[15px] pb-[27px] font-semibold">
-            Featured Listings
+            Featured Listings Trom This Property
           </p>
         </div>
       </div>

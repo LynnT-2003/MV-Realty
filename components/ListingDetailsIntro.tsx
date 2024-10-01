@@ -32,7 +32,7 @@ const ListingDetailsIntro: React.FC<ListingDetailsIntroProps> = ({
             <p className="poppins-text-title-small md:property-details-title-text lg:mb-0 mb-6">
               {listingDetails.listingName}
             </p>
-            <p className="poppins-text-small md:poppins-text-avg mt-4 lg:mb-0 mb-8">
+            <p className="poppins-text-small md:poppins-text-avg mt-6 lg:mb-0 mb-8">
               {listingDetails.description}
             </p>
             <div className="flex flex-wrap gap-2 mt-5 lg:mb-0 mb-16">
