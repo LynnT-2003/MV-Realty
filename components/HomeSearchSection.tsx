@@ -667,7 +667,7 @@ const HomeSearchSection: React.FC<HomeSearchSectionProps> = ({
               </div>
             ))}
             <Button
-              variant={"destructive"}
+              variant={"default"}
               onClick={() => {
                 handleFilter();
               }}
