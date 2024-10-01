@@ -8,6 +8,14 @@ export interface Property {
     current: string;
     _type: string;
   };
+  listing: {
+    _ref: string;
+    _type: string;
+  };
+  unitType: {
+    _ref: string;
+    _type: string;
+  };
   developer: { _ref: string; _type: string };
   description: string;
   mapUrl: string;

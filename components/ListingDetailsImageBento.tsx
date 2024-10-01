@@ -6,6 +6,7 @@ import { urlForImage } from "@/sanity/lib/image";
 import { useState } from "react";
 import { Lens } from "./ui/lens";
 import ImageViewer from "awesome-image-viewer"; // Import the package
+import { ClassNames } from "@emotion/react";
 
 
 interface ListingDetailsImageBentoProps {
