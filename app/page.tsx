@@ -174,7 +174,7 @@ const HomePage: React.FC = () => {
       <div
         className={`w-full flex items-center justify-center transition-opacity duration-300 ${searchSectionClicked ? "opacity-50" : "opacity-100"}`}
       >
-        <div className="xl:w-[1200px] overflow-x-scroll scroll whitespace-nowrap scroll-smooth">
+        <div className="xl:w-[1200px]">
           <p className="poppins-text pt-[62px] pb-[27px] font-semibold">
             Featured Listings
           </p>
@@ -188,7 +188,7 @@ const HomePage: React.FC = () => {
       />
 
       <div className="w-full flex items-center justify-center">
-        <div className="xl:w-[1200px] overflow-x-scroll scroll whitespace-nowrap scroll-smooth">
+        <div className="xl:w-[1200px]">
           <p className="poppins-text pt-[42px] pb-[27px] font-semibold">
             Featured Unit Types
           </p>
@@ -202,7 +202,7 @@ const HomePage: React.FC = () => {
       />
 
       <div className="w-full flex items-center justify-center">
-        <div className="xl:w-[1200px] overflow-x-scroll scroll whitespace-nowrap scroll-smooth">
+        <div className="xl:w-[1200px]">
           <p className="poppins-text pt-[42px] pb-[27px] font-semibold">
             Featured Properties
           </p>
@@ -211,7 +211,7 @@ const HomePage: React.FC = () => {
       <BrowseCarouselProperty properties={properties} developers={developers} />
 
       <div className="w-full flex items-center justify-center">
-        <div className="xl:w-[1200px] overflow-x-scroll scroll whitespace-nowrap scroll-smooth">
+        <div className="xl:w-[1200px]">
           <p className="poppins-text pt-[42px] pb-[0px] font-semibold">
             Curated Listings
           </p>

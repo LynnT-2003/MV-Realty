@@ -24,6 +24,7 @@ import InfiniteMovingCardsDemo from "@/components/infinite-cards-demo";
 import { fetchListingsByPropertyId } from "@/services/ListingServices";
 import FaqSection from "@/components/FaqSection";
 import { fetchUnitTypesByPropertyId } from "@/services/UnitTypeServices";
+import BrowseCarouselForProperty from "@/components/BrowseCarouselListingForProperty";
 
 const downloadFile = (url: string) => {
   if (!url) return;
@@ -123,7 +124,7 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
   }
 
   // Log the property data to the console
-  console.log(property);
+  console.log("Listings", listings);
 
   // If the property has a brochure, generate the correct URL for the PDF
   const pdf_file_url = property.brochure ? urlForFile(property.brochure) : null;
@@ -144,6 +145,19 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
 
       <FaqSection propertyDetails={property}/>
 
+      <div
+        className={`w-full flex items-center justify-center transition-opacity duration-300`}
+      >
+        <div className="xl:w-[1200px]">
+          <p className="poppins-text pt-[15px] pb-[27px] font-semibold">
+            Featured Listings
+          </p>
+        </div>
+      </div>
+      <BrowseCarouselForProperty
+        listings={listings}
+        properties={property}
+      />
       {/* Show the facilities accordion component */}
       <FacilitiesAccordion
         propertyDetails={property}
