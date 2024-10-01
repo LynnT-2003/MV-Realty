@@ -370,6 +370,27 @@ export const MapDemo = ({ lat, lng }) => {
     initMap();
   }, [lat, lng]);
 
+  const StationList = ({ stations, iconSrc, altText }) => {
+    return (
+      <div className="flex flex-col">
+      {stations.map((station, index) => (
+        <div key={index} className="flex flex-row items-center justify-between w-full my-2 px-2">
+          <div className="flex flex-row items-center">
+            <img src={iconSrc} className="w-10 h-10" alt={altText} />
+            <h1 className="ml-5 font-semibold">{station.id}</h1>
+            <h1 className="ml-5">{station.name}</h1>
+          </div>
+          <div className="flex flex-row items-center">
+            {/* <img src="/bts-icons/distance.svg" className="w-8 h-8 ml-5" alt="Walking distance" />
+            <h1 className="ml-5">{station.distance}</h1> */}
+            <img src="/bts-icons/walk.svg" className="w-8 h-8 ml-5" alt="walking duration" />
+            <h1 className="ml-4">{station.duration}</h1>
+          </div>
+        </div>
+      ))}
+    </div>
+    );
+  };
   // Render the map
   return (
     <div
@@ -398,6 +419,7 @@ export const MapDemo = ({ lat, lng }) => {
             height: "100%",
           }}
           ref={mapRef}
+          className="rounded-lg"
         ></div>
       </div>
 
@@ -410,140 +432,51 @@ export const MapDemo = ({ lat, lng }) => {
         </>
       ) : (
         <>
-          <div className="text-xl font-semibold py-6 lg:pt-4 ">
-            Nearby Transportation
+          <div className="text-xl font-semibold py-6 mt-5 lg:pt-4 ">
+            Nearby Transit
           </div>
         </>
       )}
 
       <>
-        {nearbybtsStationsGreenLineState &&
-          nearbybtsStationsGreenLineState.length > 0 && (
-            <div className="flex flex-col">
-              {nearbybtsStationsGreenLineState.map((station, index) => (
-                <div key={index}>
-                  <div className="flex flex-row items-center justify-between md:w-1/2 my-2 px-2 ">
-                    <div className="flex flex-row items-center">
-                      <img
-                        src={"/bts-icons/green.png"}
-                        className="w-10 h-10"
-                        alt={"greenline_logo"}
-                      />
-                      <h1 className="ml-5">{station.id}</h1>
-                      <h1 className="ml-5">{station.name}</h1>
-                    </div>
-                    <div className="flex flex-row items-center">
-                      {" "}
-                      <h1 className="lg:px-4 px-2">{station.distance}</h1>
-                      <h1 className="lg:px-4 px-2">{station.duration}</h1>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+        {nearbybtsStationsGreenLineState && nearbybtsStationsGreenLineState.length > 0 && (
+          <StationList
+            stations={nearbybtsStationsGreenLineState}
+            iconSrc="/bts-icons/green.png"
+            altText="greenline_logo"
+          />
+        )}
 
-        {nearbyBtsSilomLineStationsState &&
-          nearbyBtsSilomLineStationsState.length > 0 && (
-            <div className="flex flex-col">
-              {nearbyBtsSilomLineStationsState.map((station, index) => (
-                <div key={index}>
-                  <div className="flex flex-row items-center justify-between md:w-1/2 my-2 px-2">
-                    <div className="flex flex-row items-center">
-                      <img
-                        src={"/bts-icons/silom.png"}
-                        className="w-10 h-10"
-                        alt={"silomLine_logo"}
-                      />
-                      <h1 className="ml-5">{station.id}</h1>
-                      <h1 className="ml-5">{station.name}</h1>
-                    </div>
-                    <div className="flex flex-row items-center">
-                      {" "}
-                      <h1 className="lg:px-4 px-2">{station.distance}</h1>
-                      <h1 className="lg:px-4 px-2">{station.duration}</h1>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+        {nearbyBtsSilomLineStationsState && nearbyBtsSilomLineStationsState.length > 0 && (
+          <StationList
+            stations={nearbyBtsSilomLineStationsState}
+            iconSrc="/bts-icons/silom.png"
+            altText="silomLine_logo"
+          />
+        )}
 
-        {nearbyMrtYellowLineStationsState &&
-          nearbyMrtYellowLineStationsState.length > 0 && (
-            <div className="flex flex-col">
-              {nearbyMrtYellowLineStationsState.map((station, index) => (
-                <div key={index}>
-                  <div className="flex flex-row items-center justify-between md:w-1/2 my-2 px-2">
-                    <div className="flex flex-row items-center">
-                      <img
-                        src={"/bts-icons/yellow.png"}
-                        className="w-10 h-10"
-                        alt={"yellowLine_logo"}
-                      />
-                      <h1 className="ml-5">{station.id}</h1>
-                      <h1 className="ml-5">{station.name}</h1>
-                    </div>
-                    <div className="flex flex-row items-center">
-                      {" "}
-                      <h1 className="lg:px-4 px-2">{station.distance}</h1>
-                      <h1 className="lg:px-4 px-2">{station.duration}</h1>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+        {nearbyMrtYellowLineStationsState && nearbyMrtYellowLineStationsState.length > 0 && (
+          <StationList
+            stations={nearbyMrtYellowLineStationsState}
+            iconSrc="/bts-icons/yellow.png"
+            altText="yellowLine_logo"
+          />
+        )}
 
-        {nearbyMrtPinkLineStationsState &&
-          nearbyMrtPinkLineStationsState.length > 0 && (
-            <div className="flex flex-col">
-              {nearbyMrtPinkLineStationsState.map((station, index) => (
-                <div key={index}>
-                  <div className="flex flex-row items-center justify-between md:w-1/2 my-2 px-2">
-                    <div className="flex flex-row items-center">
-                      <img
-                        src={"/bts-icons/pink.png"}
-                        className="w-10 h-10"
-                        alt={"pinkLogo"}
-                      />
-                      <h1 className="ml-5">{station.id}</h1>
-                      <h1 className="ml-5">{station.name}</h1>
-                    </div>
-                    <div className="flex flex-row items-center">
-                      {" "}
-                      <h1 className="lg:px-4 px-2">{station.distance}</h1>
-                      <h1 className="lg:px-4 px-2">{station.duration} </h1>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
+        {nearbyMrtPinkLineStationsState && nearbyMrtPinkLineStationsState.length > 0 && (
+          <StationList
+            stations={nearbyMrtPinkLineStationsState}
+            iconSrc="/bts-icons/pink.png"
+            altText="pinkLogo"
+          />
+        )}
 
         {nearbyAirportLinkState && nearbyAirportLinkState.length > 0 && (
-          <div className="flex flex-col">
-            {nearbyAirportLinkState.map((station, index) => (
-              <div key={index}>
-                <div className="flex flex-row items-center justify-between md:w-1/2 my-2 px-2">
-                  <div className="flex flex-row items-center">
-                    <img
-                      src={"/bts-icons/ARLbangkok.png"}
-                      className="w-10 h-10"
-                      alt={"ARL"}
-                    />
-                    <h1 className="ml-5">{station.id}</h1>
-                    <h1 className="ml-5">{station.name}</h1>
-                  </div>
-                  <div className="flex flex-row items-center">
-                    {" "}
-                    <h1 className="px-2">{station.distance}</h1>
-                    <h1 className="px-2">{station.duration}</h1>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          <StationList
+            stations={nearbyAirportLinkState}
+            iconSrc="/bts-icons/ARLbangkok.png"
+            altText="ARL"
+          />
         )}
       </>
     </div>

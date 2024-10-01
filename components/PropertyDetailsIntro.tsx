@@ -57,7 +57,7 @@ const PropertyDetailsIntro: React.FC<PropertyDetailsIntroProps> = ({
             <p className="poppins-text-title-small md:property-details-title-text">
               {propertyDetails.title}
             </p>
-            <p className="poppins-text-small md:poppins-text-avg mt-4">
+            <p className="poppins-text-small md:poppins-text-avg mt-6">
               {propertyDetails.description}
             </p>
             <div className="flex flex-wrap gap-2 mt-5">
