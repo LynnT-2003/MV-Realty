@@ -35,46 +35,42 @@ const options: Record<Filter, any[]> = {
   // "Buy/Rent": ["Buy", "Rent"],
 };
 
-interface ListingCardCollectionProps {
-  // listings: Listing[];
+interface UnitTypeCardCollectionProps {
   unitTypes: UnitType[];
   properties: Property[];
-  // developers: Developer[];
   showFilter: boolean;
 }
 
 /**
- * The main component for displaying a list of listings and properties.
+ * The main component for displaying a list of unit types and properties.
  *
- * The component takes in three props: listings, properties, and showFilter.
- * The listings and properties props are arrays of objects, where each object
+ * The component takes in three props: unit types, properties, and showFilter.
+ * The unit types and properties props are arrays of objects, where each object
  * represents a listing or property. The showFilter prop is a boolean that
  * determines whether the filter panel is shown or not.
  *
  * The component renders a filter panel on the left side of the screen if
  * showFilter is true. The filter panel contains a list of filters that can be
- * used to narrow down the list of listings and properties. The filters are
+ * used to narrow down the list of unit types and properties. The filters are
  * grouped into categories, and each category contains a list of options that
  * can be selected.
  *
- * The component also renders a list of listings and properties on the right
- * side of the screen. The list is divided into two columns, with listings on
+ * The component also renders a list of unit types and properties on the right
+ * side of the screen. The list is divided into two columns, with unit types on
  * the left and properties on the right. Each listing and property is rendered
  * as a card that contains the title, price, and other relevant information.
  *
- * When the user selects a filter, the component updates the list of listings
+ * When the user selects a filter, the component updates the list of unit types
  * and properties to only show the ones that match the selected filter.
  *
- * @param {Listing[]} listings - The list of listings to display.
+ * @param {UnitType[]} unit types - The list of unit types to display.
  * @param {Property[]} properties - The list of properties to display.
  * @param {boolean} showFilter - Whether to show the filter panel or not.
  */
 
-const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
-  // listings,
+const UnitTypeCardCollection: React.FC<UnitTypeCardCollectionProps> = ({
   unitTypes,
   properties,
-  // developers,
   showFilter,
 }) => {
   const router = useRouter();
@@ -151,7 +147,7 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
           <div className="ipad-screen:w-full w-screenrounded-lg overflow-hidden px-2 flex flex-col h-[85vh] overflow-y-scroll">
             {filteredUnitTypes.length > 0 && unitTypes.length > 0 && (
               <h1 className="pb-1 ipad-screen:ml-5 ml-9 font-semibold poppins-text">
-                Available Units
+                Available Unit Types
               </h1>
             )}
 
@@ -424,7 +420,7 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
           <div className="ipad-screen:w-full w-screenrounded-lg overflow-hidden px-2 flex flex-col h-[85vh] overflow-y-scroll">
             {filteredUnitTypes.length > 0 && unitTypes.length > 0 && (
               <h1 className="pb-1 ipad-screen:ml-5 ml-9 font-semibold poppins-text">
-                Available Units
+                Available Unit Types
               </h1>
             )}
 
@@ -608,4 +604,4 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
   );
 };
 
-export default ListingCardCollection;
+export default UnitTypeCardCollection;

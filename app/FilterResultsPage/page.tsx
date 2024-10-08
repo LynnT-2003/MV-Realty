@@ -1,7 +1,7 @@
 "use client";
 
 import BrowseCarousel from "@/components/BrowseCarouselListing";
-import ListingCardCollection from "@/components/ListingCardCollection";
+import UnitTypeCardCollection from "@/components/UnitTypeCardCollection";
 import { Property, Listing, Developer, UnitType } from "@/types";
 import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
@@ -24,7 +24,6 @@ const FilterResultsPage: React.FC = () => {
 
   // State variables to store the properties, listings, and developers data
   const [properties, setProperties] = useState<Property[]>([]);
-  const [listings, setListings] = useState<Listing[]>([]);
   const [unitTypes, setUnitTypes] = useState<UnitType[]>([]);
   const [developers, setDevelopers] = useState<Developer[]>([]);
 
@@ -115,11 +114,9 @@ const FilterResultsPage: React.FC = () => {
 
   return (
     <div className="pt-12">
-      <ListingCardCollection
-        // listings={listings}
+      <UnitTypeCardCollection
         unitTypes={unitTypes}
         properties={properties}
-        // developers={developers}
         showFilter={true}
       />
     </div>

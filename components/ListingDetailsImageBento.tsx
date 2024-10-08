@@ -8,7 +8,6 @@ import { Lens } from "./ui/lens";
 import ImageViewer from "awesome-image-viewer"; // Import the package
 import { ClassNames } from "@emotion/react";
 
-
 interface ListingDetailsImageBentoProps {
   listingDetails: Listing;
   propertyDetails: Property;
@@ -77,7 +76,10 @@ const ListingDetailsImageBento: React.FC<ListingDetailsImageBentoProps> = ({
                   </div>
                 </Grid>
                 <Grid item xs={6}>
-                  <div className="pt-0.5 md:pt-2" onClick={() => handleImageClick(4)}>
+                  <div
+                    className="pt-0.5 md:pt-2"
+                    onClick={() => handleImageClick(4)}
+                  >
                     <img
                       src={urlForImage(listingDetails.listingPhoto[1])}
                       alt="Listing Photo 2"
@@ -86,7 +88,10 @@ const ListingDetailsImageBento: React.FC<ListingDetailsImageBentoProps> = ({
                   </div>
                 </Grid>
                 <Grid item xs={6}>
-                  <div className="pt-0.5 md:pt-2" onClick={() => handleImageClick(2)}>
+                  <div
+                    className="pt-0.5 md:pt-2"
+                    onClick={() => handleImageClick(2)}
+                  >
                     <img
                       src={urlForImage(propertyDetails.propertyHero)}
                       alt="Property Hero"
