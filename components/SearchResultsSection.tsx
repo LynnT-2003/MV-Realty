@@ -222,7 +222,7 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
               {/* Listings Column */}
               <div className="w-1/3">
                 <h2 className="text-center font-semibold text-gray-600 mb-8">
-                  Listings
+                  Filtered Unit Types
                 </h2>
                 {filteredUnitTypesState.map((unit) => (
                   <div
@@ -407,7 +407,7 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
             >
               <span key={unit._id}>
                 <span className="text-gray-500 text-xs items-center pr-3">
-                  <i>Listing:</i>
+                  <i>Filtered Units:</i>
                 </span>
                 {unit.unitTypeName}
               </span>

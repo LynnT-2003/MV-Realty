@@ -263,17 +263,24 @@ const HomeSearchSection: React.FC<HomeSearchSectionProps> = ({
 
   const filterByAddressInfo = (
     value: string,
-    // listings: Listing[],
-    unitType: UnitType[],
+    unitTypes: UnitType[],
     properties: Property[]
   ): { filteredUnitTypes: UnitType[]; filteredProperties: Property[] } => {
     console.log("INITIATING FILTER BY ADDRESS INFO");
 
     let cleanedValue = value;
 
-    // Create a regular expression to capture the word/phrase after the keyword
+    // Combine all filter keywords to act as boundaries
+    const allFilterKeywords = [
+      ...bedroomInfoKeywords,
+      ...bathroomInfoKeywords,
+      ...listingPropertyKeywords,
+      ...developerInfoKeywords,
+    ].join("|");
+
+    // Regular expression to match everything after the address keyword up to the next keyword or end of string, excluding digits at the end
     const addressRegex = new RegExp(
-      `(?:${addressInfoKeywords.join("|")})\\s+(\\w+)`, // Match the keyword, then capture the word after it
+      `(?:${addressInfoKeywords.join("|")})\\s+(.+?)(?=\\s+(${allFilterKeywords}).*|$)`,
       "i"
     );
 
@@ -281,49 +288,35 @@ const HomeSearchSection: React.FC<HomeSearchSectionProps> = ({
     const match = cleanedValue.match(addressRegex);
 
     if (match && match[1]) {
-      // If a match is found, cleanedValue becomes the word after the keyword
-      cleanedValue = match[1]; // Capture the word after the keyword
-      console.log("Cleaned Value:", cleanedValue);
+      // Capture every word after the address keyword
+      cleanedValue = match[1].trim(); // Clean any extra spaces
+
+      // Remove trailing numbers if present
+      cleanedValue = cleanedValue.replace(/\s+\d+$/, "").trim(); // Remove trailing numbers and trim
+
+      console.log("Captured Address Info:", cleanedValue); // Log the captured address part
+    } else {
+      console.log("No address keyword match found.");
     }
 
-    unitTypes.forEach((unit) => {
-      const nameMatch = unit.unitTypeName?.toLowerCase().includes(cleanedValue);
-      const descriptionMatch = unit.description
-        ?.toLowerCase()
-        .includes(cleanedValue);
-
-      console.log(unit.unitTypeName);
-      // console.log(`Name Match: ${nameMatch}`);
-      console.log(`Description Match: ${descriptionMatch}`);
-    });
-
-    // Filter listings and properties based on the cleanedValue
+    // Filter unitTypes based on the captured address value
     const filteredUnitTypes = unitTypes.filter(
       (unit) =>
         unit.description?.toLowerCase().includes(cleanedValue.toLowerCase()) ||
         unit.unitTypeName?.toLowerCase().includes(cleanedValue.toLowerCase())
     );
 
-    // const filteredProperties = properties.filter(
-    //   (property) =>
-    //     property.description
-    //       .toLowerCase()
-    //       .includes(cleanedValue.toLowerCase()) ||
-    //     property.title.toLowerCase().includes(cleanedValue.toLowerCase())
-    // );
+    console.log("Filtered Unit Types:", filteredUnitTypes);
 
+    // Placeholder for properties (since you're handling this separately)
     const propertiesWithListings = createPropertieswithUnitTypes(
       filteredUnitTypes,
       properties
     );
 
-    const filteredProperties = propertiesWithListings.map(
+    const filteredProperties: Property[] = propertiesWithListings.map(
       ([property]) => property
     );
-
-    if (cleanedValue.length === 0) {
-      return { filteredUnitTypes: [], filteredProperties: [] };
-    }
 
     return { filteredUnitTypes, filteredProperties };
   };
