@@ -628,7 +628,7 @@ const HomeSearchSection: React.FC<HomeSearchSectionProps> = ({
                       <span className="flex-1 text-left">
                         {selectedValues[filter] || filter}
                       </span>
-                      <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50 lg:ml-10 ipad-screen:ml-2" />
+                      <ChevronsUpDown className="h-4 w-4 shrink-0 lg:ml-10 z-1 ipad-screen:ml-2" />
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="w-[200px] p-0">
