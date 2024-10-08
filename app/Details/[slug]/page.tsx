@@ -126,7 +126,7 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
   }
 
   // Log the property data to the console
-  console.log("Listings", listings);
+  console.log("properties", property);
 
   // If the property has a brochure, generate the correct URL for the PDF
   const pdf_file_url = property.brochure ? urlForFile(property.brochure) : null;
