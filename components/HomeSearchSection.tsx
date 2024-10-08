@@ -573,15 +573,13 @@ const HomeSearchSection: React.FC<HomeSearchSectionProps> = ({
   };
 
   return (
-    <div
-      className={`flex flex-col items-center h-[40vh] md:h-[65vh] macbook-air:h-[70vh] xl-[75vh] 2xl-[75vh] md:w-[1320px] w-screen`}
-    >
+    <div className={`flex flex-col items-center md:w-[1320px] w-screen`}>
       {/* <h2
         className={`mt-20 mb-10 sm:mb-16 text-xl text-center lg:text-5xl ipad-screen:text-4xl text-xl dark:text-white text-black ${searchActionClicked ? "opacity-50" : "opacity-100"}`}
       >
         Ask US Anything at Maha-Vertex
       </h2> */}
-      <div className="relative bg-red-500 h-full w-full">
+      <div className="relative bg-red-500 h-[full] w-full">
         <img
           src="/Banner_Hero.jpg"
           className="z-0 w-full h-full object-cover"
@@ -609,7 +607,7 @@ const HomeSearchSection: React.FC<HomeSearchSectionProps> = ({
             )}
           </div>
 
-          <div className="max-sm:hidden inline-flex justify-center items-center shadow-lg space-x-1 py-3 rounded w-full">
+          <div className="max-sm:hidden inline-flex justify-center items-center space-x-1 py-3 rounded w-full">
             {filters.map((filter) => (
               <div key={filter} className="md:px-0">
                 <Popover
@@ -667,7 +665,7 @@ const HomeSearchSection: React.FC<HomeSearchSectionProps> = ({
               </div>
             ))}
             <Button
-              variant={"default"}
+              variant={"destructive"}
               onClick={() => {
                 handleFilter();
               }}
