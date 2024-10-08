@@ -591,7 +591,7 @@ const HomeSearchSection: React.FC<HomeSearchSectionProps> = ({
           onClick={onSearchSectionClick}
           onFocus={handleInputFocus}
         >
-          <div className="search-section search-section-internal w-[800px]">
+          <div className="search-section search-section-internal">
             <PlaceholdersAndVanishInput
               placeholders={placeholders}
               onChange={handleChange}
