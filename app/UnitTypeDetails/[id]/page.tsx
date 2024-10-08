@@ -110,10 +110,9 @@ const UnitTypeDetailPage = ({ params }: { params: { id: string } }) => {
         unitTypeDetails={unitType}
         propertyDetails={property}
       />
-      <UnitTypeDetailIntro unitTypeDetails={unitType} />
+      <UnitTypeDetailIntro unitTypeDetails={unitType} property={property} />
 
-      <FaqSection propertyDetails={property}
-      />
+      <FaqSection propertyDetails={property} />
 
       <FacilitiesAccordion
         propertyDetails={property}

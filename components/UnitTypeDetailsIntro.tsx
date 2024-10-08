@@ -1,15 +1,42 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
-import { Listing, Tag, UnitType } from "@/types";
+import { Listing, Property, Tag, UnitType } from "@/types";
 import { fetchTagsFromListing } from "@/services/TagsServices";
+import { useRouter, usePathname } from "next/navigation";
 
 interface UnitTypeDetailsIntroProps {
   unitTypeDetails: UnitType;
+  property: Property;
 }
 
 const UnitTypeDetailIntro: React.FC<UnitTypeDetailsIntroProps> = ({
   unitTypeDetails,
+  property,
 }) => {
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const handlePropertyClick = (id: String) => {
+    router.push(`/Details/${id}`);
+  };
+
+  // Function to copy the current URL to clipboard
+  const handleShareClick = async () => {
+    const currentUrl = window.location.origin + pathname;
+    try {
+      await navigator.clipboard.writeText(currentUrl);
+      alert("Unit Type URL copied to clipboard!");
+    } catch (error) {
+      console.error("Failed to copy URL to clipboard:", error);
+    }
+  };
+
+  // Function for Contact us
+  const handleContactUsClick = async () => {
+    alert("Contact Functionality coming soon!");
+  };
+
   const [tags, setTags] = useState<Tag[]>([]);
 
   // Fetch tags when the component mounts or when listingDetails changes
@@ -87,15 +114,26 @@ const UnitTypeDetailIntro: React.FC<UnitTypeDetailsIntroProps> = ({
               </Grid>
             </Grid>
             <div className="flex justify-between gap-4 mt-10 md:mt-15">
-              <button className="py-3 lg:py-2 hover:bg-slate-700 bg-[#193158] text-white font-semibold rounded-lg w-1/2 text-xs">
+              <button
+                className="py-3 lg:py-2 hover:bg-slate-700 bg-[#193158] text-white font-semibold rounded-lg w-1/2 text-xs"
+                onClick={handleShareClick}
+              >
                 SHARE THIS LISTING
               </button>
-              <button className="py-3 lg:py-2 hover:bg-slate-700 bg-[#193158] text-white font-semibold rounded-lg w-1/2 text-xs">
+              <button
+                className="py-3 lg:py-2 hover:bg-slate-700 bg-[#193158] text-white font-semibold rounded-lg w-1/2 text-xs"
+                onClick={handleContactUsClick}
+              >
                 CONTACT US
               </button>
             </div>
             <div className="mt-4">
-              <button className="py-3 lg:py-2 hover:bg-slate-700 bg-[#193158] text-white font-semibold rounded-lg w-full text-xs">
+              <button
+                className="py-3 lg:py-2 hover:bg-slate-700 bg-[#193158] text-white font-semibold rounded-lg w-full text-xs"
+                onClick={() => {
+                  handlePropertyClick(property.slug.current);
+                }}
+              >
                 MORE FROM THIS PROPERTY
               </button>
               <p className="mt-4 text-[#193158] font-semibold text-center text-md">

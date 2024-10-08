@@ -1,15 +1,42 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
-import { Listing, Tag } from "@/types";
+import { Listing, Property, Tag } from "@/types";
 import { fetchTagsFromListing } from "@/services/TagsServices";
+import { useRouter, usePathname } from "next/navigation";
 
 interface ListingDetailsIntroProps {
   listingDetails: Listing;
+  property: Property;
 }
 
 const ListingDetailsIntro: React.FC<ListingDetailsIntroProps> = ({
   listingDetails,
+  property,
 }) => {
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const handlePropertyClick = (slug: String) => {
+    router.push(`/Details/${slug}`);
+  };
+
+  // Function to copy the current URL to clipboard
+  const handleShareClick = async () => {
+    const currentUrl = window.location.origin + pathname;
+    try {
+      await navigator.clipboard.writeText(currentUrl);
+      alert("Listing URL copied to clipboard!");
+    } catch (error) {
+      console.error("Failed to copy URL to clipboard:", error);
+    }
+  };
+
+  // Function for Contact us
+  const handleContactUsClick = async () => {
+    alert("Contact Functionality coming soon!");
+  };
+
   const [tags, setTags] = useState<Tag[]>([]);
 
   // Fetch tags when the component mounts or when listingDetails changes
@@ -47,11 +74,7 @@ const ListingDetailsIntro: React.FC<ListingDetailsIntroProps> = ({
               ))}
             </div>
           </Grid>
-          <Grid
-            item
-            md={5}
-            className="mt-10 md:mt-0"
-          >
+          <Grid item md={5} className="mt-10 md:mt-0">
             <Grid
               container
               rowSpacing={{ xs: 4, md: 3 }}
@@ -94,25 +117,45 @@ const ListingDetailsIntro: React.FC<ListingDetailsIntroProps> = ({
               <Grid item xs={6}>
                 <div className="flex">
                   <img src="/icons/price.svg" />
-                  <p className="ml-3.5">{new Intl.NumberFormat('th-TH', { style: 'currency', currency: 'THB', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(listingDetails.price)} per Month</p>
+                  <p className="ml-3.5">
+                    {new Intl.NumberFormat("th-TH", {
+                      style: "currency",
+                      currency: "THB",
+                      minimumFractionDigits: 0,
+                      maximumFractionDigits: 0,
+                    }).format(listingDetails.price)}{" "}
+                    per Month
+                  </p>
                 </div>
               </Grid>
               <div className="flex w-full ml-3.5 mb-2 mt-8 justify-center">
                 <p className="ml-3.5 pt-1">
-                  Minimum Constract Period of {listingDetails.minimumContractInMonth} Months
+                  Minimum Constract Period of{" "}
+                  {listingDetails.minimumContractInMonth} Months
                 </p>
               </div>
             </Grid>
             <div className="flex justify-between gap-4 mt-10 md:mt-15">
-              <button className="py-3 lg:py-2 hover:bg-slate-700 bg-[#193158] text-white font-semibold rounded-lg w-1/2 text-xs">
+              <button
+                className="py-3 lg:py-2 hover:bg-slate-700 bg-[#193158] text-white font-semibold rounded-lg w-1/2 text-xs"
+                onClick={handleShareClick}
+              >
                 SHARE THIS LISTING
               </button>
-              <button className="py-3 lg:py-2 hover:bg-slate-700 bg-[#193158] text-white font-semibold rounded-lg w-1/2 text-xs">
+              <button
+                className="py-3 lg:py-2 hover:bg-slate-700 bg-[#193158] text-white font-semibold rounded-lg w-1/2 text-xs"
+                onClick={handleContactUsClick}
+              >
                 CONTACT US
               </button>
             </div>
             <div className="mt-4">
-              <button className="py-3 lg:py-2 hover:bg-slate-700 bg-[#193158] text-white font-semibold rounded-lg w-full text-xs">
+              <button
+                className="py-3 lg:py-2 hover:bg-slate-700 bg-[#193158] text-white font-semibold rounded-lg w-full text-xs"
+                onClick={() => {
+                  handlePropertyClick(property.slug.current);
+                }}
+              >
                 MORE FROM THIS PROPERTY
               </button>
               <p className="mt-4 text-[#193158] font-semibold text-center text-md">
