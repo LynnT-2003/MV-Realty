@@ -6,7 +6,7 @@ import { fetchPropertyById } from "@/services/PropertyServices";
 import { fetchListingsByPropertyId } from "@/services/ListingServices";
 import { fetchUnitTypesByPropertyId } from "@/services/UnitTypeServices";
 import { Property, Listing, UnitType } from "@/types";
-import ListingCardCollection from "@/components/ListingCardCollection";
+import UnitTypeCardCollection from "@/components/UnitTypeCardCollection";
 import unitType from "@/sanity/schemas/unitType";
 
 /**
@@ -94,7 +94,7 @@ const CollectionsPage = ({ params }: { params: { id: string } }) => {
   return (
     <div className="w-full flex justify-center pb-16">
       <div className="md:max-w-[1320px] w-[95vw]">
-        <ListingCardCollection
+        <UnitTypeCardCollection
           // listings={listings}
           unitTypes={unitTypes}
           properties={collectionProperties}

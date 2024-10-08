@@ -2,7 +2,7 @@
 import React, { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Listing, UnitType } from "@/types";
-import ListingCardCollection from "@/components/ListingCardCollection";
+import UnitTypeCardCollection from "@/components/UnitTypeCardCollection";
 
 const ListingsContent = () => {
   // Get the search parameters from the URL
@@ -43,7 +43,7 @@ const ListingsContent = () => {
         This component takes in the listings and properties as props and renders a collection of cards
         Each card displays the information of a single listing
       */}
-      <ListingCardCollection
+      <UnitTypeCardCollection
         // Pass the listings as a prop to the component
 
         // listings={listings}
