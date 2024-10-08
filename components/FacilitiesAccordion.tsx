@@ -78,10 +78,11 @@ const FacilitiesAccordion: React.FC<FacilitiesAccordionProps> = ({
 
   const handleChange =
     (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
-      setExpanded((prevExpanded) =>
-        isExpanded
-          ? [...prevExpanded, panel] // Add to expanded array if not already expanded
-          : prevExpanded.filter((p) => p !== panel) // Remove from expanded array if collapsed
+      setExpanded(
+        (prevExpanded) =>
+          isExpanded
+            ? [...prevExpanded, panel] // Add to expanded array if not already expanded
+            : prevExpanded.filter((p) => p !== panel) // Remove from expanded array if collapsed
       );
     };
 
@@ -116,8 +117,12 @@ const FacilitiesAccordion: React.FC<FacilitiesAccordionProps> = ({
                   >
                     <div className="md:w-1/2">
                       <img
-                        src={urlForImage(facility.photos[0])}
-                        alt={facility.name}
+                        src={
+                          facility.photos && facility.photos[0]
+                            ? urlForImage(facility.photos[0])
+                            : "/placeholder.jpg"
+                        }
+                        alt={facility.name || "Placeholder"}
                         className="rounded-lg"
                       />
                     </div>

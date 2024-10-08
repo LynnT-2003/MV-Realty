@@ -94,9 +94,14 @@ const ListingDetailsIntro: React.FC<ListingDetailsIntroProps> = ({
               <Grid item xs={6}>
                 <div className="flex">
                   <img src="/icons/price.svg" />
-                  <p className="ml-3.5">{listingDetails.price}M Baht</p>
+                  <p className="ml-3.5">{new Intl.NumberFormat('th-TH', { style: 'currency', currency: 'THB', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(listingDetails.price)} per Month</p>
                 </div>
               </Grid>
+              <div className="flex w-full ml-3.5 mb-2 mt-8 justify-center">
+                <p className="ml-3.5 pt-1">
+                  Minimum Constract Period of {listingDetails.minimumContractInMonth} Months
+                </p>
+              </div>
             </Grid>
             <div className="flex justify-between gap-4 mt-10 md:mt-15">
               <button className="py-3 lg:py-2 hover:bg-slate-700 bg-[#193158] text-white font-semibold rounded-lg w-1/2 text-xs">

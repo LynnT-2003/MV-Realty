@@ -25,6 +25,7 @@ import { fetchListingsByPropertyId } from "@/services/ListingServices";
 import FaqSection from "@/components/FaqSection";
 import { fetchUnitTypesByPropertyId } from "@/services/UnitTypeServices";
 import BrowseCarouselForProperty from "@/components/BrowseCarouselListingForProperty";
+import BrowseCarouselUnitTypeForProperty from "@/components/BrowseCarouselUnitTypeForProperty";
 
 const downloadFile = (url: string) => {
   if (!url) return;
@@ -143,21 +144,40 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
         unitTypes={unitTypes}
       />
 
-      <FaqSection propertyDetails={property}/>
+      <FaqSection propertyDetails={property} />
 
-      <div
-        className={`w-full flex items-center justify-center transition-opacity duration-300`}
-      >
-        <div className="xl:w-[1200px]">
-          <p className="poppins-text pt-[15px] pb-[27px] font-semibold">
-            Featured Listings Trom This Property
-          </p>
-        </div>
-      </div>
-      <BrowseCarouselForProperty
-        listings={listings}
-        properties={property}
-      />
+      {listings.length > 0 && (
+        <>
+          <div className="w-full flex items-center justify-center transition-opacity duration-300">
+            <div className="xl:w-[1200px]">
+              <p className="poppins-text pt-[4px] pb-[27px] font-semibold">
+                Listings For Rent
+              </p>
+            </div>
+          </div>
+          <BrowseCarouselForProperty
+            listings={listings}
+            properties={property}
+          />
+        </>
+      )}
+
+      {unitTypes.length > 0 && (
+        <>
+          <div className="w-full flex items-center justify-center transition-opacity duration-300">
+            <div className="xl:w-[1200px]">
+              <p className="poppins-text pt-[4px] pb-[27px] font-semibold">
+                UnitTypes for Sales
+              </p>
+            </div>
+          </div>
+          <BrowseCarouselUnitTypeForProperty
+            unitTypes={unitTypes}
+            properties={property}
+          />
+        </>
+      )}
+
       {/* Show the facilities accordion component */}
       <FacilitiesAccordion
         propertyDetails={property}
