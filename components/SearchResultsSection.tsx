@@ -211,10 +211,10 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
       <div className="hidden ipad-screen:hidden lg:block mt-2 lg:w-screen xl:w-[1250px] w-[1250px] h-screen relative mx-auto max-h-[0px]">
         <div className="rounded-3xl shadow-lg h-[500px] overflow-scroll py-8 glass ">
           {filteredUnitTypes.length === 0 && filteredProperties.length === 0 ? (
-            <div className="bg-red-500 w-[300px] h-[200px] mx-auto my-16">
+            <div className="w-[300px] h-[200px] mx-auto my-16">
               {/* Red block for testing when there are no listings or properties */}
-              <span className="text-white text-center block py-16">
-                Placeholder
+              <span className="text-black text-center block py-16">
+                No results found
               </span>
             </div>
           ) : (
