@@ -1,4 +1,5 @@
 // types.ts
+import exp from "constants";
 import { Image as SanityImage } from "sanity";
 
 export interface Property {
@@ -144,4 +145,35 @@ export interface GeoLocation {
   _type: string;
   lat: number;
   lng: number;
+}
+
+export interface Ameneties {
+  _id: string;
+  name: string;
+  geoLocation: GeoLocation;
+  amenetiesPhoto: SanityImageWithKey;
+}
+
+export interface FeaturedListing {
+  _id: string;
+  listing: {
+    _ref: string;
+    _type: string;
+  }[];
+}
+
+export interface FeaturedProperty {
+  _id: string;
+  property: {
+    _ref: string;
+    _type: string;
+  }[];
+}
+
+export interface FeaturedUnitType {
+  _id: string;
+  unitType: {
+    _ref: string;
+    _type: string;
+  }[];
 }
