@@ -1,8 +1,8 @@
-import React, { useMemo } from "react";
-import { useState, useEffect } from "react";
-import { Listing, Property, Developer, UnitType } from "@/types";
+"use client";
+import React, { useState, useEffect, useMemo } from "react";
+import { Listing, Property } from "@/types";
 
-import LensCardUnitTypes from "./LensCardUnitTypes";
+import LensCardListings from "./LensCardListings";
 import LensCardProperties from "./LensCardProperties";
 import { Slider } from "./ui/slider";
 import { Button } from "./ui/button";
@@ -23,6 +23,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Check, ChevronsUpDown } from "lucide-react";
+import listing from "@/sanity/schemas/listing";
 
 // const filters = ["Bedrooms", "Location", "Buy/Rent"] as const;
 const filters = ["Bedrooms", "Location"] as const;
@@ -35,41 +36,14 @@ const options: Record<Filter, any[]> = {
   // "Buy/Rent": ["Buy", "Rent"],
 };
 
-interface UnitTypeCardCollectionProps {
-  unitTypes: UnitType[];
+interface ListingCardCollectionProps {
+  listings: Listing[];
   properties: Property[];
   showFilter: boolean;
 }
 
-/**
- * The main component for displaying a list of unit types and properties.
- *
- * The component takes in three props: unit types, properties, and showFilter.
- * The unit types and properties props are arrays of objects, where each object
- * represents a listing or property. The showFilter prop is a boolean that
- * determines whether the filter panel is shown or not.
- *
- * The component renders a filter panel on the left side of the screen if
- * showFilter is true. The filter panel contains a list of filters that can be
- * used to narrow down the list of unit types and properties. The filters are
- * grouped into categories, and each category contains a list of options that
- * can be selected.
- *
- * The component also renders a list of unit types and properties on the right
- * side of the screen. The list is divided into two columns, with unit types on
- * the left and properties on the right. Each listing and property is rendered
- * as a card that contains the title, price, and other relevant information.
- *
- * When the user selects a filter, the component updates the list of unit types
- * and properties to only show the ones that match the selected filter.
- *
- * @param {UnitType[]} unit types - The list of unit types to display.
- * @param {Property[]} properties - The list of properties to display.
- * @param {boolean} showFilter - Whether to show the filter panel or not.
- */
-
-const UnitTypeCardCollection: React.FC<UnitTypeCardCollectionProps> = ({
-  unitTypes,
+const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
+  listings,
   properties,
   showFilter,
 }) => {
@@ -79,13 +53,13 @@ const UnitTypeCardCollection: React.FC<UnitTypeCardCollectionProps> = ({
   const [maxInitPrice, setMaxInitPrice] = useState(999);
 
   useEffect(() => {
-    if (unitTypes.length > 0) {
+    if (listings.length > 0) {
       let maxListingPrice = Math.max(
-        ...unitTypes.map((unit) => unit.startingPrice)
+        ...listings.map((listing) => listing.price)
       );
       setMaxInitPrice(maxListingPrice);
     }
-  }, [unitTypes]);
+  }, [listings]);
 
   // Desktop filter state
   const [openFilter, setOpenFilter] = useState<Filter | null>(null);
@@ -105,31 +79,31 @@ const UnitTypeCardCollection: React.FC<UnitTypeCardCollectionProps> = ({
   };
 
   // Create a filtered list based on all filters
-  const filteredUnitTypes = useMemo(() => {
+  const filteredListings = useMemo(() => {
     console.log("Applying filters...");
     console.log("Max Price:", maxPrice);
     console.log("Selected Values:", selectedValues);
 
-    const filteredBedroom = unitTypes.filter((unit) => {
+    const filteredBedroom = listings.filter((listing) => {
       return selectedValues.Bedrooms
-        ? unit.bedroom === Number(selectedValues.Bedrooms)
+        ? listing.bedroom === Number(selectedValues.Bedrooms)
         : true;
     });
 
-    const filteredLocation = filteredBedroom.filter((unit) => {
+    const filteredLocation = filteredBedroom.filter((listing) => {
       return selectedValues.Location
-        ? unit.unitTypeName.includes(selectedValues.Location)
+        ? listing.listingName.includes(selectedValues.Location)
         : true;
     });
 
-    const filteredMaxPrice = filteredLocation.filter((unit) => {
-      return unit.startingPrice <= maxPrice;
+    const filteredMaxPrice = filteredLocation.filter((listing) => {
+      return listing.price <= maxPrice;
     });
 
     console.log("Filtered Units:", filteredMaxPrice); // Debug log
 
     return filteredMaxPrice;
-  }, [unitTypes, maxPrice, selectedValues]);
+  }, [listings, maxPrice, selectedValues]);
 
   const handleSliderChange = (value: number[]) => {
     setMaxPrice(value[0]);
@@ -139,15 +113,14 @@ const UnitTypeCardCollection: React.FC<UnitTypeCardCollectionProps> = ({
   const handleUnitTypeClick = (id: string) => {
     router.push(`/UnitTypeDetails/${id}`);
   };
-
   return (
     <div className="flex justify-center pt-0">
       {!showFilter && (
         <div className="flex w-screen lg:w-[1320px]">
           <div className="ipad-screen:w-full w-screenrounded-lg overflow-hidden px-2 flex flex-col h-[85vh] overflow-y-scroll">
-            {filteredUnitTypes.length > 0 && unitTypes.length > 0 && (
+            {filteredListings.length > 0 && listings.length > 0 && (
               <h1 className="pb-1 ipad-screen:ml-5 ml-9 font-semibold poppins-text">
-                Available Unit Types for Sale
+                Available Listings for Rent
               </h1>
             )}
 
@@ -282,19 +255,19 @@ const UnitTypeCardCollection: React.FC<UnitTypeCardCollectionProps> = ({
               </div>
             </div>
 
-            {filteredUnitTypes.length > 0 && (
+            {filteredListings.length > 0 && (
               <div className="flex grid grid-cols-1 ipad-screen:grid-cols-2 lg:grid-cols-3">
-                {filteredUnitTypes.map((unit, index) => {
+                {filteredListings.map((listing, index) => {
                   return (
                     <div
                       key={index}
                       onClick={() => {
-                        handleUnitTypeClick(unit._id);
+                        handleUnitTypeClick(listing._id);
                       }}
                       className="lg:ml-0 ipad-screen:px-0 px-5 relative rounded-lg overflow-hidden inline-block mb-4 md:mb-0 group w-full"
                     >
                       {/* <LensCardListings listing={listing} /> */}
-                      <LensCardUnitTypes unitType={unit} />
+                      <LensCardListings listing={listing} />
                     </div>
                   );
                 })}
@@ -418,9 +391,9 @@ const UnitTypeCardCollection: React.FC<UnitTypeCardCollectionProps> = ({
 
           {/* Second column (listings, taking 2/3 width) */}
           <div className="ipad-screen:w-full w-screenrounded-lg overflow-hidden px-2 flex flex-col h-[85vh] overflow-y-scroll">
-            {filteredUnitTypes.length > 0 && unitTypes.length > 0 && (
+            {filteredListings.length > 0 && listings.length > 0 && (
               <h1 className="pb-1 ipad-screen:ml-5 ml-9 font-semibold poppins-text">
-                Available Unit Types for Sale
+                Available Listings for Rent
               </h1>
             )}
 
@@ -553,19 +526,19 @@ const UnitTypeCardCollection: React.FC<UnitTypeCardCollectionProps> = ({
               </div>
             </div>
 
-            {filteredUnitTypes.length > 0 && unitTypes.length > 0 && (
+            {filteredListings.length > 0 && listings.length > 0 && (
               <div className="flex grid grid-cols-1 ipad-screen:grid-cols-2 lg:grid-cols-3">
-                {filteredUnitTypes.map((unit, index) => {
+                {filteredListings.map((listing, index) => {
                   return (
                     <div
                       key={index}
                       onClick={() => {
-                        handleUnitTypeClick(unit._id);
+                        handleUnitTypeClick(listing._id);
                       }}
                       className="lg:ml-0 ipad-screen:px-0 px-5 relative rounded-lg overflow-hidden inline-block mb-4 md:mb-0 group w-full"
                     >
                       {/* <LensCardListings listing={listing} /> */}
-                      <LensCardUnitTypes unitType={unit} />
+                      <LensCardListings listing={listing} />
                     </div>
                   );
                 })}
@@ -604,4 +577,4 @@ const UnitTypeCardCollection: React.FC<UnitTypeCardCollectionProps> = ({
   );
 };
 
-export default UnitTypeCardCollection;
+export default ListingCardCollection;

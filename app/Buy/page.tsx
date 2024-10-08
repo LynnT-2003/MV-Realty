@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import UnitTypeCardCollection from "@/components/UnitTypeCardCollection";
 import { fetchAllUnitTypes } from "@/services/UnitTypeServices";
 import { fetchAllProperties } from "@/services/PropertyServices";
-import Listing from "@/sanity/schemas/listing";
 
 const BuyPage = () => {
   const [unitTypes, setUnitTypes] = useState([]);
