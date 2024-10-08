@@ -12,11 +12,11 @@ export interface Property {
   listing: {
     _ref: string;
     _type: string;
-  };
+  }[];
   unitType: {
     _ref: string;
     _type: string;
-  };
+  }[];
   developer: { _ref: string; _type: string };
   description: string;
   mapUrl: string;

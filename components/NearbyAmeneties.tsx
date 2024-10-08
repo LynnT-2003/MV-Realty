@@ -15,11 +15,8 @@ const NearbyAmenities: React.FC<NearbyAmenities> = ({ property }) => {
     // Fetch amenities from the service
     fetchAllAmeneties().then((amenities) => {
       const filteredAmenities = amenities.filter((amenity) => {
-        console.log("Property:", property);
-        console.log("Amenity:", amenity);
         // Calculate Euclidean distance between property and amenity location
         const distance = haversine(property.geoLocation, amenity.geoLocation);
-        console.log("Distance:", distance);
         // Filter amenities within 2km
         return distance <= 2;
       });
