@@ -14,6 +14,7 @@ import FacilitiesAccordion from "@/components/FacilitiesAccordion";
 import { fetchAllFacilityTypes } from "@/services/FacilityServices";
 import { urlForFile } from "@/sanity/lib/image";
 import LoadingPage from "./loading";
+import NearbyAmenities from "@/components/NearbyAmeneties";
 
 const downloadFile = (url: string) => {
   if (!url) return "No Url";
@@ -130,6 +131,10 @@ const ListingDetailPage = ({ params }: { params: { id: string } }) => {
         propertyDetails={property}
         facilityTypeDetails={facilityType}
       />
+
+      <div className="container mx-auto p-8">
+        <NearbyAmenities property={property} />
+      </div>
 
       <div className="w-full flex justify-center pb-6">
         <div className="md:max-w-[1150px] w-[85vw]">

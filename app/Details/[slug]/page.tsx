@@ -26,6 +26,7 @@ import FaqSection from "@/components/FaqSection";
 import { fetchUnitTypesByPropertyId } from "@/services/UnitTypeServices";
 import BrowseCarouselForProperty from "@/components/BrowseCarouselListingForProperty";
 import BrowseCarouselUnitTypeForProperty from "@/components/BrowseCarouselUnitTypeForProperty";
+import NearbyAmenities from "@/components/NearbyAmeneties";
 
 const downloadFile = (url: string) => {
   if (!url) return;
@@ -183,6 +184,10 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
         propertyDetails={property}
         facilityTypeDetails={facilityType}
       />
+
+      <div className="container mx-auto p-8">
+        <NearbyAmenities property={property} />
+      </div>
 
       {/* Show the map demo component */}
       <div className="w-full flex justify-center pb-24 md:pb-12 px-4 lg:px-0">

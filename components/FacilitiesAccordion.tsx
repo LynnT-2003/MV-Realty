@@ -89,7 +89,7 @@ const FacilitiesAccordion: React.FC<FacilitiesAccordionProps> = ({
   return (
     <div className="w-full flex justify-center md:pt-0 pt-6 pb-0">
       <div className="md:max-w-[1150px] w-[85vw]">
-        <p className="poppins-text-title-small md:property-details-title-text pb-2">
+        <p className="poppins-text-title-small md:property-details-title-text">
           Facilities
         </p>
 
