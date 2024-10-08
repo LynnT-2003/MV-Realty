@@ -587,24 +587,26 @@ const HomeSearchSection: React.FC<HomeSearchSectionProps> = ({
         />
 
         <div
-          className="search-section search-section-internal z-10 absolute top-[85%] md:top-[85%] left-1/2 transform -translate-x-1/2 -translate-y-1/2" // Added background for visibility
+          className="z-10 absolute top-[85%] md:top-[85%] left-1/2 transform -translate-x-1/2 -translate-y-1/2" // Added background for visibility
           onClick={onSearchSectionClick}
           onFocus={handleInputFocus}
         >
-          <PlaceholdersAndVanishInput
-            placeholders={placeholders}
-            onChange={handleChange}
-            onSubmit={onSubmit}
-          />
+          <div className="search-section search-section-internal w-[800px]">
+            <PlaceholdersAndVanishInput
+              placeholders={placeholders}
+              onChange={handleChange}
+              onSubmit={onSubmit}
+            />
 
-          <div className="z-10 w-screen">
-            {searchActionClicked && (
-              <SearchResultsSection
-                filteredUnitTypes={filteredUnitTypes}
-                filteredProperties={filteredProperties}
-                isActive={isSearchActive}
-              />
-            )}
+            <div className="z-10 w-screen">
+              {searchActionClicked && (
+                <SearchResultsSection
+                  filteredUnitTypes={filteredUnitTypes}
+                  filteredProperties={filteredProperties}
+                  isActive={isSearchActive}
+                />
+              )}
+            </div>
           </div>
 
           <div className="max-sm:hidden inline-flex justify-center items-center space-x-1 py-3 rounded w-full">
