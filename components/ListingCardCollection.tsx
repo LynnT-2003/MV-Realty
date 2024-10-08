@@ -110,8 +110,8 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
     console.log(maxPrice);
   };
 
-  const handleUnitTypeClick = (id: string) => {
-    router.push(`/UnitTypeDetails/${id}`);
+  const handleListingClick = (id: string) => {
+    router.push(`/ListingDetails/${id}`);
   };
   return (
     <div className="flex justify-center pt-0">
@@ -262,7 +262,7 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
                     <div
                       key={index}
                       onClick={() => {
-                        handleUnitTypeClick(listing._id);
+                        handleListingClick(listing._id);
                       }}
                       className="lg:ml-0 ipad-screen:px-0 px-5 relative rounded-lg overflow-hidden inline-block mb-4 md:mb-0 group w-full"
                     >
@@ -533,7 +533,7 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
                     <div
                       key={index}
                       onClick={() => {
-                        handleUnitTypeClick(listing._id);
+                        handleListingClick(listing._id);
                       }}
                       className="lg:ml-0 ipad-screen:px-0 px-5 relative rounded-lg overflow-hidden inline-block mb-4 md:mb-0 group w-full"
                     >
