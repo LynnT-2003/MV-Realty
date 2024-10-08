@@ -2,7 +2,7 @@
 import "./page.css";
 import React, { useEffect, useState } from "react";
 import { Property, Listing, UnitType } from "@/types";
-import ListingCardCollection from "@/components/ListingCardCollection";
+import UnitTypeCardCollection from "@/components/UnitTypeCardCollection";
 import unitType from "@/sanity/schemas/unitType";
 import { set } from "sanity";
 
@@ -61,7 +61,7 @@ const SearchResultsPage: React.FC = () => {
    */
   return (
     <div className=" pt-12">
-      <ListingCardCollection
+      <UnitTypeCardCollection
         // listings={listings}
         unitTypes={unitTypes}
         properties={properties}

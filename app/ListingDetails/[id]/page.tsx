@@ -2,20 +2,10 @@
 import React from "react";
 import { PopupButton } from "react-calendly";
 import { useRouter } from "next/navigation";
-import { Developer, FacilityType, Listing, Property } from "../../../types";
-import {
-  fetchPropertyById,
-  fetchPropertyBySlug,
-} from "@/services/PropertyServices";
-import { fetchDeveloperById } from "@/services/DeveloperServices";
-
-import { DetailsBento } from "@/components/DetailsBento";
-import { DetailsImageGridLayout } from "@/components/DetailsImageGrid";
-import { LayoutGridDemo } from "@/components/HomeLayoutGrid";
+import { FacilityType, Listing, Property } from "../../../types";
+import { fetchPropertyById } from "@/services/PropertyServices";
 
 import MapDemo from "@/components/MapDemo";
-import PropertyDetailsImageBento from "@/components/PropertyDetailsImageBento";
-import PropertyDetailsIntro from "@/components/PropertyDetailsIntro";
 import { fetchListingById } from "@/services/ListingServices";
 import ListingDetailsImageBento from "@/components/ListingDetailsImageBento";
 import ListingDetailsIntro from "@/components/ListingDetailsIntro";
@@ -134,7 +124,7 @@ const ListingDetailPage = ({ params }: { params: { id: string } }) => {
       />
       <ListingDetailsIntro listingDetails={listing} />
 
-      <FaqSection propertyDetails={property}/>
+      <FaqSection propertyDetails={property} />
 
       <FacilitiesAccordion
         propertyDetails={property}
