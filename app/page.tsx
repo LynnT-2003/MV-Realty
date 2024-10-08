@@ -174,14 +174,15 @@ const HomePage: React.FC = () => {
       <div
         className={`w-full flex items-center justify-center transition-opacity duration-300 ${searchSectionClicked ? "opacity-50" : "opacity-100"}`}
       >
+        {" "}
         <div className="xl:w-[1200px]">
           <p className="poppins-text pt-[62px] pb-[27px] font-semibold">
-            Featured Listings
+            Featured Unit Types
           </p>
         </div>
       </div>
-      <BrowseCarouselListing
-        listings={listings}
+      <BrowseCarouselUnitType
+        unitTypes={unitTypes}
         properties={properties}
         developers={developers}
         blur={searchSectionClicked}
@@ -189,13 +190,13 @@ const HomePage: React.FC = () => {
 
       <div className="w-full flex items-center justify-center">
         <div className="xl:w-[1200px]">
-          <p className="poppins-text pt-[42px] pb-[27px] font-semibold">
-            Featured Unit Types
+          <p className="poppins-text pt-[38px] pb-[27px] font-semibold">
+            Featured Listings
           </p>
         </div>
       </div>
-      <BrowseCarouselUnitType
-        unitTypes={unitTypes}
+      <BrowseCarouselListing
+        listings={listings}
         properties={properties}
         developers={developers}
         blur={searchSectionClicked}

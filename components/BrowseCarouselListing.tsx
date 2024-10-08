@@ -127,44 +127,38 @@ const BrowseCarousel: React.FC<BrowseCarouselProps> = ({
               </DirectionAwareHover>
               <div className="mt-4 pt-2 pr-2 bg-white rounded-lg mb-8">
                 <div className="relative flex">
-                  <div className="w-80 inline-flex items-center overflow-hidden pr-3">
+                  <div className="w-80 inline-flex items-top overflow-hidden pr-3">
                     <span className="truncate text-lg font-light overflow-hidden whitespace-nowrap">
                       {listing.listingName}
                     </span>
                   </div>
-                  <div className="w-20">
-                    <p className="mr-0 ml-3 absolute top-0 right-0 font-semibold text-xl text-[#193158]">
-                      {listing.price} MB
+                  <div className="w-20 flex flex-col items-end">
+                    <p className="mr-0 ml-3 font-semibold text-xl text-[#193158]">
+                      {new Intl.NumberFormat("th-TH", {
+                        style: "currency",
+                        currency: "THB",
+                        minimumFractionDigits: 0,
+                        maximumFractionDigits: 0,
+                      }).format(listing.price)}
                     </p>
+                    <p className="mr-0 ml-3 text-xs text-[#193158]">/Month</p>
                   </div>
                 </div>
-
-                {/* <div className="relative flex items-center justify-between text-lg font-light w-full">
-                  <div className="flex-1 pr-16 truncate w-1/2">
-                    <span className="inline-flex item-baseline">
-                    {listing.listingName}
-                    <img
-                      src={urlForImage(developer.profileIcon)}
-                      className="w-8 h-8 ml-1"
-                    /> 
-                    </span>
-                  </div>
-                </div> */}
-                <div className="flex pt-4">
+                <div className="flex">
                   <span className="pr-6 flex">
-                    <img src="/icons/bed.svg" className="pr-2" />
+                    <img src="/icons/bed.svg" className="pr-2 w-7 h-7" />
                     {listing.bedroom}
                   </span>
                   <span className="pr-6 flex">
-                    <img src="/icons/sqmt.svg" className="pr-2" />
-                    {listing.size}
-                  </span>
-                  <span className="pr-6 flex">
-                    <img src="/icons/shower.svg" className="pr-2" />
+                    <img src="/icons/shower.svg" className="pr-2 w-7  h-7 " />
                     {listing.bathroom}
                   </span>
                   <span className="pr-6 flex">
-                    <img src="/icons/floor.svg" className="pr-2" />
+                    <img src="/icons/sqmt.svg" className="pr-2 w-7  h-7 " />
+                    {listing.size}
+                  </span>
+                  <span className="pr-6 flex">
+                    <img src="/icons/floor.svg" className="pr-2 w-7  h-7 " />
                     {listing.floor}
                   </span>
                 </div>

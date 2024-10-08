@@ -143,16 +143,16 @@ const BrowseCarouselUnitType: React.FC<BrowseCarouselProps> = ({
 
                 <div className="flex pt-4">
                   <span className="pr-6 flex">
-                    <img src="/icons/bed.svg" className="pr-2" />
+                    <img src="/icons/bed.svg" className="pr-2 w-7 h-7" />
                     {unit.bedroom}
                   </span>
                   <span className="pr-6 flex">
-                    <img src="/icons/sqmt.svg" className="pr-2" />
-                    {unit.size}
+                    <img src="/icons/shower.svg" className="pr-2 w-7 h-7" />
+                    {unit.bathroom}
                   </span>
                   <span className="pr-6 flex">
-                    <img src="/icons/shower.svg" className="pr-2" />
-                    {unit.bathroom}
+                    <img src="/icons/sqmt.svg" className="pr-2 w-7 h-7" />
+                    {unit.size}
                   </span>
                 </div>
               </div>

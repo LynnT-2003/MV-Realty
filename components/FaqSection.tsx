@@ -86,7 +86,7 @@ const CustomizedAccordions: React.FC<FaqSectionProps> = ({
     };
   console.log("propertyFaqs", propertyFaqs);
   return (
-    <div className="w-full flex justify-center pb-12 md:pb-20">
+    <div className="w-full flex justify-center pb-12 md:pb-8">
       <div className="md:max-w-[1150px] w-[85vw]">
         <p className="poppins-text-title-small md:property-details-title-text">
           Frequently Asked Questions

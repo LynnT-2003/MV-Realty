@@ -123,7 +123,7 @@ const BrowseCarouselForProperty: React.FC<BrowseCarouselProps> = ({
                   </div>
                   <div className="w-20">
                     <p className="mr-0 ml-3 absolute top-0 right-0 font-semibold text-xl text-[#193158]">
-                      {listing.price} MB
+                    {new Intl.NumberFormat('th-TH', { style: 'currency', currency: 'THB', minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(listing.price)}
                     </p>
                   </div>
                 </div>
@@ -141,19 +141,19 @@ const BrowseCarouselForProperty: React.FC<BrowseCarouselProps> = ({
                 </div> */}
                 <div className="flex pt-4">
                   <span className="pr-6 flex">
-                    <img src="/icons/bed.svg" className="pr-2" />
+                    <img src="/icons/bed.svg" className="pr-2 w-7 h-7" />
                     {listing.bedroom}
                   </span>
                   <span className="pr-6 flex">
-                    <img src="/icons/sqmt.svg" className="pr-2" />
-                    {listing.size}
-                  </span>
-                  <span className="pr-6 flex">
-                    <img src="/icons/shower.svg" className="pr-2" />
+                    <img src="/icons/shower.svg" className="pr-2 w-7 h-7" />
                     {listing.bathroom}
                   </span>
                   <span className="pr-6 flex">
-                    <img src="/icons/floor.svg" className="pr-2" />
+                    <img src="/icons/sqmt.svg" className="pr-2 w-7 h-7" />
+                    {listing.size}
+                  </span>
+                  <span className="pr-6 flex">
+                    <img src="/icons/floor.svg" className="pr-2 w-7 h-7" />
                     {listing.floor}
                   </span>
                 </div>
