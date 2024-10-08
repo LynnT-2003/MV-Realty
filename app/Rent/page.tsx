@@ -57,6 +57,7 @@ const BuyPage = () => {
         listings={listings}
         properties={properties}
         showFilter={true}
+        showProperties={false}
       />
     </div>
   );

@@ -40,12 +40,14 @@ interface ListingCardCollectionProps {
   listings: Listing[];
   properties: Property[];
   showFilter: boolean;
+  showProperties: boolean;
 }
 
 const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
   listings,
   properties,
   showFilter,
+  showProperties,
 }) => {
   const router = useRouter();
 
@@ -273,12 +275,12 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
                 })}
               </div>
             )}
-            {properties.length > 0 && (
+            {properties.length > 0 && showProperties == true && (
               <h1 className="pb-1 ipad-screen:ml-5 ml-9 font-semibold poppins-text">
                 Available Properties
               </h1>
             )}
-            {properties.length > 0 && (
+            {properties.length > 0 && showProperties == true && (
               <div className="flex grid ml-5 grid-cols-1 ipad-screen:grid-cols-2 lg:grid-cols-3">
                 {properties.map((property, index) => {
                   return (
@@ -545,13 +547,13 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
               </div>
             )}
 
-            {properties.length > 0 && (
+            {properties.length > 0 && showProperties == true && (
               <h1 className="pb-1 ipad-screen:ml-5 ml-9 font-semibold poppins-text">
                 Available Properties
               </h1>
             )}
 
-            {properties.length > 0 && (
+            {properties.length > 0 && showProperties == true && (
               <div className="flex grid grid-cols-1 ipad-screen:grid-cols-2 lg:grid-cols-3">
                 {properties.map((property, index) => {
                   return (
