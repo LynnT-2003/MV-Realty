@@ -97,9 +97,7 @@
 import React, { useEffect, useState } from "react";
 import { Listing, Property, UnitType } from "@/types"; // Import types if needed
 import {
-  fetchAllPropertiesFromTags,
-  fetchListingsFromProperties,
-  fetchUnitTypesFromProperties,
+  fetchAllListingsAndUnitTypeFromTags,
 } from "@/services/TagsServices";
 
 const TagPropertiesPage = () => {
@@ -110,33 +108,17 @@ const TagPropertiesPage = () => {
   const [loading, setLoading] = useState(true);
 
   // Tag ID for the service calls
-  const tagId = "50a18a78-e995-453b-915c-52d0ff69962d";
+  const tagId = "82131086-8e0c-4d89-a057-d4f1d0cd8551";
 
   // Fetch properties and unit types
   useEffect(() => {
     async function fetchData() {
       try {
         // Fetch properties by tagId
-        const fetchedProperties = await fetchAllPropertiesFromTags(tagId);
+        const fetchedProperties = await fetchAllListingsAndUnitTypeFromTags(tagId);
         console.log("Fetched Properties:", fetchedProperties);
         setProperties(fetchedProperties);
 
-        // Extract property IDs from fetched properties
-        const propertyIds = fetchedProperties.map((property) => property._id);
-
-        if (propertyIds.length > 0) {
-          // Fetch unit types from property IDs
-          const fetchedUnitTypes =
-            await fetchUnitTypesFromProperties(propertyIds);
-          console.log("Fetched Unit Types:", fetchedUnitTypes);
-          setUnitTypes(fetchedUnitTypes);
-
-          const fetchedListings =
-            await fetchListingsFromProperties(propertyIds);
-            console.log("Fetched Listings:", fetchedListings);
-
-          setListings(fetchedListings);
-        }
       } catch (error) {
         console.error("Error fetching properties or unit types:", error);
       } finally {
@@ -170,21 +152,6 @@ const TagPropertiesPage = () => {
         )}
       </div>
 
-      <div>
-        <h2>Unit Types:</h2>
-        {unitTypes.length > 0 ? (
-          <ul>
-            {unitTypes.map((unitType) => (
-              <li key={unitType._id}>
-                {unitType.unitTypeName} - {unitType.bedroom} Beds,{" "}
-                {unitType.bathroom} Baths
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>No unit types found.</p>
-        )}
-      </div>
     </div>
   );
 };
