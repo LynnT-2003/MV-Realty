@@ -130,7 +130,7 @@ const ListingDetailsIntro: React.FC<ListingDetailsIntroProps> = ({
               </Grid>
               <div className="flex w-full ml-3.5 mb-2 mt-8 justify-center">
                 <p className="ml-3.5 pt-1">
-                  Minimum Constract Period of{" "}
+                  Minimum Contract Period of{" "}
                   {listingDetails.minimumContractInMonth} Months
                 </p>
               </div>
