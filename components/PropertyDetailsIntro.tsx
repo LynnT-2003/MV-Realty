@@ -114,18 +114,6 @@ const PropertyDetailsIntro: React.FC<PropertyDetailsIntroProps> = ({
             </div>
 
             <div className="mt-4">
-              <button
-                className="py-3 lg:py-2 hover:bg-slate-700 bg-[#193158] text-white font-semibold rounded-lg w-full text-xs"
-                onClick={() => {
-                  const unitTypesParam = encodeURIComponent(
-                    JSON.stringify(unitTypes)
-                  );
-                  router.push(`/Listings?unitTypes=${unitTypesParam}`);
-                }}
-              >
-                UNITS FROM THIS PROPERTY
-              </button>
-
               <p className="mt-4 text-[#193158] font-bold text-center text-lg">
                 Property ID: {propertyDetails._id}
               </p>
