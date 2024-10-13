@@ -72,7 +72,7 @@ const UnitTypeDetailsImageBento: React.FC<UnitTypeDetailsImageBentoProps> = ({
                     <img
                       src={urlForImage(unitTypeDetails.floorPlan)}
                       alt="Floor Plan"
-                      className="cursor-pointer hover:brightness-75 transition duration-300"
+                      className="rounded-lg cursor-pointer hover:brightness-75 transition duration-300"
                     />
                   </div>
                 </Grid>
