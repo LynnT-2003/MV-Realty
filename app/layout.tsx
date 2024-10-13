@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import Navbar from "@/components/Navbar";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import Head from "next/head";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,6 +19,12 @@ export default function RootLayout({
 
   return (
     <html lang="en">
+      <Head>
+        {/* Ensure the title and meta description are strings */}
+        <title>{String(metadata.title)}</title>
+        <meta name="description" content={String(metadata.description)} />
+        {/* Add other meta tags as needed */}
+      </Head>
       <body className={inter.className}>
         {!hideNavbar && <Navbar />}
         {children}

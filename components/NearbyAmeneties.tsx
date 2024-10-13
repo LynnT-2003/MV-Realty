@@ -24,6 +24,10 @@ const NearbyAmenities: React.FC<NearbyAmenities> = ({ property }) => {
     });
   }, [property]);
 
+  if (nearbyAmenities.length === 0) {
+    return null;
+  }
+
   return (
     <div className="w-full flex justify-center md:pb-0">
       <div className="md:max-w-[1150px] w-[85vw]">

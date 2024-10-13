@@ -168,7 +168,7 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
           <div className="w-full flex items-center justify-center transition-opacity duration-300">
             <div className="xl:w-[1200px]">
               <p className="poppins-text pt-[4px] pb-[27px] font-semibold">
-                UnitTypes for Sales
+                Unit for Sales
               </p>
             </div>
           </div>

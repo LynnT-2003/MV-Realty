@@ -35,7 +35,7 @@ const PropertyDetailsImageBento: React.FC<PropertyDetailsImageBentoProps> = ({
               <img
                 src={urlForImage(propertyDetails.propertyHero)}
                 alt="Logo"
-                className="w-full h-full rounded-lg cursor-pointer"
+                className="w-full h-full rounded-lg cursor-pointer hover:brightness-75 transition duration-300"
               />
             </div>
           </Grid>
@@ -55,7 +55,7 @@ const PropertyDetailsImageBento: React.FC<PropertyDetailsImageBentoProps> = ({
                       <img
                         src={urlForImage(photo)}
                         alt={`Photo ${index + 1}`}
-                        className="rounded-lg cursor-pointer"
+                        className="rounded-lg cursor-pointer hover:brightness-75 transition duration-300"
                       />
                     </div>
                   </Grid>
@@ -72,7 +72,7 @@ const PropertyDetailsImageBento: React.FC<PropertyDetailsImageBentoProps> = ({
         <img
           src={urlForImage(propertyDetails.propertyHero)}
           alt="Property Hero"
-          className="rounded-lg"
+          className="rounded-lg hover:brightness-75 transition duration-300"
         />
       </div>
     </div>

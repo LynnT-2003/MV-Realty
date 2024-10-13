@@ -46,7 +46,7 @@ const ListingDetailsImageBento: React.FC<ListingDetailsImageBentoProps> = ({
               <img
                 src={urlForImage(listingDetails.listingHero)}
                 alt="Listing Hero"
-                className="w-full h-full rounded-lg cursor-pointer"
+                className="w-full h-full rounded-lg cursor-pointer hover:brightness-75 transition duration-300"
               />
             </div>
           </Grid>
@@ -62,7 +62,7 @@ const ListingDetailsImageBento: React.FC<ListingDetailsImageBentoProps> = ({
                     <img
                       src={urlForImage(listingDetails.listingPhoto[0])}
                       alt="Listing Photo 1"
-                      className="rounded-lg cursor-pointer"
+                      className="rounded-lg cursor-pointer hover:brightness-75 transition duration-300"
                     />
                   </div>
                 </Grid>
@@ -71,7 +71,7 @@ const ListingDetailsImageBento: React.FC<ListingDetailsImageBentoProps> = ({
                     <img
                       src={urlForImage(listingDetails.floorPlan)}
                       alt="Floor Plan"
-                      className="cursor-pointer"
+                      className="cursor-pointer hover:brightness-75 transition duration-300"
                     />
                   </div>
                 </Grid>
@@ -83,7 +83,7 @@ const ListingDetailsImageBento: React.FC<ListingDetailsImageBentoProps> = ({
                     <img
                       src={urlForImage(listingDetails.listingPhoto[1])}
                       alt="Listing Photo 2"
-                      className="rounded-lg cursor-pointer"
+                      className="rounded-lg cursor-pointer hover:brightness-75 transition duration-300"
                     />
                   </div>
                 </Grid>
@@ -95,7 +95,7 @@ const ListingDetailsImageBento: React.FC<ListingDetailsImageBentoProps> = ({
                     <img
                       src={urlForImage(propertyDetails.propertyHero)}
                       alt="Property Hero"
-                      className="rounded-lg cursor-pointer"
+                      className="rounded-lg cursor-pointer hover:brightness-75 transition duration-300"
                     />
                   </div>
                 </Grid>
