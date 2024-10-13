@@ -26,6 +26,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Check, ChevronsUpDown } from "lucide-react";
+import { fetchPropertyById } from "@/services/PropertyServices";
 
 // const filters = ["Bedrooms", "Location", "Buy/Rent"] as const;
 const filters = ["Bedrooms", "Location"] as const;
@@ -81,23 +82,14 @@ const UnitTypeCardCollection: React.FC<UnitTypeCardCollectionProps> = ({
   const [tags, setTags] = useState<Tag[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]); // Track selected tags
   const [propertiesWithTags, setPropertiesWithTags] = useState<Property[]>([]);
+  const [filteredUnits, setFilteredUnits] = useState<UnitType[]>([]);
 
   useEffect(() => {
     fetchAllTags().then((tags) => {
-      console.log(tags);
+      setTags(tags);
+      console.log("Fetched tags with ref:", tags);
     });
   }, []);
-
-  const handleClick = (tag: string) => {
-    if (selectedTags.includes(tag)) {
-      // If the tag is already selected, remove it from the array and log "unclicked"
-      setSelectedTags(selectedTags.filter((t) => t !== tag));
-    } else {
-      // Otherwise, add the tag to the selected array and log "clicked"
-      setSelectedTags([...selectedTags, tag]);
-    }
-    console.log("Selected Tags:", selectedTags);
-  };
 
   const [maxPrice, setMaxPrice] = useState(999);
   const [maxInitPrice, setMaxInitPrice] = useState(999);
@@ -127,40 +119,83 @@ const UnitTypeCardCollection: React.FC<UnitTypeCardCollectionProps> = ({
   const [selectedValues, setSelectedValues] = useState<Record<Filter, any>>({
     Bedrooms: "",
     Location: "",
-    // "Buy/Rent": "",
   });
 
-  const handleSelect = (filter: Filter, value: string) => {
-    setSelectedValues((prev) => ({ ...prev, [filter]: value }));
-    setOpenFilter(null);
+  // Fetch tags initially
+  useEffect(() => {
+    fetchAllTags().then((tags) => {
+      setTags(tags);
+      console.log("Fetched tags with ref:", tags);
+    });
+  }, []);
+
+  // Handle tag button click
+  const handleClick = (tag: string) => {
+    setSelectedTags((prev) =>
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
+    );
+    console.log("Selected Tags:", selectedTags);
   };
 
-  // Create a filtered list based on all filters
-  const filteredUnitTypes = useMemo(() => {
-    console.log("Applying filters...");
-    console.log("Max Price:", maxPrice);
-    console.log("Selected Values:", selectedValues);
+  // Fetch the max price based on the unit types
+  useEffect(() => {
+    if (unitTypes.length > 0) {
+      let maxListingPrice = Math.max(
+        ...unitTypes.map((unit) => unit.startingPrice)
+      );
+      setMaxInitPrice(maxListingPrice);
+    }
+  }, [unitTypes]);
 
-    const filteredBedroom = unitTypes.filter((unit) => {
-      return selectedValues.Bedrooms
-        ? unit.bedroom === Number(selectedValues.Bedrooms)
-        : true;
-    });
+  // Fetch and filter properties based on selected tags
+  useEffect(() => {
+    const applyFilters = async () => {
+      // Filter by bedrooms and location first
+      let filtered = unitTypes.filter((unit) => {
+        return (
+          (selectedValues.Bedrooms
+            ? unit.bedroom === Number(selectedValues.Bedrooms)
+            : true) &&
+          (selectedValues.Location
+            ? unit.unitTypeName.includes(selectedValues.Location)
+            : true) &&
+          unit.startingPrice <= maxPrice
+        );
+      });
 
-    const filteredLocation = filteredBedroom.filter((unit) => {
-      return selectedValues.Location
-        ? unit.unitTypeName.includes(selectedValues.Location)
-        : true;
-    });
+      // Now handle the tag filtering asynchronously
+      if (selectedTags.length > 0) {
+        const filteredWithTags = [];
 
-    const filteredMaxPrice = filteredLocation.filter((unit) => {
-      return unit.startingPrice <= maxPrice;
-    });
+        for (const unit of filtered) {
+          const property = await fetchPropertyById(unit.property._ref);
+          const propertyTags = property.tags.map((tag) => tag._ref);
 
-    console.log("Filtered Units:", filteredMaxPrice); // Debug log
+          // Check if any selected tags match the property tags
+          const matchesTag = selectedTags.every((selectedTag) =>
+            propertyTags.includes(selectedTag)
+          );
 
-    return filteredMaxPrice;
-  }, [unitTypes, maxPrice, selectedValues]);
+          if (matchesTag) {
+            filteredWithTags.push(unit);
+          }
+        }
+
+        setFilteredUnits(filteredWithTags);
+      } else {
+        setFilteredUnits(filtered);
+      }
+
+      console.log("Filtered Units:", filteredUnits);
+    };
+
+    applyFilters();
+  }, [unitTypes, maxPrice, selectedValues, selectedTags]);
+
+  // Handle filter value changes
+  const handleSelect = (filter: Filter, value: string) => {
+    setSelectedValues((prev) => ({ ...prev, [filter]: value }));
+  };
 
   const handleSliderChange = (value: number[]) => {
     setMaxPrice(value[0]);
@@ -176,7 +211,7 @@ const UnitTypeCardCollection: React.FC<UnitTypeCardCollectionProps> = ({
       {!showFilter && (
         <div className="flex w-screen lg:w-[1320px]">
           <div className="ipad-screen:w-full w-screenrounded-lg overflow-hidden px-2 flex flex-col h-[90vh] overflow-y-scroll">
-            {filteredUnitTypes.length > 0 && unitTypes.length > 0 && (
+            {filteredUnits.length > 0 && unitTypes.length > 0 && (
               <h1 className="pb-1 ipad-screen:ml-5 ml-9 font-semibold poppins-text">
                 Available Unit Types for Sale
               </h1>
@@ -313,9 +348,9 @@ const UnitTypeCardCollection: React.FC<UnitTypeCardCollectionProps> = ({
               </div>
             </div>
 
-            {filteredUnitTypes.length > 0 && (
+            {filteredUnits.length > 0 && (
               <div className="flex grid grid-cols-1 ipad-screen:grid-cols-2 lg:grid-cols-3">
-                {filteredUnitTypes.map((unit, index) => {
+                {filteredUnits.map((unit, index) => {
                   return (
                     <div
                       key={index}
@@ -446,21 +481,21 @@ const UnitTypeCardCollection: React.FC<UnitTypeCardCollectionProps> = ({
               </div>
             </div>
             <div className="flex flex-wrap pt-4">
-              {listOfTags.map((tag) => (
+              {tags.map((tag) => (
                 <button
-                  key={tag}
+                  key={tag._id}
                   className="p-[3px] m-2 relative"
-                  onClick={() => handleClick(tag)}
+                  onClick={() => handleClick(tag._id)}
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg" />
                   <div
                     className={`px-3 py-2 text-xs font-medium bg-white rounded-[6px] relative group transition duration-200 ${
-                      selectedTags.includes(tag)
+                      selectedTags.includes(tag._id)
                         ? "bg-gradient-to-r from-indigo-500 to-purple-500 text-white" // Change style when clicked
                         : "text-black hover:bg-transparent hover:text-white" // Default hover style
                     }`}
                   >
-                    {tag}
+                    {tag.tag}
                   </div>
                 </button>
               ))}
@@ -469,7 +504,7 @@ const UnitTypeCardCollection: React.FC<UnitTypeCardCollectionProps> = ({
 
           {/* Second column (listings, taking 2/3 width) */}
           <div className="ipad-screen:w-full w-screenrounded-lg overflow-hidden px-2 flex flex-col h-[90vh] overflow-y-scroll">
-            {filteredUnitTypes.length > 0 && unitTypes.length > 0 && (
+            {filteredUnits.length > 0 && unitTypes.length > 0 && (
               <h1 className="pb-1 ipad-screen:ml-5 ml-9 font-semibold poppins-text">
                 Available Unit Types for Sale
               </h1>
@@ -604,9 +639,9 @@ const UnitTypeCardCollection: React.FC<UnitTypeCardCollectionProps> = ({
               </div>
             </div>
 
-            {filteredUnitTypes.length > 0 && unitTypes.length > 0 && (
+            {filteredUnits.length > 0 && unitTypes.length > 0 && (
               <div className="flex grid grid-cols-1 ipad-screen:grid-cols-2 lg:grid-cols-3">
-                {filteredUnitTypes.map((unit, index) => {
+                {filteredUnits.map((unit, index) => {
                   return (
                     <div
                       key={index}
