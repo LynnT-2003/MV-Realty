@@ -113,7 +113,7 @@ const FilterResultsPage: React.FC = () => {
   console.log("Buy/Rent:", buyRent);
 
   return (
-    <div className="pt-12">
+    <div className="pt-4">
       <UnitTypeCardCollection
         unitTypes={unitTypes}
         properties={properties}

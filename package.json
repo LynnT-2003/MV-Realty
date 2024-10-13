@@ -31,7 +31,7 @@
     "cmdk": "^1.0.0",
     "embla-carousel-react": "^8.1.5",
     "firebase": "^10.12.2",
-    "framer-motion": "^11.2.12",
+    "framer-motion": "^11.11.8",
     "lucide-react": "^0.394.0",
     "next": "^14.2.4",
     "next-sanity": "^9.3.10",
@@ -39,12 +39,13 @@
     "react": "^18",
     "react-calendly": "^4.3.1",
     "react-dom": "^18",
+    "react-element-to-jsx-string": "^15.0.0",
     "react-icons": "^5.2.1",
     "react-spinners": "^0.14.1",
     "sanity": "^3.46.1",
     "sanity-plugin-media": "^2.2.5",
     "styled-components": "^6.1.11",
-    "tailwind-merge": "^2.3.0",
+    "tailwind-merge": "^2.5.3",
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {

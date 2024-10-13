@@ -1,6 +1,9 @@
 import React, { useMemo } from "react";
 import { useState, useEffect } from "react";
 import { Listing, Property, Developer, UnitType } from "@/types";
+import { listOfTags } from "./constants/btsStations";
+import { fetchAllTags } from "@/services/TagsServices";
+import { Tag } from "@/types";
 
 import LensCardUnitTypes from "./LensCardUnitTypes";
 import LensCardProperties from "./LensCardProperties";
@@ -75,6 +78,27 @@ const UnitTypeCardCollection: React.FC<UnitTypeCardCollectionProps> = ({
 }) => {
   const router = useRouter();
 
+  const [tags, setTags] = useState<Tag[]>([]);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]); // Track selected tags
+  const [propertiesWithTags, setPropertiesWithTags] = useState<Property[]>([]);
+
+  useEffect(() => {
+    fetchAllTags().then((tags) => {
+      console.log(tags);
+    });
+  }, []);
+
+  const handleClick = (tag: string) => {
+    if (selectedTags.includes(tag)) {
+      // If the tag is already selected, remove it from the array and log "unclicked"
+      setSelectedTags(selectedTags.filter((t) => t !== tag));
+    } else {
+      // Otherwise, add the tag to the selected array and log "clicked"
+      setSelectedTags([...selectedTags, tag]);
+    }
+    console.log("Selected Tags:", selectedTags);
+  };
+
   const [maxPrice, setMaxPrice] = useState(999);
   const [maxInitPrice, setMaxInitPrice] = useState(999);
 
@@ -86,6 +110,13 @@ const UnitTypeCardCollection: React.FC<UnitTypeCardCollectionProps> = ({
       setMaxInitPrice(maxListingPrice);
     }
   }, [unitTypes]);
+
+  useEffect(() => {
+    console.log(properties);
+    properties.map((property) => {
+      console.log(property.tags.map((tag) => console.log(property.tags)));
+    });
+  }, [selectedTags]);
 
   // Desktop filter state
   const [openFilter, setOpenFilter] = useState<Filter | null>(null);
@@ -144,7 +175,7 @@ const UnitTypeCardCollection: React.FC<UnitTypeCardCollectionProps> = ({
     <div className="flex justify-center pt-0">
       {!showFilter && (
         <div className="flex w-screen lg:w-[1320px]">
-          <div className="ipad-screen:w-full w-screenrounded-lg overflow-hidden px-2 flex flex-col h-[85vh] overflow-y-scroll">
+          <div className="ipad-screen:w-full w-screenrounded-lg overflow-hidden px-2 flex flex-col h-[90vh] overflow-y-scroll">
             {filteredUnitTypes.length > 0 && unitTypes.length > 0 && (
               <h1 className="pb-1 ipad-screen:ml-5 ml-9 font-semibold poppins-text">
                 Available Unit Types for Sale
@@ -329,11 +360,11 @@ const UnitTypeCardCollection: React.FC<UnitTypeCardCollectionProps> = ({
       )}
 
       {showFilter && (
-        <div className="flex w-screen lg:w-[1320px]">
+        <div className="flex w-screen lg:w-[1320px] overflow-hidden">
           {/* First column (blank, taking 1/3 width) */}
-          <div className="mx-5 position:fixed ipad-screen:block rounded-3xl ipad-screen:w-[300px] w-[0px] hidden">
-            <div className="px-10 pt-10 pb-16 mt-[42px] rounded-lg bg-[#e3effd]">
-              <h1 className="ml-1 text-xl">Filter Listings:</h1>
+          <div className="mx-5 position:fixed ipad-screen:block rounded-3xl ipad-screen:w-[300px] w-[0px] hidden h-[90vh] overflow-hidden overflow-y-scroll scrollbar-hide">
+            <div className="px-10 pt-10 pb-16 rounded-lg bg-[#e3effd]">
+              <h1 className="ml-1 text-xl">Filter Units:</h1>
               {filters.map((filter) => (
                 <div key={filter} className="md:px-0 my-8">
                   <Popover
@@ -414,10 +445,30 @@ const UnitTypeCardCollection: React.FC<UnitTypeCardCollectionProps> = ({
                 />
               </div>
             </div>
+            <div className="flex flex-wrap pt-4">
+              {listOfTags.map((tag) => (
+                <button
+                  key={tag}
+                  className="p-[3px] m-2 relative"
+                  onClick={() => handleClick(tag)}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg" />
+                  <div
+                    className={`px-3 py-2 text-xs font-medium bg-white rounded-[6px] relative group transition duration-200 ${
+                      selectedTags.includes(tag)
+                        ? "bg-gradient-to-r from-indigo-500 to-purple-500 text-white" // Change style when clicked
+                        : "text-black hover:bg-transparent hover:text-white" // Default hover style
+                    }`}
+                  >
+                    {tag}
+                  </div>
+                </button>
+              ))}
+            </div>
           </div>
 
           {/* Second column (listings, taking 2/3 width) */}
-          <div className="ipad-screen:w-full w-screenrounded-lg overflow-hidden px-2 flex flex-col h-[85vh] overflow-y-scroll">
+          <div className="ipad-screen:w-full w-screenrounded-lg overflow-hidden px-2 flex flex-col h-[90vh] overflow-y-scroll">
             {filteredUnitTypes.length > 0 && unitTypes.length > 0 && (
               <h1 className="pb-1 ipad-screen:ml-5 ml-9 font-semibold poppins-text">
                 Available Unit Types for Sale

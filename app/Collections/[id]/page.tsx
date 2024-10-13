@@ -92,15 +92,12 @@ const CollectionsPage = ({ params }: { params: { id: string } }) => {
   }, [id, fetched]);
 
   return (
-    <div className="w-full flex justify-center pb-16">
-      <div className="md:max-w-[1320px] w-[95vw]">
-        <UnitTypeCardCollection
-          // listings={listings}
-          unitTypes={unitTypes}
-          properties={collectionProperties}
-          showFilter={true}
-        />
-      </div>
+    <div className="pt-4">
+      <UnitTypeCardCollection
+        unitTypes={unitTypes}
+        properties={collectionProperties}
+        showFilter={true}
+      />
     </div>
   );
 };
