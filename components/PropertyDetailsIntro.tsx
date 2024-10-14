@@ -104,7 +104,7 @@ const PropertyDetailsIntro: React.FC<PropertyDetailsIntroProps> = ({
               </Grid>
             </Grid>
 
-            <div className="flex justify-between gap-4 mt-20">
+            <div className="flex justify-between gap-4 mt-16">
               <button className="py-3 lg:py-2 hover:bg-slate-700 bg-[#193158] text-white font-semibold rounded-lg w-1/2 text-xs">
                 SHARE THIS PROPERTY
               </button>
@@ -114,7 +114,7 @@ const PropertyDetailsIntro: React.FC<PropertyDetailsIntroProps> = ({
             </div>
 
             <div className="mt-4">
-              <p className="mt-4 text-[#193158] font-bold text-center text-lg">
+              <p className="ml-3.5 pt-1 text-[#193158] text-sm font-semibold text-center">
                 Property ID: {propertyDetails._id}
               </p>
             </div>

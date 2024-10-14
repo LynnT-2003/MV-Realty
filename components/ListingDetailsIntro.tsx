@@ -158,7 +158,7 @@ const ListingDetailsIntro: React.FC<ListingDetailsIntroProps> = ({
               >
                 MORE FROM THIS PROPERTY
               </button>
-              <p className="mt-4 text-[#193158] font-semibold text-center text-md">
+              <p className="ml-3.5 pt-1 text-[#193158] text-sm font-semibold text-center mt-4">
                 Unit ID: {listingDetails._id}
               </p>
             </div>

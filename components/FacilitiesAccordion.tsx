@@ -111,6 +111,7 @@ const FacilitiesAccordion: React.FC<FacilitiesAccordionProps> = ({
             <AccordionDetails>
               {groupedFacilities[facilityType].map(
                 (facility, facilityIndex) => (
+                  console.log("hey",facility),
                   <div
                     key={facilityIndex}
                     className="pb-12 flex flex-col md:flex-row"
@@ -118,8 +119,8 @@ const FacilitiesAccordion: React.FC<FacilitiesAccordionProps> = ({
                     <div className="md:w-1/2">
                       <img
                         src={
-                          facility.photos && facility.photos[0]
-                            ? urlForImage(facility.photos[0])
+                          Array.isArray(facility.photos) && facility.photos.length > 0
+                          ? urlForImage(facility.photos[0])
                             : "/placeholder.jpg"
                         }
                         alt={facility.name || "Placeholder"}
