@@ -51,8 +51,8 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
 }) => {
   const router = useRouter();
 
-  const [maxPrice, setMaxPrice] = useState(999);
-  const [maxInitPrice, setMaxInitPrice] = useState(999);
+  const [maxPrice, setMaxPrice] = useState(9999999);
+  const [maxInitPrice, setMaxInitPrice] = useState(9999999);
 
   useEffect(() => {
     if (listings.length > 0) {
@@ -102,7 +102,8 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
       return listing.price <= maxPrice;
     });
 
-    console.log("Filtered Units:", filteredMaxPrice); // Debug log
+    console.log("Listings", listings);
+    console.log("Filtered Listings:", filteredMaxPrice); // Debug log
 
     return filteredMaxPrice;
   }, [listings, maxPrice, selectedValues]);
@@ -243,7 +244,7 @@ const ListingCardCollection: React.FC<ListingCardCollectionProps> = ({
 
                 {/* Max price slider */}
                 <div>
-                  {maxPrice < 999 && (
+                  {maxPrice < 9999999 && (
                     <h1 className="my-2">Max Price: {maxPrice} Million THB</h1>
                   )}
                   <Slider
