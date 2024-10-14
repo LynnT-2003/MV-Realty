@@ -206,6 +206,10 @@ const UnitTypeCardCollection: React.FC<UnitTypeCardCollectionProps> = ({
     router.push(`/UnitTypeDetails/${id}`);
   };
 
+  const handlePropertyClick = (slug: String) => {
+    router.push(`/Details/${slug}`);
+  };
+
   return (
     <div className="flex justify-center pt-0">
       {!showFilter && (
@@ -378,7 +382,7 @@ const UnitTypeCardCollection: React.FC<UnitTypeCardCollectionProps> = ({
                     <div
                       key={index}
                       onClick={() => {
-                        // handlePropertyClick(property._id);
+                        handlePropertyClick(property.slug.current);
                       }}
                       className="lg:ml-0 ipad-screen:px-0 px-5 relative rounded-lg overflow-hidden inline-block mb-4 md:mb-0 group w-full"
                     >
@@ -671,7 +675,7 @@ const UnitTypeCardCollection: React.FC<UnitTypeCardCollectionProps> = ({
                     <div
                       key={index}
                       onClick={() => {
-                        // handlePropertyClick(property._id);
+                        handlePropertyClick(property.slug.current);
                       }}
                       className="lg:ml-0 ipad-screen:px-0 px-5 relative rounded-lg overflow-hidden inline-block mb-4 md:mb-0 group w-full"
                     >
