@@ -117,7 +117,7 @@ const PropertyDetailsIntro: React.FC<PropertyDetailsIntroProps> = ({
             </Grid>
 
             <div className="flex justify-between gap-4 mt-16">
-              <button className="py-3 lg:py-2 hover:bg-slate-700 bg-[#193158] text-white font-semibold rounded-lg w-1/2 text-xs">
+              <button onClick={handleCopyToClipboard} className="py-3 lg:py-2 hover:bg-slate-700 bg-[#193158] text-white font-semibold rounded-lg w-1/2 text-xs">
                 SHARE THIS PROPERTY
               </button>
               <button className="py-3 lg:py-2 hover:bg-slate-700 bg-[#193158] text-white font-semibold rounded-lg w-1/2 text-xs">

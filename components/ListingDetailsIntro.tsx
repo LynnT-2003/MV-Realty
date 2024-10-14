@@ -4,6 +4,13 @@ import Grid from "@mui/material/Grid";
 import { Listing, Property, Tag } from "@/types";
 import { fetchTagsFromListing } from "@/services/TagsServices";
 import { useRouter, usePathname } from "next/navigation";
+import Alert from "@mui/material/Alert"; // Import Alert for notifications
+import Snackbar, { SnackbarOrigin } from "@mui/material/Snackbar";
+import { SnackbarCloseReason } from "@mui/material/Snackbar";
+
+interface State extends SnackbarOrigin {
+  open: boolean;
+}
 
 interface ListingDetailsIntroProps {
   listingDetails: Listing;
@@ -39,6 +46,14 @@ const ListingDetailsIntro: React.FC<ListingDetailsIntroProps> = ({
 
   const [tags, setTags] = useState<Tag[]>([]);
 
+  const [state, setState] = useState<State>({
+    open: false,
+    vertical: "top",
+    horizontal: "right", // Set to 'top-right' position
+  });
+  const { vertical, horizontal, open } = state;
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
   // Fetch tags when the component mounts or when listingDetails changes
   useEffect(() => {
     const fetchTags = async () => {
@@ -50,6 +65,26 @@ const ListingDetailsIntro: React.FC<ListingDetailsIntroProps> = ({
 
     fetchTags();
   }, [listingDetails._id]);
+
+  const handleCopyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(listingDetails._id);
+      // Show snackbar after successful copy
+      setSnackbarOpen(true);
+    } catch (err) {
+      console.error("Failed to copy: ", err);
+    }
+  };
+
+  const handleSnackbarClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: SnackbarCloseReason
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
 
   return (
     <div className="w-full flex justify-center pb-16 md:pb-20">
@@ -138,7 +173,7 @@ const ListingDetailsIntro: React.FC<ListingDetailsIntroProps> = ({
             <div className="flex justify-between gap-4 mt-10 md:mt-15">
               <button
                 className="py-3 lg:py-2 hover:bg-slate-700 bg-[#193158] text-white font-semibold rounded-lg w-1/2 text-xs"
-                onClick={handleShareClick}
+                onClick={handleCopyToClipboard}
               >
                 SHARE THIS LISTING
               </button>
@@ -156,15 +191,34 @@ const ListingDetailsIntro: React.FC<ListingDetailsIntroProps> = ({
                   handlePropertyClick(property.slug.current);
                 }}
               >
-                MORE FROM THIS PROPERTY
+                MORE FROM THIS LISTING
               </button>
-              <p className="ml-3.5 pt-1 text-[#193158] text-sm font-semibold text-center mt-4">
-                Unit ID: {listingDetails._id}
+              <p
+                onClick={handleCopyToClipboard}
+                className="cursor-pointer ml-3.5 pt-1 text-[#193158] text-sm font-semibold text-center mt-4"
+              >
+                Listing ID: {listingDetails._id}
               </p>
             </div>
           </Grid>
         </Grid>
       </div>
+      {/* Snackbar to show notifications */}
+      <Snackbar
+        anchorOrigin={{ vertical, horizontal }}
+        open={snackbarOpen}
+        autoHideDuration={5000}
+        onClose={handleSnackbarClose}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity="success"
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          Listing ID copied to clipboard!
+        </Alert>
+      </Snackbar>
     </div>
   );
 };
