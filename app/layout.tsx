@@ -6,6 +6,8 @@ import Navbar from "@/components/Navbar";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import Head from "next/head";
+import { Toast } from "@/components/ui/toast";
+import { ToastProvider } from "@/components/ui/toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,6 +29,7 @@ export default function RootLayout({
       </Head>
       <body className={inter.className}>
         {!hideNavbar && <Navbar />}
+        {/* Ensure the ToastProvider wraps your layout */}
         {children}
       </body>
     </html>

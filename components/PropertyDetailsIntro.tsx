@@ -1,54 +1,73 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
-import { Developer, Property, Tag, Listing, UnitType } from "@/types";
-import { Button } from "./ui/button";
+import { Developer, Property, Tag, UnitType } from "@/types";
 import { fetchTagsFromProperty } from "@/services/TagsServices";
-import developer from "@/sanity/schemas/developer";
 import { useRouter } from "next/navigation";
+import Snackbar, { SnackbarOrigin } from "@mui/material/Snackbar";
+import { SnackbarCloseReason } from '@mui/material/Snackbar';
+
+import Alert from "@mui/material/Alert"; // Import Alert for notifications
+
+interface State extends SnackbarOrigin {
+  open: boolean;
+}
 
 interface PropertyDetailsIntroProps {
   propertyDetails: Property;
-  // listings: Listing[];
   unitTypes: UnitType[];
   developer: Developer;
 }
 
 const PropertyDetailsIntro: React.FC<PropertyDetailsIntroProps> = ({
   propertyDetails,
-
   developer,
-
   unitTypes,
 }) => {
-  // Get the router so we can navigate
   const router = useRouter();
 
-  // Initialize the tags state to an empty array
+  const [state, setState] = useState<State>({
+    open: false,
+    vertical: "top",
+    horizontal: "right", // Set to 'top-right' position
+  });
+  const { vertical, horizontal, open } = state;
+
   const [tags, setTags] = useState<Tag[]>([]);
 
-  // Fetch the tags when the component mounts or when the property details change
-  useEffect(() => {
-    // Function to fetch the tags
-    const fetchTags = async () => {
-      // If the property has an ID, fetch the tags for that property
-      if (propertyDetails._id) {
-        // Fetch the tags using the TagsService
-        const fetchedTags = await fetchTagsFromProperty(propertyDetails._id);
+  // Snackbar control
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
 
-        // Set the tags state to the fetched tags, or an empty array if there were no tags
+  useEffect(() => {
+    const fetchTags = async () => {
+      if (propertyDetails._id) {
+        const fetchedTags = await fetchTagsFromProperty(propertyDetails._id);
         setTags(fetchedTags || []);
       }
     };
-
-    // Call the fetchTags function
     fetchTags();
-    console.log("Fetched tags", tags);
   }, [propertyDetails._id]);
 
-  // Log the tags to the console
-  console.log("Tags", tags);
+  const handleCopyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(propertyDetails._id);
+      // Show snackbar after successful copy
+      setSnackbarOpen(true);
+    } catch (err) {
+      console.error("Failed to copy: ", err);
+    }
+  };
 
-  // Return the JSX for the property details intro
+  const handleSnackbarClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: SnackbarCloseReason
+  ) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
+
   return (
     <div className="w-full flex justify-center pb-12 md:pb-20">
       <div className="md:max-w-[1150px] w-[85vw]">
@@ -64,8 +83,7 @@ const PropertyDetailsIntro: React.FC<PropertyDetailsIntroProps> = ({
               {tags.map((tag, index) => (
                 <button
                   key={index}
-                  className="px-5 py-1 rounded-full bg-white border border-[#002194] text-[#002194] font-semibold text-sm
-                transition-colors duration-200 hover:bg-[#002194] hover:text-white"
+                  className="px-5 py-1 rounded-full bg-white border border-[#002194] text-[#002194] font-semibold text-sm transition-colors duration-200 hover:bg-[#002194] hover:text-white"
                 >
                   {tag.tag}
                 </button>
@@ -73,13 +91,7 @@ const PropertyDetailsIntro: React.FC<PropertyDetailsIntroProps> = ({
             </div>
           </Grid>
           <Grid item md={5} className="mt-10 md:mt-0">
-            <Grid
-              container
-              rowSpacing={{ xs: 4, md: 3 }}
-              columnSpacing={{ xs: 1, md: 2 }}
-              //   spacing={{ xs: 0, md: 2 }}
-              spacing={2}
-            >
+            <Grid container rowSpacing={{ xs: 4, md: 3 }} spacing={2}>
               <div className="flex w-full ml-3.5 mb-8 mt-8">
                 <img src="/icons/PriceTag.svg" className="w-10 h-10" />
                 <p className="ml-3.5 pt-1 text-[#193158] text-2xl font-semibold">
@@ -113,7 +125,7 @@ const PropertyDetailsIntro: React.FC<PropertyDetailsIntroProps> = ({
               </button>
             </div>
 
-            <div className="mt-4">
+            <div className="mt-4 cursor-pointer" onClick={handleCopyToClipboard}>
               <p className="ml-3.5 pt-1 text-[#193158] text-sm font-semibold text-center">
                 Property ID: {propertyDetails._id}
               </p>
@@ -121,6 +133,23 @@ const PropertyDetailsIntro: React.FC<PropertyDetailsIntroProps> = ({
           </Grid>
         </Grid>
       </div>
+
+      {/* Snackbar to show notifications */}
+      <Snackbar
+        anchorOrigin={{ vertical, horizontal }}
+        open={snackbarOpen}
+        autoHideDuration={5000}
+        onClose={handleSnackbarClose}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity="success"
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
+          Property ID copied to clipboard!
+        </Alert>
+      </Snackbar>
     </div>
   );
 };
