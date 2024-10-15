@@ -30,6 +30,11 @@ function LoadingPage() {
             <Grid item xs={12} md={7}>
               <Skeleton className="h-[40px] w-[80%] mb-4" />
               <Skeleton className="h-[80px] w-[100%] mb-4" />
+              <div className="flex flex-wrap gap-2 mt-5">
+                <Skeleton className="h-[30px] w-[70px] rounded-full" />
+                <Skeleton className="h-[30px] w-[70px] rounded-full" />
+                <Skeleton className="h-[30px] w-[70px] rounded-full" />
+              </div>
             </Grid>
 
             <Grid item xs={12} md={5} className="mt-10 md:mt-0">

@@ -1,17 +1,48 @@
-"use client";
 import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Modal from "@mui/material/Modal";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 import { Developer, Property, Tag, UnitType } from "@/types";
 import { fetchTagsFromProperty } from "@/services/TagsServices";
 import { useRouter } from "next/navigation";
-import Snackbar, { SnackbarOrigin } from "@mui/material/Snackbar";
-import { SnackbarCloseReason } from '@mui/material/Snackbar';
+import { SnackbarCloseReason } from "@mui/material/Snackbar";
+import { radioClasses } from "@mui/material";
+import { FaFacebookF, FaTwitter, FaLinkedinIn } from "react-icons/fa"; // Import icons
 
-import Alert from "@mui/material/Alert"; // Import Alert for notifications
+// Modal style
+const modalStyle = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  boxShadow: 24,
+  p: 4,
+  outline: 0,
+  borderRadius: 4,
+};
 
-interface State extends SnackbarOrigin {
-  open: boolean;
-}
+// Button container style (for the social icons)
+const iconButtonContainer = {
+  display: "flex",
+  justifyContent: "space-between",
+  width: "50%", // Adjust size of the container
+  marginTop: "20px",
+};
+
+const iconButtonStyle = {
+  fontSize: "42px", // Adjust icon size
+  color: "#193059", // Adjust color (optional)
+  padding: "10px",
+  border: "1px solid #E0E0E0",
+  borderRadius: "50%",
+  cursor: "pointer",
+};
 
 interface PropertyDetailsIntroProps {
   propertyDetails: Property;
@@ -25,17 +56,10 @@ const PropertyDetailsIntro: React.FC<PropertyDetailsIntroProps> = ({
   unitTypes,
 }) => {
   const router = useRouter();
-
-  const [state, setState] = useState<State>({
-    open: false,
-    vertical: "top",
-    horizontal: "right", // Set to 'top-right' position
-  });
-  const { vertical, horizontal, open } = state;
-
+  const [openModal, setOpenModal] = useState(false);
   const [tags, setTags] = useState<Tag[]>([]);
 
-  // Snackbar control
+  // Snackbar state
   const [snackbarOpen, setSnackbarOpen] = useState(false);
 
   useEffect(() => {
@@ -48,16 +72,16 @@ const PropertyDetailsIntro: React.FC<PropertyDetailsIntroProps> = ({
     fetchTags();
   }, [propertyDetails._id]);
 
-  const handleCopyToClipboard = async () => {
+  // Function to handle copy to clipboard
+  const handleCopyToClipboard = async (textToCopy: string) => {
     try {
-      await navigator.clipboard.writeText(propertyDetails._id);
+      await navigator.clipboard.writeText(textToCopy);
       // Show snackbar after successful copy
       setSnackbarOpen(true);
     } catch (err) {
       console.error("Failed to copy: ", err);
     }
   };
-
   const handleSnackbarClose = (
     event?: React.SyntheticEvent | Event,
     reason?: SnackbarCloseReason
@@ -67,6 +91,11 @@ const PropertyDetailsIntro: React.FC<PropertyDetailsIntroProps> = ({
     }
     setSnackbarOpen(false);
   };
+
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
+
+  const currentUrl = typeof window !== "undefined" ? window.location.href : "";
 
   return (
     <div className="w-full flex justify-center pb-12 md:pb-20">
@@ -117,16 +146,25 @@ const PropertyDetailsIntro: React.FC<PropertyDetailsIntroProps> = ({
             </Grid>
 
             <div className="flex justify-between gap-4 mt-16">
-              <button onClick={handleCopyToClipboard} className="py-3 lg:py-2 hover:bg-slate-700 bg-[#193158] text-white font-semibold rounded-lg w-1/2 text-xs">
+              <button
+                onClick={() => handleCopyToClipboard(currentUrl)}
+                className="py-3 lg:py-2 hover:bg-slate-700 bg-[#193158] text-white font-semibold rounded-lg w-1/2 text-xs"
+              >
                 SHARE THIS PROPERTY
               </button>
-              <button className="py-3 lg:py-2 hover:bg-slate-700 bg-[#193158] text-white font-semibold rounded-lg w-1/2 text-xs">
+              <button
+                onClick={handleOpenModal}
+                className="py-3 lg:py-2 hover:bg-slate-700 bg-[#193158] text-white font-semibold rounded-lg w-1/2 text-xs"
+              >
                 CONTACT US
               </button>
             </div>
 
-            <div className="mt-4 cursor-pointer" onClick={handleCopyToClipboard}>
-              <p className="ml-3.5 pt-1 text-[#193158] text-sm font-semibold text-center">
+            <div
+              className="mt-4 cursor-pointer"
+              onClick={() => handleCopyToClipboard(propertyDetails._id)}
+            >
+              <p className="ml-3.5 pt-1 text-[#193158] text-sm font-light text-center curson-pointer">
                 Property ID: {propertyDetails._id}
               </p>
             </div>
@@ -134,9 +172,71 @@ const PropertyDetailsIntro: React.FC<PropertyDetailsIntroProps> = ({
         </Grid>
       </div>
 
-      {/* Snackbar to show notifications */}
+      {/* Modal for Contact Us */}
+      <Modal
+        open={openModal}
+        onClose={handleCloseModal}
+        aria-labelledby="modal-title"
+        aria-describedby="modal-description"
+      >
+        <Box sx={modalStyle}>
+          <Typography
+            id="modal-title"
+            variant="h6"
+            component="h2"
+            className="font-bold text-xl"
+          >
+            Contact Us
+          </Typography>
+          <Typography id="modal-description" sx={{ mt: 2 }}>
+            <b className=" text-base">Email:</b>{" "}
+            <a href="mailto:info@mahavertex.com">info@mahavertex.com</a>
+            <br />
+            <div className="mt-1">
+              {" "}
+              <b className=" text-base">Phone:</b>{" "}
+              <a href="tel:+66022001020" className="ml-1">
+                +66 02 200 1020
+              </a>
+              <br />
+            </div>
+            <div className="mt-1">
+              {" "}
+              <b className=" text-base">Adrress:</b> Suite: 28, Level 2, Summer
+              Point Building, 7 Sukhumvit 69 Alley, Phra Khanong, Watthana,
+              Bangkok 10110
+              <br />
+            </div>
+            <div style={iconButtonContainer}>
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:brightness-75 transition duration-300"
+              >
+                <FaTwitter style={iconButtonStyle} />
+              </a>
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:brightness-75 transition duration-300"
+              >
+                <FaFacebookF style={iconButtonStyle} />
+              </a>
+              <a
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:brightness-75 transition duration-300"
+              >
+                <FaLinkedinIn style={iconButtonStyle} />
+              </a>
+            </div>
+          </Typography>
+        </Box>
+      </Modal>
+
+      {/* Snackbar for notification */}
       <Snackbar
-        anchorOrigin={{ vertical, horizontal }}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
         open={snackbarOpen}
         autoHideDuration={5000}
         onClose={handleSnackbarClose}
@@ -147,7 +247,7 @@ const PropertyDetailsIntro: React.FC<PropertyDetailsIntroProps> = ({
           variant="filled"
           sx={{ width: "100%" }}
         >
-          Property ID copied to clipboard!
+          Copied to clipboard!
         </Alert>
       </Snackbar>
     </div>

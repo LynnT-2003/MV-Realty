@@ -33,6 +33,25 @@ export const fetchTagsFromListing = async (
   return result?.property?.tags || [];
 };
 
+export const fetchTagsFromUnit = async (
+  unitId: string
+): Promise<Tag[] | null> => {
+  const query = `
+  *[_type == "unitType" && _id == $unitId][0]{
+    property->{
+      tags[]->{
+        _id,
+        tag
+      }
+    }
+  }
+  `;
+  const params = { unitId };
+  const result = await client.fetch(query, params);
+  return result?.property?.tags || [];
+};
+
+
 export const fetchTagsFromProperty = async (
   propertyId: string
 ): Promise<Tag[]> => {
