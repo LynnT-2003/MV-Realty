@@ -118,14 +118,19 @@ const BrowseCarouselProperty: React.FC<BrowseCarouselProps> = ({
               </DirectionAwareHover>
               <div className="mt-4 pt-2 pr-2 bg-white rounded-lg mb-8">
                 <div className="relative flex">
-                  <div className="w-[50%] inline-flex items-center overflow-hidden">
+                  <div className="w-[63%] inline-flex items-center overflow-hidden">
                     <span className="truncate text-lg font-light overflow-hidden whitespace-nowrap">
                       {property.title}
                     </span>
                   </div>
                   <div className="w-20">
                     <p className="mr-0 ml-3 absolute top-0 right-0 font-semibold text-xl text-[#193158]">
-                      {property.minPrice} MB - {property.maxPrice} MB
+                      <span className="hidden ipad-screen:inline">
+                        {property.minPrice} MB - {property.maxPrice} MB
+                      </span>
+                      <span className="ipad-screen:hidden">
+                        {property.minPrice} - {property.maxPrice} MB
+                      </span>
                     </p>
                   </div>
                 </div>
