@@ -2,7 +2,10 @@
 import React, { useEffect, useState } from "react";
 import Grid from "@mui/material/Grid";
 import { Listing, Property, Tag, UnitType } from "@/types";
-import { fetchTagsFromListing, fetchTagsFromUnit } from "@/services/TagsServices";
+import {
+  fetchTagsFromListing,
+  fetchTagsFromUnit,
+} from "@/services/TagsServices";
 import { useRouter, usePathname } from "next/navigation";
 import Alert from "@mui/material/Alert"; // Import Alert for notifications
 import Snackbar, { SnackbarOrigin } from "@mui/material/Snackbar";
@@ -11,6 +14,8 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { FaFacebookF, FaTwitter, FaLinkedinIn } from "react-icons/fa"; // Import icons
 import Box from "@mui/material/Box";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCopy } from "@fortawesome/free-solid-svg-icons";
 
 // Modal style
 const modalStyle = {
@@ -199,10 +204,15 @@ const UnitTypeDetailIntro: React.FC<UnitTypeDetailsIntroProps> = ({
                 MORE FROM THIS UNIT
               </button>
               <p
-                className="ml-3.5 pt-1 text-[#193158] text-sm font-light text-center mt-4 cursor-pointer"
+                className="ml-3.5 pt-1 text-[#040405FF] text-sm font-light text-center mt-4 cursor-pointer underline"
                 onClick={() => handleCopyToClipboard(unitTypeDetails._id)}
               >
                 Unit ID: {unitTypeDetails._id}
+                <FontAwesomeIcon
+                  icon={faCopy}
+                  className="ml-2 text-[#193158] cursor-pointer w-4 h-4"
+                  onClick={() => handleCopyToClipboard(unitTypeDetails._id)}
+                />
               </p>
             </div>
           </Grid>
@@ -238,7 +248,7 @@ const UnitTypeDetailIntro: React.FC<UnitTypeDetailsIntroProps> = ({
             </div>
             <div className="mt-1">
               {" "}
-              <b className=" text-base">Adrress:</b> Suite: 28, Level 2, Summer
+              <b className=" text-base">Address:</b> Suite: 28, Level 2, Summer
               Point Building, 7 Sukhumvit 69 Alley, Phra Khanong, Watthana,
               Bangkok 10110
               <br />

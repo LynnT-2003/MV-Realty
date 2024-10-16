@@ -12,6 +12,8 @@ import { useRouter } from "next/navigation";
 import { SnackbarCloseReason } from "@mui/material/Snackbar";
 import { radioClasses } from "@mui/material";
 import { FaFacebookF, FaTwitter, FaLinkedinIn } from "react-icons/fa"; // Import icons
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCopy } from "@fortawesome/free-solid-svg-icons";
 
 // Modal style
 const modalStyle = {
@@ -164,8 +166,13 @@ const PropertyDetailsIntro: React.FC<PropertyDetailsIntroProps> = ({
               className="mt-4 cursor-pointer"
               onClick={() => handleCopyToClipboard(propertyDetails._id)}
             >
-              <p className="ml-3.5 pt-1 text-[#193158] text-sm font-light text-center curson-pointer">
+              <p className="ml-3.5 pt-1 text-[#193158] text-sm font-light text-center underline curson-pointer">
                 Property ID: {propertyDetails._id}
+                <FontAwesomeIcon
+                  icon={faCopy}
+                  className="ml-2 text-[#193158] cursor-pointer w-4 h-4"
+                  onClick={() => handleCopyToClipboard(propertyDetails._id)}
+                />
               </p>
             </div>
           </Grid>
@@ -202,7 +209,7 @@ const PropertyDetailsIntro: React.FC<PropertyDetailsIntroProps> = ({
             </div>
             <div className="mt-1">
               {" "}
-              <b className=" text-base">Adrress:</b> Suite: 28, Level 2, Summer
+              <b className=" text-base">Address:</b> Suite: 28, Level 2, Summer
               Point Building, 7 Sukhumvit 69 Alley, Phra Khanong, Watthana,
               Bangkok 10110
               <br />

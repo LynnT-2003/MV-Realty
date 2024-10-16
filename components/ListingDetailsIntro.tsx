@@ -11,6 +11,8 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { FaFacebookF, FaTwitter, FaLinkedinIn } from "react-icons/fa"; // Import icons
 import Box from "@mui/material/Box";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCopy } from "@fortawesome/free-solid-svg-icons";
 
 
 // Modal style
@@ -222,9 +224,14 @@ const ListingDetailsIntro: React.FC<ListingDetailsIntroProps> = ({
               </button>
               <p
                 onClick={() => handleCopyToClipboard(listingDetails._id)}
-                className="cursor-pointer ml-3.5 pt-1 text-[#193158] text-sm font-light text-center mt-4"
+                className="cursor-pointer underline ml-3.5 pt-1 text-[#193158] text-sm font-light text-center mt-4"
               >
                 Listing ID: {listingDetails._id}
+                <FontAwesomeIcon
+                  icon={faCopy}
+                  className="ml-2 text-[#193158] cursor-pointer w-4 h-4"
+                  onClick={() => handleCopyToClipboard(listingDetails._id)}
+                />
               </p>
             </div>
           </Grid>
@@ -260,7 +267,7 @@ const ListingDetailsIntro: React.FC<ListingDetailsIntroProps> = ({
             </div>
             <div className="mt-1">
               {" "}
-              <b className=" text-base">Adrress:</b> Suite: 28, Level 2, Summer
+              <b className=" text-base">Address:</b> Suite: 28, Level 2, Summer
               Point Building, 7 Sukhumvit 69 Alley, Phra Khanong, Watthana,
               Bangkok 10110
               <br />
