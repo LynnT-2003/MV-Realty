@@ -408,7 +408,7 @@ export const MapDemo = ({ lat, lng }) => {
           <div
             key={index}
             className="flex flex-row items-center justify-between w-full my-2 px-2"
-          >// fix ui
+          >
             <div className="flex flex-row items-center">
               <img src={iconSrc} className="w-10 h-10" alt={altText} />
               <h1 className="ml-5 font-semibold">{station.id}</h1>
