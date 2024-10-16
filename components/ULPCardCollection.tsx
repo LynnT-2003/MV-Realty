@@ -28,6 +28,7 @@ import listing from "@/sanity/schemas/listing";
 import ListingCardCollection from "./ListingCardCollection";
 import { fetchPropertyById } from "@/services/PropertyServices";
 import UnitTypeCardCollection from "./UnitTypeCardCollection";
+import unitType from "@/sanity/schemas/unitType";
 
 // const filters = ["Bedrooms", "Location", "Buy/Rent"] as const;
 const filters = ["Bedrooms", "Location", "Buy/Rent"] as const;
@@ -60,6 +61,7 @@ const ULPCardCollection: React.FC<ULPCardCollectionProps> = ({
   const [isBuy, setIsBuy] = useState(true);
   const [maxPrice, setMaxPrice] = useState(9999999);
   const [maxInitPrice, setMaxInitPrice] = useState(9999999);
+  const [maxUnitInitPrice, setMaxUnitInitPrice] = useState(9999999);
 
   const [tags, setTags] = useState<Tag[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -74,15 +76,6 @@ const ULPCardCollection: React.FC<ULPCardCollectionProps> = ({
     });
   }, []);
 
-  useEffect(() => {
-    if (listings.length > 0) {
-      let maxListingPrice = Math.max(
-        ...listings.map((listing) => listing.price)
-      );
-      setMaxInitPrice(maxListingPrice);
-    }
-  }, [listings]);
-
   // Desktop filter state
   const [openFilter, setOpenFilter] = useState<Filter | null>(null);
 
@@ -94,6 +87,24 @@ const ULPCardCollection: React.FC<ULPCardCollectionProps> = ({
     Location: "",
     "Buy/Rent": "",
   });
+
+  useEffect(() => {
+    if (listings.length > 0) {
+      let maxListingPrice = Math.max(
+        ...listings.map((listing) => listing.price)
+      );
+      setMaxInitPrice(maxListingPrice);
+    }
+  }, [listings, selectedValues["Buy/Rent"]]);
+
+  useEffect(() => {
+    if (unitTypes.length > 0) {
+      let maxUnitPrice = Math.max(
+        ...unitTypes.map((unit) => unit.startingPrice)
+      );
+      setMaxUnitInitPrice(maxUnitPrice);
+    }
+  }, [unitType, selectedValues["Buy/Rent"]]);
 
   // Create a filtered list based on all filters
   //   const filteredListings = useMemo(() => {
@@ -133,8 +144,7 @@ const ULPCardCollection: React.FC<ULPCardCollectionProps> = ({
   };
 
   const handleSliderChange = (value: number[]) => {
-    value[0];
-    console.log(maxPrice);
+    setMaxPrice(value[0]);
   };
 
   // Fetch and filter properties based on selected tags copy here
@@ -230,7 +240,7 @@ const ULPCardCollection: React.FC<ULPCardCollectionProps> = ({
           {/* First column (blank, taking 1/3 width) */}
           <div className="mx-5 position:fixed ipad-screen:block rounded-3xl ipad-screen:w-[300px] w-[0px] hidden h-[90vh] overflow-hidden overflow-y-scroll scrollbar-hide">
             <div className="px-10 pt-10 pb-16 rounded-lg bg-[#e3effd]">
-              <h1 className="ml-1 text-xl">Filter Units:</h1>
+              <h1 className="ml-1 text-xl">Filter:</h1>
               {filters.map((filter) => (
                 <div key={filter} className="md:px-0 my-8">
                   <Popover
@@ -294,17 +304,19 @@ const ULPCardCollection: React.FC<ULPCardCollectionProps> = ({
                 <span className="mt-12 text-sm text-slate-700 font-light poppins-text">
                   Max Price:
                 </span>
-                {maxPrice < 999 && (
-                  <h1 className="my-2">{maxPrice} Million THB</h1>
-                )}
-                {maxPrice >= 999 && (
+                {maxPrice < 9999999 ? (
+                  <h1 className="my-2">
+                    {maxPrice} {isBuy ? "Million THB" : "THB / month"}
+                  </h1>
+                ) : (
                   <span className="my-2 ml-2 text-sm text-slate-700 font-light poppins-text">
                     Not set
                   </span>
                 )}
+
                 <Slider
-                  defaultValue={[maxInitPrice]}
-                  max={maxInitPrice}
+                  defaultValue={isBuy ? [maxUnitInitPrice] : [maxInitPrice]}
+                  max={isBuy ? maxUnitInitPrice : maxInitPrice}
                   step={2}
                   onValueChange={handleSliderChange}
                   className="mt-4"
@@ -465,7 +477,7 @@ const ULPCardCollection: React.FC<ULPCardCollectionProps> = ({
 
                     {/* Max price slider */}
                     <div>
-                      {maxPrice < 999 && (
+                      {maxPrice < 9999999 && (
                         <h1 className="my-2">
                           Max Price: {maxPrice} Million THB
                         </h1>
@@ -617,7 +629,7 @@ const ULPCardCollection: React.FC<ULPCardCollectionProps> = ({
 
                     {/* Max price slider */}
                     <div>
-                      {maxPrice < 999 && (
+                      {maxPrice < 9999999 && (
                         <h1 className="my-2">
                           Max Price: {maxPrice} Million THB
                         </h1>
