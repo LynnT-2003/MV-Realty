@@ -8,6 +8,7 @@ import { fetchUnitTypesByPropertyId } from "@/services/UnitTypeServices";
 import { Property, Listing, UnitType } from "@/types";
 import UnitTypeCardCollection from "@/components/UnitTypeCardCollection";
 import unitType from "@/sanity/schemas/unitType";
+import UnitTypeSpecificCardCollection from "@/components/UnitTypeSpecificCardCollection";
 
 /**
  * Fetches a collection by id and renders its properties as a list
@@ -93,7 +94,7 @@ const CollectionsPage = ({ params }: { params: { id: string } }) => {
 
   return (
     <div className="pt-4">
-      <UnitTypeCardCollection
+      <UnitTypeSpecificCardCollection
         unitTypes={unitTypes}
         properties={collectionProperties}
         showFilter={true}
