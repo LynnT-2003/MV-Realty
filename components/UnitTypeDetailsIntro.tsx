@@ -219,7 +219,7 @@ const UnitTypeDetailIntro: React.FC<UnitTypeDetailsIntroProps> = ({
         </Grid>
       </div>
 
-      <div className="md:max-w-[1150px] w-[85vw]">
+      <div className="md:max-w-[1150px] w-[85vw] ipad-screen:hidden">
         <Grid container columnSpacing={10}>
           <Grid item md={7}>
             <p className="poppins-text-title-small md:property-details-title-text lg:mb-0 mb-6">
