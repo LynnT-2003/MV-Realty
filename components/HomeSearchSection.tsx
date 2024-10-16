@@ -781,7 +781,7 @@ const HomeSearchSection: React.FC<HomeSearchSectionProps> = ({
               onSubmit={onSubmit}
             />
 
-            <div className="z-10 w-screen">
+            <div className="z-10 w-[75vw]">
               {searchActionClicked && (
                 <SearchResultsSection
                   filteredUnitTypes={filteredUnitTypes}

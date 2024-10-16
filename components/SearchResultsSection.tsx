@@ -299,7 +299,10 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
   };
 
   return (
-    <div style={sectionStyle} className="search-section">
+    <div
+      style={sectionStyle}
+      className="flex items-center justify-center search-section"
+    >
       <div className="hidden ipad-screen:hidden lg:block mt-2 lg:w-screen xl:w-[1250px] w-[1250px] h-screen relative mx-auto max-h-[0px]">
         <div className="rounded-3xl shadow-lg h-[500px] overflow-scroll py-8 glass ">
           {filteredUnitTypes.length === 0 && filteredProperties.length === 0 ? (
@@ -322,7 +325,7 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
                       <div
                         key={unit._id}
                         className="flex items-center space-x-8 py-3 bg-transparent rounded-2xl hover:bg-gray-200 hover:cursor-pointer pl-8 text-gray-600 hover:text-black mb-4"
-                        // onClick={() => handleUnitTypeClick(unit._id)}
+                        onClick={() => handleUnitTypeClick(unit._id)}
                       >
                         <img
                           src={urlForImage(unit.unitHero)}
@@ -586,8 +589,8 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
           {filteredListings.map((listing) => (
             <div
               key={listing._id}
-              className="bg-gray-100 hover:bg-gray-300 hover:cursor-pointer pl-8 py-2 text-gray-600 hover:text-black"
-              // onClick={() => handleUnitTypeClick(listing._id)}
+              className="w-[90vw] bg-gray-100 hover:bg-gray-300 hover:cursor-pointer pl-8 py-2 text-gray-600 hover:text-black"
+              onClick={() => handleUnitTypeClick(listing._id)}
             >
               <span key={listing._id}>
                 <span className="text-gray-500 text-xs items-center pr-3">
