@@ -201,7 +201,7 @@ const UnitTypeDetailIntro: React.FC<UnitTypeDetailsIntroProps> = ({
                   handlePropertyClick(property.slug.current);
                 }}
               >
-                MORE FROM THIS UNIT
+                MORE FROM THIS PROPERTY
               </button>
               <p
                 className="ml-3.5 pt-1 text-[#040405FF] text-sm font-light text-center mt-4 cursor-pointer underline"
@@ -301,7 +301,7 @@ const UnitTypeDetailIntro: React.FC<UnitTypeDetailsIntroProps> = ({
                   handlePropertyClick(property.slug.current);
                 }}
               >
-                MORE FROM THIS UNIT
+                MORE FROM THIS PROPERTY
               </button>
               <p
                 className="ml-3.5 pt-1 text-[#040405FF] text-sm font-light text-center mt-4 cursor-pointer underline"
