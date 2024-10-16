@@ -467,8 +467,8 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
                     <SelectContent>
                       <SelectGroup>
                         <SelectLabel>Options:</SelectLabel>
-                        <SelectItem value="Buy">Buy a Unit</SelectItem>
-                        <SelectItem value="Rent">Rent a Listing</SelectItem>
+                        <SelectItem value="Buy">Buy</SelectItem>
+                        <SelectItem value="Rent">Rent</SelectItem>
                       </SelectGroup>
                     </SelectContent>
                   </Select>
@@ -487,8 +487,8 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
                     <SelectContent>
                       <SelectGroup>
                         <SelectLabel>Bedroom</SelectLabel>
-                        <SelectItem value="1">1 Bedroom Studio</SelectItem>
-                        <SelectItem value="2">2 Bedroom Duplex</SelectItem>
+                        <SelectItem value="1">1 Bedroom</SelectItem>
+                        <SelectItem value="2">2 Bedroom</SelectItem>
                         <SelectItem value="3">3 Bedroom</SelectItem>
                       </SelectGroup>
                     </SelectContent>
