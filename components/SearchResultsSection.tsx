@@ -519,48 +519,24 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
                   className="flex justify-center text-gray-400 py-2"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  {/* Placeholder content */}
-                  <Select
-                    onValueChange={(value) => setMinPriceFilter(Number(value))}
-                  >
-                    <SelectTrigger className="w-[180px]">
-                      <SelectValue placeholder="Min Price (THB)" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectLabel>Price in THB</SelectLabel>
-                        <SelectItem value="0">0 Million</SelectItem>
-                        <SelectItem value="10">10 Million</SelectItem>
-                        <SelectItem value="20">20 Million</SelectItem>
-                        <SelectItem value="30">30 Million</SelectItem>
-                        <SelectItem value="40">40 Million</SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
+                  <input
+                    type="number"
+                    onChange={(e) => setMinPriceFilter(Number(e.target.value))}
+                    placeholder="Min Price (MB)"
+                    className="w-[180px] text-sm pl-3 p-2 border rounded"
+                  />
                 </div>
 
                 <div
                   className="flex justify-center text-gray-400 py-2"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  {/* Placeholder content */}
-                  <Select
-                    onValueChange={(value) => setMaxPriceFilter(Number(value))}
-                  >
-                    <SelectTrigger className="w-[180px]">
-                      <SelectValue placeholder="Max Price (THB)" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectLabel>Price in THB</SelectLabel>
-                        <SelectItem value="10">10 Million</SelectItem>
-                        <SelectItem value="20">20 Million</SelectItem>
-                        <SelectItem value="30">30 Million</SelectItem>
-                        <SelectItem value="40">40 Million</SelectItem>
-                        <SelectItem value="50">50 Million</SelectItem>
-                      </SelectGroup>
-                    </SelectContent>
-                  </Select>
+                  <input
+                    type="number"
+                    onChange={(e) => setMaxPriceFilter(Number(e.target.value))}
+                    placeholder="Max Price (MB)"
+                    className="w-[180px] text-sm pl-3 p-2 border rounded"
+                  />
                 </div>
                 {/* <div className="flex justify-center items-center pt-4">
                   <Button
