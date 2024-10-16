@@ -325,21 +325,33 @@ const ULPCardCollection: React.FC<ULPCardCollectionProps> = ({
             </div>
             <div className="flex flex-wrap pt-4">
               {tags.map((tag) => (
+                // <button
+                //   key={tag._id}
+                //   className="p-[3px] m-2 relative"
+                //   onClick={() => handleClick(tag._id)}
+                // >
+                //   <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg" />
+                //   <div
+                //     className={`px-3 py-2 text-xs font-medium bg-white rounded-[6px] relative group transition duration-200 ${
+                //       selectedTags.includes(tag._id)
+                //         ? "bg-gradient-to-r from-indigo-500 to-purple-500 text-white" // Change style when clicked
+                //         : "text-black hover:bg-transparent hover:text-white" // Default hover style
+                //     }`}
+                //   >
+                //     {tag.tag}
+                //   </div>
+                // </button>
                 <button
                   key={tag._id}
-                  className="p-[3px] m-2 relative"
                   onClick={() => handleClick(tag._id)}
+                  className={`px-5 py-1 mt-3 rounded-full bg-white border border-[#002194] font-semibold text-sm
+                  transition-colors duration-200 hover:bg-[#002194] hover:text-white ${
+                    selectedTags.includes(tag._id)
+                      ? "bg-[#002194] text-white"
+                      : "text-[#002194]"
+                  }`}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg" />
-                  <div
-                    className={`px-3 py-2 text-xs font-medium bg-white rounded-[6px] relative group transition duration-200 ${
-                      selectedTags.includes(tag._id)
-                        ? "bg-gradient-to-r from-indigo-500 to-purple-500 text-white" // Change style when clicked
-                        : "text-black hover:bg-transparent hover:text-white" // Default hover style
-                    }`}
-                  >
-                    {tag.tag}
-                  </div>
+                  {tag.tag}
                 </button>
               ))}
             </div>
