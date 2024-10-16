@@ -89,18 +89,18 @@ const ULPCardCollection: React.FC<ULPCardCollectionProps> = ({
   });
 
   useEffect(() => {
-    if (listings.length > 0) {
+    if (filteredListings.length > 0) {
       let maxListingPrice = Math.max(
-        ...listings.map((listing) => listing.price)
+        ...filteredListings.map((listing) => listing.price)
       );
       setMaxInitPrice(maxListingPrice);
     }
   }, [listings, selectedValues["Buy/Rent"]]);
 
   useEffect(() => {
-    if (unitTypes.length > 0) {
+    if (filteredUnits.length > 0) {
       let maxUnitPrice = Math.max(
-        ...unitTypes.map((unit) => unit.startingPrice)
+        ...filteredUnits.map((unit) => unit.startingPrice)
       );
       setMaxUnitInitPrice(maxUnitPrice);
     }
@@ -325,22 +325,6 @@ const ULPCardCollection: React.FC<ULPCardCollectionProps> = ({
             </div>
             <div className="flex flex-wrap pt-4">
               {tags.map((tag) => (
-                // <button
-                //   key={tag._id}
-                //   className="p-[3px] m-2 relative"
-                //   onClick={() => handleClick(tag._id)}
-                // >
-                //   <div className="absolute inset-0 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg" />
-                //   <div
-                //     className={`px-3 py-2 text-xs font-medium bg-white rounded-[6px] relative group transition duration-200 ${
-                //       selectedTags.includes(tag._id)
-                //         ? "bg-gradient-to-r from-indigo-500 to-purple-500 text-white" // Change style when clicked
-                //         : "text-black hover:bg-transparent hover:text-white" // Default hover style
-                //     }`}
-                //   >
-                //     {tag.tag}
-                //   </div>
-                // </button>
                 <button
                   key={tag._id}
                   onClick={() => handleClick(tag._id)}
