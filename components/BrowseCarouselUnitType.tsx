@@ -129,7 +129,7 @@ const BrowseCarouselUnitType: React.FC<BrowseCarouselProps> = ({
               </DirectionAwareHover>
               <div className="mt-4 pt-2 pr-2 bg-white rounded-lg mb-8">
                 <div className="relative flex">
-                  <div className="w-80 inline-flex items-center overflow-hidden pr-3">
+                  <div className="w-[72%] inline-flex items-center overflow-hidden pr-3">
                     <span className="truncate text-lg font-light overflow-hidden whitespace-nowrap">
                       {unit.unitTypeName}
                     </span>
