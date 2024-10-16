@@ -3,8 +3,9 @@ import "./page.css";
 import React, { useEffect, useState } from "react";
 import { Property, Listing, UnitType } from "@/types";
 import UnitTypeCardCollection from "@/components/UnitTypeCardCollection";
-import unitType from "@/sanity/schemas/unitType";
 import { set } from "sanity";
+import ListingCardCollection from "@/components/ListingCardCollection";
+import ULPCardCollection from "@/components/ULPCardCollection";
 
 /**
  * SearchResultsPage component renders a list of listings and properties
@@ -23,6 +24,7 @@ const SearchResultsPage: React.FC = () => {
    */
   // const [listings, setListings] = useState<Listing[]>([]);
   const [unitTypes, setUnitTypes] = useState<UnitType[]>([]);
+  const [listings, setListings] = useState<Listing[]>([]);
   const [properties, setProperties] = useState<Property[]>([]);
 
   /**
@@ -45,6 +47,10 @@ const SearchResultsPage: React.FC = () => {
     //   setListings(JSON.parse(storedListings));
     // }
 
+    if (storedListings) {
+      setListings(JSON.parse(storedListings));
+    }
+
     if (storedProperties) {
       setProperties(JSON.parse(storedProperties));
     }
@@ -61,11 +67,24 @@ const SearchResultsPage: React.FC = () => {
    */
   return (
     <div className=" pt-12">
+      {/* <ListingCardCollection
+        listings={listings}
+        properties={properties}
+        showFilter={true}
+        showProperties={false}
+      />
       <UnitTypeCardCollection
         // listings={listings}
         unitTypes={unitTypes}
         properties={properties}
         showFilter={true}
+      /> */}
+      <ULPCardCollection
+        listings={listings}
+        unitTypes={unitTypes}
+        properties={properties}
+        showFilter={true}
+        showProperties={true}
       />
     </div>
   );
