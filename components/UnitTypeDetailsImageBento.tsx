@@ -5,7 +5,7 @@ import { Listing, Property, UnitType } from "@/types";
 import { urlForImage } from "@/sanity/lib/image";
 import { useState } from "react";
 import { Lens } from "./ui/lens";
-import ImageViewer from 'awesome-image-viewer'; // Import image viewer
+import ImageViewer from "awesome-image-viewer"; // Import image viewer
 
 interface UnitTypeDetailsImageBentoProps {
   unitTypeDetails: UnitType;
@@ -18,7 +18,6 @@ const UnitTypeDetailsImageBento: React.FC<UnitTypeDetailsImageBentoProps> = ({
 }) => {
   console.log("Unit Type Details:", unitTypeDetails);
   const [hovering, setHovering] = useState(false);
-
 
   const allImages = [
     unitTypeDetails.unitHero,
@@ -38,7 +37,7 @@ const UnitTypeDetailsImageBento: React.FC<UnitTypeDetailsImageBentoProps> = ({
   };
 
   return (
-    <div className="w-full flex justify-center pt-3 pb-12 md:pb-20">
+    <div className="w-full flex justify-center pt-3 pb-8 md:pb-20">
       {/* Desktop view */}
       <div className="md:max-w-[1200px] w-[95vw] hidden md:block">
         <Grid container spacing={{ xs: 0.5, md: 1.5 }}>
@@ -77,7 +76,10 @@ const UnitTypeDetailsImageBento: React.FC<UnitTypeDetailsImageBentoProps> = ({
                   </div>
                 </Grid>
                 <Grid item xs={6}>
-                  <div className="pt-0.5 md:pt-2" onClick={() => handleImageClick(4)}>
+                  <div
+                    className="pt-0.5 md:pt-2"
+                    onClick={() => handleImageClick(4)}
+                  >
                     <img
                       src={urlForImage(unitTypeDetails.unitPhoto[1])}
                       alt="Unit Photo 2"
@@ -86,7 +88,10 @@ const UnitTypeDetailsImageBento: React.FC<UnitTypeDetailsImageBentoProps> = ({
                   </div>
                 </Grid>
                 <Grid item xs={6}>
-                  <div className="pt-0.5 md:pt-2" onClick={() => handleImageClick(2)}>
+                  <div
+                    className="pt-0.5 md:pt-2"
+                    onClick={() => handleImageClick(2)}
+                  >
                     <img
                       src={urlForImage(propertyDetails.propertyHero)}
                       alt="Property Hero"
