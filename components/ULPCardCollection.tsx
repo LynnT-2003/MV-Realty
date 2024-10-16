@@ -147,6 +147,10 @@ const ULPCardCollection: React.FC<ULPCardCollectionProps> = ({
     setMaxPrice(value[0]);
   };
 
+  const handlePriceChange = (value: number) => {
+    setMaxInitPrice(value);
+  };
+
   // Fetch and filter properties based on selected tags copy here
   useEffect(() => {
     const applyFilters = async () => {
@@ -239,10 +243,10 @@ const ULPCardCollection: React.FC<ULPCardCollectionProps> = ({
         <div className="flex w-screen lg:w-[1320px]">
           {/* First column (blank, taking 1/3 width) */}
           <div className="mx-5 position:fixed ipad-screen:block rounded-3xl ipad-screen:w-[300px] w-[0px] hidden h-[90vh] overflow-hidden overflow-y-scroll scrollbar-hide">
-            <div className="px-10 pt-10 pb-16 rounded-lg bg-[#e3effd]">
+            <div className="px-10 py-6 rounded-lg bg-[#e3effd]">
               <h1 className="ml-1 text-xl">Filter:</h1>
               {filters.map((filter) => (
-                <div key={filter} className="md:px-0 my-8">
+                <div key={filter} className="md:px-0 mt-8">
                   <Popover
                     open={openFilter === filter}
                     onOpenChange={(isOpen) =>
@@ -300,27 +304,31 @@ const ULPCardCollection: React.FC<ULPCardCollectionProps> = ({
                   </Popover>
                 </div>
               ))}
-              <div className="mt-4">
-                <span className="mt-12 text-sm text-slate-700 font-light poppins-text">
+              <div className="mt-8">
+                <span className="mt-12 ml-2.5 font-thin poppins-text text-sm text-slate-700 font-light poppins-text">
                   Max Price:
                 </span>
                 {maxPrice < 9999999 ? (
-                  <h1 className="my-2">
-                    {maxPrice} {isBuy ? "Million THB" : "THB / month"}
-                  </h1>
+                  <span className="ml-2 font-thin poppins-text text-sm text-slate-700 font-light poppins-text">
+                    {isBuy ? "Million" : "THB / mo"}
+                  </span>
                 ) : (
-                  <span className="my-2 ml-2 text-sm text-slate-700 font-light poppins-text">
+                  <span className="my-2 ml-2 font-thin poppins-text text-sm text-slate-700 font-light poppins-text">
                     Not set
                   </span>
                 )}
 
-                <Slider
-                  defaultValue={isBuy ? [maxUnitInitPrice] : [maxInitPrice]}
-                  max={isBuy ? maxUnitInitPrice : maxInitPrice}
-                  step={2}
-                  onValueChange={handleSliderChange}
-                  className="mt-4"
-                />
+                <div
+                  className="flex justify-center text-gray-400 py-2"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <input
+                    type="number"
+                    onChange={(e) => setMaxPrice(Number(e.target.value))}
+                    placeholder="Million THB"
+                    className="w-[150px] text-sm pl-3 p-2 border rounded-md"
+                  />
+                </div>
               </div>
             </div>
             <div className="flex flex-wrap pt-4">
@@ -344,7 +352,7 @@ const ULPCardCollection: React.FC<ULPCardCollectionProps> = ({
           <>
             {isBuy ? (
               <div>
-                <div className="mx-8 ipad-screen:hidden py-4">
+                <div className="mx-8 ipad-screen:hidden py-4 ">
                   {/* Separate filters for mobile view */}
                   <div className="flex flex-col space-y-4">
                     {/* Horizontal filter row */}
