@@ -6,7 +6,6 @@ import { fetchAllProperties } from "@/services/PropertyServices";
 import BrowseCarouselProperty from "@/components/BrowseCarouselProperty";
 import BrowseCarouselCollection from "@/components/BrowseCarouselCollection";
 import BrowseCarouselUnitType from "@/components/BrowseCarouselUnitType";
-import { fetchAllListings } from "@/services/ListingServices";
 import { fetchAllUnitTypes } from "@/services/UnitTypeServices";
 import BrowseCarouselListing from "@/components/BrowseCarouselListing";
 import { fetchAllDevelopers } from "@/services/DeveloperServices";
@@ -22,16 +21,7 @@ const filters = ["Bedrooms", "Price", "Location", "Buy/Rent"] as const;
 
 type Filter = (typeof filters)[number];
 
-const options: Record<Filter, string[]> = {
-  Bedrooms: ["1-Bedroom", "2-Bedroom", "3-Bedroom"],
-  Price: ["$0 - $100k", "$100k - $200k", "$200k+"],
-  Location: ["New York", "San Francisco", "Chicago", "Los Angeles"],
-  "Buy/Rent": ["Buy", "Rent"],
-};
-
 const HomePage: React.FC = () => {
-  const router = useRouter();
-
   const [properties, setProperties] = useState<Property[]>([]);
   const [listings, setListings] = useState<Listing[]>([]);
   const [developers, setDevelopers] = useState<Developer[]>([]);
@@ -40,20 +30,6 @@ const HomePage: React.FC = () => {
   const [featuredListings, setFeaturedListings] = useState<Listing[]>([]);
   const [featuredUnitTypes, setFeaturedUnitTypes] = useState<UnitType[]>([]);
   const [featuredProperties, setFeaturedProperties] = useState<Property[]>([]);
-
-  const [openFilter, setOpenFilter] = useState<Filter | null>(null);
-
-  const [bedroomFilter, setBedroomFilter] = useState(null);
-  const [priceFilter, setPriceFilter] = useState(null);
-  const [locationFilter, setLocationFilter] = useState(null);
-  const [transactionOption, setTransactionOption] = useState(null);
-
-  const [selectedValues, setSelectedValues] = useState<Record<Filter, string>>({
-    Bedrooms: "",
-    Price: "",
-    Location: "",
-    "Buy/Rent": "",
-  });
 
   const [searchSectionClicked, setSearchSectionClicked] = useState(false);
 
@@ -128,48 +104,6 @@ const HomePage: React.FC = () => {
 
     fetchData();
   }, []);
-
-  useEffect(() => {
-    console.log("Active filters: ", selectedValues);
-  }, [selectedValues]);
-
-  const fetchProperties = async () => {
-    try {
-      const response: Property[] = await fetchAllProperties();
-
-      if (!response) {
-        throw new Error("Failed to fetch properties.");
-      }
-      console.log("Fetching properties...");
-      setProperties(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const fetchListings = async () => {
-    try {
-      const response: Listing[] = await fetchAllListings();
-
-      if (!response) {
-        throw new Error("Failed to fetch listings.");
-      }
-      console.log("Fetching listings...");
-      setListings(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleSelect = (filter: Filter, value: string) => {
-    setSelectedValues((prev) => ({ ...prev, [filter]: value }));
-    setOpenFilter(null);
-  };
-
-  const handlePropertyClick = (property: Property) => {
-    console.log("Clicked on Property: ", { property });
-    router.push(`/Details/${property.slug.current}`);
-  };
 
   const handleSearchSectionClick = () => {
     setSearchSectionClicked(true);
