@@ -12,7 +12,11 @@ import BrowseCarouselListing from "@/components/BrowseCarouselListing";
 import { fetchAllDevelopers } from "@/services/DeveloperServices";
 import { fetchAllCollections } from "@/services/CollectionsServices";
 import HomeSearchSection from "@/components/HomeSearchSection";
-import { fetchAllListingsFromFeaturedListings, fetchAllPropertiesFromFeaturedProperties, fetchAllUnitTypeFromFeaturedUnitType } from "@/services/FeaturedService";
+import {
+  fetchAllListingsFromFeaturedListings,
+  fetchAllPropertiesFromFeaturedProperties,
+  fetchAllUnitTypeFromFeaturedUnitType,
+} from "@/services/FeaturedService";
 
 const filters = ["Bedrooms", "Price", "Location", "Buy/Rent"] as const;
 
@@ -94,9 +98,18 @@ const HomePage: React.FC = () => {
           fetchDataWithCache("developers", fetchAllDevelopers),
           fetchDataWithCache("collections", fetchAllCollections),
           fetchDataWithCache("unitTypes", fetchAllUnitTypes),
-          fetchDataWithCache("featuredListings", fetchAllListingsFromFeaturedListings),
-          fetchDataWithCache("featuredUnitTypes", fetchAllUnitTypeFromFeaturedUnitType),
-          fetchDataWithCache("featuredProperties", fetchAllPropertiesFromFeaturedProperties),
+          fetchDataWithCache(
+            "featuredListings",
+            fetchAllListingsFromFeaturedListings
+          ),
+          fetchDataWithCache(
+            "featuredUnitTypes",
+            fetchAllUnitTypeFromFeaturedUnitType
+          ),
+          fetchDataWithCache(
+            "featuredProperties",
+            fetchAllPropertiesFromFeaturedProperties
+          ),
         ]);
 
         // Update state with fetched data
@@ -222,12 +235,15 @@ const HomePage: React.FC = () => {
           </p>
         </div>
       </div>
-      <BrowseCarouselProperty properties={featuredProperties} developers={developers} />
+      <BrowseCarouselProperty
+        properties={featuredProperties}
+        developers={developers}
+      />
 
       <div className="w-full flex items-center justify-center">
         <div className="xl:w-[1200px]">
           <p className="poppins-text pt-[42px] pb-[0px] font-semibold">
-            Curated Listings
+            Curated Unit Types
           </p>
         </div>
       </div>

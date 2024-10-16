@@ -125,14 +125,14 @@ const BrowseCarousel: React.FC<BrowseCarouselProps> = ({
               >
                 <></>
               </DirectionAwareHover>
-              <div className="mt-4 pt-2 pr-2 bg-white rounded-lg mb-8">
+              <div className="mt-4 pt-2 bg-white rounded-lg mb-8">
                 <div className="relative flex">
-                  <div className="w-80 inline-flex items-top overflow-hidden pr-3">
+                  <div className="w-[72%] inline-flex items-top overflow-hidden pr-2">
                     <span className="truncate text-lg font-light overflow-hidden whitespace-nowrap">
                       {listing.listingName}
                     </span>
                   </div>
-                  <div className="w-20 flex flex-col items-end">
+                  <div className="w-20 flex flex-col justify-between">
                     <p className="mr-0 ml-3 font-semibold text-xl text-[#193158]">
                       {new Intl.NumberFormat("th-TH", {
                         style: "currency",

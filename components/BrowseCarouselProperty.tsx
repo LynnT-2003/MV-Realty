@@ -118,7 +118,7 @@ const BrowseCarouselProperty: React.FC<BrowseCarouselProps> = ({
               </DirectionAwareHover>
               <div className="mt-4 pt-2 pr-2 bg-white rounded-lg mb-8">
                 <div className="relative flex">
-                  <div className="w-[63%] inline-flex items-center overflow-hidden">
+                  <div className="w-[63%] ipad-screen:w-[56%] inline-flex items-center overflow-hidden">
                     <span className="truncate text-lg font-light overflow-hidden whitespace-nowrap">
                       {property.title}
                     </span>
