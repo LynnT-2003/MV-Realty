@@ -145,7 +145,7 @@ const UnitTypeDetailPage = ({ params }: { params: { id: string } }) => {
         <div className="md:max-w-[1100px] w-[100vw] flex gap-4 lg:gap-16">
           <PopupButton
             className="w-1/2 py-3 bg-[#193158] hover:bg-[#132441] text-white text-sm font-bold rounded-lg shadow-md"
-            url="https://calendly.com/tanat-navin/30min"
+            url="https://calendly.com/mahavertex-info/in-person-viewing"
             rootElement={document.getElementById("root") || document.body}
             text="Schedule a viewing"
           />
