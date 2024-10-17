@@ -53,7 +53,7 @@ const LensCardListings: React.FC<LensDemoProps> = ({
             {/* We render the listing name as an h2 element. */}
             <h2 className="text-xl text-left">{listing.listingName}</h2>
             {/* We render the listing price as a paragraph element. */}
-            <p className="text-left mt-2">Price: {listing.price} Million THB</p>
+            <p className="text-left mt-2">Price: {listing.price} THB</p>
           </motion.div>
         </div>
       </div>
