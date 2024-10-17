@@ -231,12 +231,32 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
       updatedUnitTypes = updatedUnitTypes.filter(
         (unit) => Number(unit?.startingPrice) <= Number(maxPriceFilter)
       );
+
+      const propertiesWithUnitTypes = createPropertiesWithUnitTypes(
+        updatedUnitTypes,
+        updatedProperties
+      );
+      updatedProperties = propertiesWithUnitTypes.map(([property]) => property);
+
+      updatedListings = updatedListings.filter(
+        (listing) => Number(listing?.price) <= Number(maxPriceFilter)
+      );
+      const propertiesWithListings = createPropertiesWithListings(
+        updatedListings,
+        updatedProperties
+      );
+      updatedPropertiesWithListings = propertiesWithListings.map(
+        ([property]) => property
+      );
     }
 
     // Filter by min price
     if (minPriceFilter) {
       updatedUnitTypes = updatedUnitTypes.filter(
         (unit) => Number(unit?.startingPrice) >= Number(minPriceFilter)
+      );
+      updatedListings = updatedListings.filter(
+        (listing) => Number(listing?.price) >= Number(minPriceFilter)
       );
     }
 
@@ -288,6 +308,10 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
     console.log("Max Price Filter:", maxPriceFilter);
     filteredUnitTypes.forEach((unit) => {
       console.log("Unit Price:", unit.startingPrice);
+    });
+
+    filteredListings.forEach((listing) => {
+      console.log("Listing Price:", listing.price);
     });
 
     // ... Rest of the filtering logic
