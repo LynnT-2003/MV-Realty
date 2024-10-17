@@ -189,6 +189,14 @@ const PropertyDetailPage = ({ params }: { params: { slug: string } }) => {
         <NearbyAmenities property={property} />
       </div>
 
+      <div className="w-full flex justify-center pb-6">
+        <div className="md:max-w-[1150px] w-[85vw]">
+          <p className="poppins-text-title-small md:property-details-title-text">
+            Location
+          </p>
+        </div>
+      </div>
+      
       {/* Show the map demo component */}
       <div className="w-full flex justify-center pb-24 md:pb-12 px-4 lg:px-0">
         <div className="md:max-w-[1100px] w-[100vw] ">

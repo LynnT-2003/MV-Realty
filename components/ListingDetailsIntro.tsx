@@ -335,7 +335,7 @@ const ListingDetailsIntro: React.FC<ListingDetailsIntroProps> = ({
               handlePropertyClick(property.slug.current);
             }}
           >
-            MORE FROM THIS LISTING
+            MORE FROM THIS PROPERTY
           </button>
           <p
             onClick={() => handleCopyToClipboard(listingDetails._id)}
@@ -368,21 +368,28 @@ const ListingDetailsIntro: React.FC<ListingDetailsIntroProps> = ({
           </Typography>
           <Typography id="modal-description" sx={{ mt: 2 }}>
             <b className=" text-base">Email:</b>{" "}
-            <a href="mailto:info@mahavertex.com">info@mahavertex.com</a>
+            <a href="mailto:info@mahavertex.com" className="hover:underline transition duration-300">
+              info@mahavertex.com</a>
             <br />
             <div className="mt-1">
               {" "}
               <b className=" text-base">Phone:</b>{" "}
-              <a href="tel:+66022001020" className="ml-1">
+              <a href="tel:+66022001020" className="hover:underline transition duration-300">
                 +66 02 200 1020
               </a>
               <br />
             </div>
             <div className="mt-1">
               {" "}
-              <b className=" text-base">Address:</b> Suite: 28, Level 2, Summer
-              Point Building, 7 Sukhumvit 69 Alley, Phra Khanong, Watthana,
-              Bangkok 10110
+              <b className=" text-base">Address:</b>
+              <a
+                href="https://maps.app.goo.gl/LZ9qHhuNT6zpDz3a7"
+                className="hover:underline transition duration-300"
+              >
+                {" "}
+                Suite: 28, Level 2, Summer Point Building, 7 Sukhumvit 69 Alley,
+                Phra Khanong, Watthana, Bangkok 10110
+              </a>
               <br />
             </div>
             <div style={iconButtonContainer}>
