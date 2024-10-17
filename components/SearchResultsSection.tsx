@@ -428,7 +428,7 @@ const SearchResultsSection: React.FC<SearchResultsSectionProps> = ({
                             <b>{listing.listingName}</b>
                           </h1>
                           <h1 className="pt-2">
-                            Price: <i>{listing.price}M THB</i>
+                            Price: <i>{listing.price} THB</i>
                           </h1>
                         </span>
                       </div>
