@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import UnitTypeCardCollection from "@/components/UnitTypeCardCollection";
 import { fetchAllUnitTypes } from "@/services/UnitTypeServices";
 import { fetchAllProperties } from "@/services/PropertyServices";
+import UnitTypeSpecificCardCollection from "@/components/UnitTypeSpecificCardCollection";
 
 const BuyPage = () => {
   const [unitTypes, setUnitTypes] = useState([]);
@@ -51,7 +52,7 @@ const BuyPage = () => {
   return (
     <div>
       <div>
-        <UnitTypeCardCollection
+        <UnitTypeSpecificCardCollection
           unitTypes={unitTypes}
           properties={properties}
           showFilter={true}
