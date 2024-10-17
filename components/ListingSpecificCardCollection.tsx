@@ -368,8 +368,8 @@ const ListingSpecificCardCollection: React.FC<
                 <span className="mt-12 text-sm text-slate-700 font-light poppins-text">
                   Max Price:
                 </span>
-                {maxPrice < 999 && <h1 className="my-2">{maxPrice} THB</h1>}
-                {maxPrice >= 999 && (
+                {maxPrice < 9999999 && <h1 className="my-2">{maxPrice} THB</h1>}
+                {maxPrice >= 9999999 && (
                   <span className="my-2 ml-2 text-sm text-slate-700 font-light poppins-text">
                     Not set
                   </span>
