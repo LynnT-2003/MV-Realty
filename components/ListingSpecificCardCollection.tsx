@@ -240,7 +240,7 @@ const ListingSpecificCardCollection: React.FC<
                 {/* Max price slider */}
                 <div>
                   {maxPrice < 9999999 && (
-                    <h1 className="my-2">Max Price: {maxPrice} Million THB</h1>
+                    <h1 className="my-2">Max Price: {maxPrice} THB</h1>
                   )}
                   <Slider
                     defaultValue={[maxInitPrice]}
@@ -368,9 +368,7 @@ const ListingSpecificCardCollection: React.FC<
                 <span className="mt-12 text-sm text-slate-700 font-light poppins-text">
                   Max Price:
                 </span>
-                {maxPrice < 999 && (
-                  <h1 className="my-2">{maxPrice} Million THB</h1>
-                )}
+                {maxPrice < 999 && <h1 className="my-2">{maxPrice} THB</h1>}
                 {maxPrice >= 999 && (
                   <span className="my-2 ml-2 text-sm text-slate-700 font-light poppins-text">
                     Not set
@@ -508,7 +506,7 @@ const ListingSpecificCardCollection: React.FC<
                 {/* Max price slider */}
                 <div>
                   {maxPrice < 999 && (
-                    <h1 className="my-2">Max Price: {maxPrice} Million THB</h1>
+                    <h1 className="my-2">Max Price: {maxPrice} THB</h1>
                   )}
                   <Slider
                     defaultValue={[maxInitPrice]}
