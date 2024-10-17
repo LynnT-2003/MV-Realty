@@ -5,6 +5,7 @@ import { fetchAllListings } from "@/services/ListingServices";
 import { fetchAllProperties } from "@/services/PropertyServices";
 import ListingCardCollection from "@/components/ListingCardCollection";
 import listing from "@/sanity/schemas/listing";
+import ListingSpecificCardCollection from "@/components/ListingSpecificCardCollection";
 
 const BuyPage = () => {
   const [listings, setListings] = useState([]);
@@ -53,7 +54,7 @@ const BuyPage = () => {
 
   return (
     <div>
-      <ListingCardCollection
+      <ListingSpecificCardCollection
         listings={listings}
         properties={properties}
         showFilter={true}
