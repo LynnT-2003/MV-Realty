@@ -796,7 +796,7 @@ const HomeSearchSection: React.FC<HomeSearchSectionProps> = ({
             </div>
           </div>
 
-          <div className="max-sm:hidden inline-flex justify-center items-center space-x-1 py-3 rounded w-full">
+          {/* <div className="max-sm:hidden inline-flex justify-center items-center space-x-1 py-3 rounded w-full">
             {filters.map((filter) => (
               <div key={filter} className="md:px-0">
                 <Popover
@@ -861,7 +861,7 @@ const HomeSearchSection: React.FC<HomeSearchSectionProps> = ({
             >
               Search -&gt;
             </Button>
-          </div>
+          </div> */}
         </div>
       </div>
 
